@@ -3,17 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Random Thoughts</title>
+  <title>RMQ 算法 | Random Thoughts</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Random Thoughts">
-<meta property="og:url" content="http://tjgao.github.io/index.html">
+  <meta name="description" content="RMQ (Range Minimum/Maximum Query，区间最值) 问题，是指给定一个区间，然后询问在区间某一局部区域的最值是什么。比如给出一个长度为$n$的数组$N$，然后每次给出索引号$i$和$j$，问：$N[i]$和$N[j]$之间的最大（小）值是什么。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RMQ 算法">
+<meta property="og:url" content="http://tjgao.github.io/2015/08/17/RMQ-算法/index.html">
 <meta property="og:site_name" content="Random Thoughts">
-<meta property="og:description">
+<meta property="og:description" content="RMQ (Range Minimum/Maximum Query，区间最值) 问题，是指给定一个区间，然后询问在区间某一局部区域的最值是什么。比如给出一个长度为$n$的数组$N$，然后每次给出索引号$i$和$j$，问：$N[i]$和$N[j]$之间的最大（小）值是什么。">
+<meta property="og:updated_time" content="2015-08-18T08:12:54.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Random Thoughts">
-<meta name="twitter:description">
+<meta name="twitter:title" content="RMQ 算法">
+<meta name="twitter:description" content="RMQ (Range Minimum/Maximum Query，区间最值) 问题，是指给定一个区间，然后询问在区间某一局部区域的最值是什么。比如给出一个长度为$n$的数组$N$，然后每次给出索引号$i$和$j$，问：$N[i]$和$N[j]$之间的最大（小）值是什么。">
   
     <link rel="alternative" href="/atom.xml" title="Random Thoughts" type="application/atom+xml">
   
@@ -182,9 +183,7 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap">
-  
-    <article id="post-RMQ-算法" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-RMQ-算法" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
       <a href="/2015/08/17/RMQ-算法/" class="article-date">
@@ -200,167 +199,112 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/08/17/RMQ-算法/">RMQ 算法</a>
+    <h1 class="article-title" itemprop="name">
+      RMQ 算法
     </h1>
   
 
       </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dynamic-programming/">dynamic programming</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/动态规划/">动态规划</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/technology/">技术</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
       
     
     <div class="article-entry" itemprop="articleBody">
       
         <p>RMQ (Range Minimum/Maximum Query，区间最值) 问题，是指给定一个区间，然后询问在区间某一局部区域的最值是什么。比如给出一个长度为$n$的数组$N$，然后每次给出索引号$i$和$j$，问：$N[i]$和$N[j]$之间的最大（小）值是什么。</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dynamic-programming/">dynamic programming</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/动态规划/">动态规划</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
-	</div>
+<a id="more"></a>
+<p>一个简单的办法是，逐个扫描，复杂度为$O(n)$。问题在于，如果询问的次数非常多，每次都逐个扫描，性能一定很差。显然，如果能预先准备好数据，然后直接查询会快多了。这里，又是一个使用动态规划的理想场所。其解决办法被称为 Sparse Table (稀疏表)。</p>
+<p>准备一个二维数组$A[n][n]$，其下标$i$和$j$的含义是，起始于索引$i$，长度为$2^j$的区间的最值为$A[i][j]$。$A[i][j]$可以被均分为$A[i][j-1]$以及$A[i+2^{j-1}][j-1]$，从动态规划的观点看，已经找到了最为关键的递推关系(假设求的是最小值)：<br>$$A[i][j] = min(A[i][j-1], A[i+2^{j-1}][j-1])$$</p>
+<p>很显然，$A[i][0]$就是$N[i]$，只有一个值，最值就是这个值。于是乎，其他值也就相应求出即可。准备好这个二维数组的时间是$O(nlogn)$</p>
+<p>怎么使用这个表呢？假设给出的区间是$u$和$v$，则$u$和$v$之间的长度为$v-u+1$，可得出$k=log_2(v-u+1)$，则以下两个区间一定覆盖了所求区间，即$A[u][k]$和$A[1+v-2^k][k]$。有重叠区域也无所谓，它们的最小值中较小的那个仍然是最后所求的值。即：<br>$$RMQ(u,v) = min(A[u][k], A[1+v-2^k][k])$$<br>时间复杂度为$O(1)$。</p>
+<pre><code><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; st(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; v) {
+    <span class="keyword">int</span> sz = v.size();
+    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; table(sz, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(sz));
+    <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;sz; i++ )
+        table[i][<span class="number">0</span>] = v[i];
+    <span class="keyword">int</span> j = <span class="number">1</span>;
+    <span class="keyword">while</span>( <span class="built_in">pow</span>(<span class="number">2</span>,j-<span class="number">1</span>) &lt; sz) {
+        <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;sz; i++ ) 
+            <span class="keyword">if</span>( (i + <span class="built_in">pow</span>(<span class="number">2</span>,j-<span class="number">1</span>)) &lt; sz )
+                table[i][j] = min(table[i][j-<span class="number">1</span>], table[i+<span class="built_in">pow</span>(<span class="number">2</span>, j-<span class="number">1</span>)][j-<span class="number">1</span>]);
+        j++;
+    }
+    <span class="keyword">return</span> table;
+}
 
+<span class="function"><span class="keyword">int</span> <span class="title">rmq</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; table, <span class="keyword">int</span> u, <span class="keyword">int</span> v)</span> </span>{
+    <span class="keyword">int</span> len = v - u + <span class="number">1</span>, k = <span class="keyword">int</span>(<span class="built_in">log</span>(len)/<span class="built_in">log</span>(<span class="number">2</span>));
+    <span class="keyword">return</span> min(table[u][k], table[<span class="number">1</span>+v-<span class="built_in">pow</span>(<span class="number">2</span>,k)][k]);
+}
+</code></pre>
       
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/technology/">技术</a>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/08/17/RMQ-算法/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
     </div>
     
   </div>
   
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/08/11/Suffix-array-I/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Suffix array I</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
 </article>
 
 
-
-
-
-
-
-  
-    <article id="post-Suffix-array-I" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/08/11/Suffix-array-I/" class="article-date">
-  	<time datetime="2015-08-11T13:00:33.000Z" itemprop="datePublished">2015-08-11</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/08/11/Suffix-array-I/">Suffix array I</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Suffix array 是一种很奇妙的数据结构，在字符串处理中有很多重要的用途。很多看上去复杂的字符串问题，在已经创建了 suffix array之后，往往能够在线性时间之内解决。</p>
-<p>Suffix array 其实只是 suffix tree 的一种简化，而 suffix tree，只是 trie 的一个特例。如果有了 trie 的概念，那么所谓的 suffix tree， 其实只是用字符串 S 的所有后缀构建的一个 trie。所谓后缀，比如对于字符串 bananas, 其所有的后缀包括了 bananas, ananas, nanas, anas, nas, as, s。这些后缀构成的 trie 如下：</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/string/">string</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/suffix-array/">suffix array</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/字符串/">字符串</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
 	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/technology/">技术</a>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/08/11/Suffix-array-I/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
 
 
 
 
 
+<section id="comments">
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'tiejungao'; // required: replace example with your forum shortname
 
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
 
-  
-    <article id="post-Hello-hexo" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/08/09/Hello-hexo/" class="article-date">
-  	<time datetime="2015-08-09T07:49:17.000Z" itemprop="datePublished">2015-08-09</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/08/09/Hello-hexo/">Hello hexo</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Nice, a fresh start</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-  
 </div>
       <footer id="footer">
   <div class="outer">
@@ -384,8 +328,8 @@
 		fancybox: true,
 		mathjax: true,
 		animate: true,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
