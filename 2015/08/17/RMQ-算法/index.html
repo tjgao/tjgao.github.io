@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://tjgao.github.io/2015/08/17/RMQ-算法/index.html">
 <meta property="og:site_name" content="Random Thoughts">
 <meta property="og:description" content="RMQ (Range Minimum/Maximum Query，区间最值) 问题，是指给定一个区间，然后询问在区间某一局部区域的最值是什么。比如给出一个长度为$n$的数组$N$，然后每次给出索引号$i$和$j$，问：$N[i]$和$N[j]$之间的最大（小）值是什么。">
-<meta property="og:updated_time" content="2015-08-18T08:12:54.000Z">
+<meta property="og:updated_time" content="2015-08-18T17:34:38.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RMQ 算法">
 <meta name="twitter:description" content="RMQ (Range Minimum/Maximum Query，区间最值) 问题，是指给定一个区间，然后询问在区间某一局部区域的最值是什么。比如给出一个长度为$n$的数组$N$，然后每次给出索引号$i$和$j$，问：$N[i]$和$N[j]$之间的最大（小）值是什么。">
@@ -227,17 +227,18 @@
         <p>RMQ (Range Minimum/Maximum Query，区间最值) 问题，是指给定一个区间，然后询问在区间某一局部区域的最值是什么。比如给出一个长度为$n$的数组$N$，然后每次给出索引号$i$和$j$，问：$N[i]$和$N[j]$之间的最大（小）值是什么。</p>
 <a id="more"></a>
 <p>一个简单的办法是，逐个扫描，复杂度为$O(n)$。问题在于，如果询问的次数非常多，每次都逐个扫描，性能一定很差。显然，如果能预先准备好数据，然后直接查询会快多了。这里，又是一个使用动态规划的理想场所。其解决办法被称为 Sparse Table (稀疏表)。</p>
-<p>准备一个二维数组$A[n][n]$，其下标$i$和$j$的含义是，起始于索引$i$，长度为$2^j$的区间的最值为$A[i][j]$。$A[i][j]$可以被均分为$A[i][j-1]$以及$A[i+2^{j-1}][j-1]$，从动态规划的观点看，已经找到了最为关键的递推关系(假设求的是最小值)：<br>$$A[i][j] = min(A[i][j-1], A[i+2^{j-1}][j-1])$$</p>
-<p>很显然，$A[i][0]$就是$N[i]$，只有一个值，最值就是这个值。于是乎，其他值也就相应求出即可。准备好这个二维数组的时间是$O(nlogn)$</p>
+<p>准备一个二维数组$A[n][m]$，$n$为数组长度，而$m$则为$1+log_2{n}$。对于数组中任何一个元素$A[i][j]$，记录了起始于索引$i$，长度为$2^j$的区间的最值。$A[i][j]$可以被均分为$A[i][j-1]$以及$A[i+2^{j-1}][j-1]$，从动态规划的观点看，已经找到了最为关键的递推关系(假设求的是最小值)：<br>$$A[i][j] = min(A[i][j-1], A[i+2^{j-1}][j-1])$$</p>
+<p>很显然，$A[i][0]$就是$N[i]$，只有一个值，最值就是这个值。于是乎，其他值也就相应求出即可。准备好这个二维数组的时间是$O(nlogn)$。</p>
 <p>怎么使用这个表呢？假设给出的区间是$u$和$v$，则$u$和$v$之间的长度为$v-u+1$，可得出$k=log_2(v-u+1)$，则以下两个区间一定覆盖了所求区间，即$A[u][k]$和$A[1+v-2^k][k]$。有重叠区域也无所谓，它们的最小值中较小的那个仍然是最后所求的值。即：<br>$$RMQ(u,v) = min(A[u][k], A[1+v-2^k][k])$$<br>时间复杂度为$O(1)$。</p>
 <pre><code><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; st(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; v) {
     <span class="keyword">int</span> sz = v.size();
-    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; table(sz, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(sz));
+    <span class="keyword">int</span> k = <span class="keyword">int</span>(<span class="built_in">log</span>(sz)/<span class="built_in">log</span>(<span class="number">2</span>)) + <span class="number">1</span>;
+    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; table(sz, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(k));
     <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;sz; i++ )
         table[i][<span class="number">0</span>] = v[i];
     <span class="keyword">int</span> j = <span class="number">1</span>;
     <span class="keyword">while</span>( <span class="built_in">pow</span>(<span class="number">2</span>,j-<span class="number">1</span>) &lt; sz) {
-        <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;sz; i++ ) 
+        <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;sz; i++ )
             <span class="keyword">if</span>( (i + <span class="built_in">pow</span>(<span class="number">2</span>,j-<span class="number">1</span>)) &lt; sz )
                 table[i][j] = min(table[i][j-<span class="number">1</span>], table[i+<span class="built_in">pow</span>(<span class="number">2</span>, j-<span class="number">1</span>)][j-<span class="number">1</span>]);
         j++;
