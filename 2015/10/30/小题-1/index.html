@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://tjgao.github.io/2015/10/30/小题-1/index.html">
 <meta property="og:site_name" content="Random Thoughts">
 <meta property="og:description" content="逛买卖提看到一个小题，其实也不难，但是如果在面试中出现，要瞬间找到解法，还是需要在平时多思多练。平时遇到问题也不应轻易放过，自我勉励一下。">
-<meta property="og:updated_time" content="2015-10-29T14:17:10.000Z">
+<meta property="og:updated_time" content="2015-10-29T14:22:40.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="小题(1)">
 <meta name="twitter:description" content="逛买卖提看到一个小题，其实也不难，但是如果在面试中出现，要瞬间找到解法，还是需要在平时多思多练。平时遇到问题也不应轻易放过，自我勉励一下。">
@@ -222,8 +222,8 @@
       
         <p>逛买卖提看到一个小题，其实也不难，但是如果在面试中出现，要瞬间找到解法，还是需要在平时多思多练。平时遇到问题也不应轻易放过，自我勉励一下。</p>
 <a id="more"></a>
-<p>题目是这样： 排序数组中找2个数，使其差等于一个给定值。 数组中都是正数且为unique number，给定一个正整数k，找出两个数A、B，使得$A-B=K$，要求使用常数空间（hash map不能用）、$O(N)$时间。</p>
-<p>其实类似于经典的twoSum问题，略作修改而已。当然解决办法也是类似的，用两个指针i, j指向尾部($i&lt;j$，且一直保证j不可能小于i)，比较i, j指向的值的差，若差为k，返回。若小于k，i–， 若大于k, j–。一直到i小于0为止。</p>
+<p>题目是这样： 排序数组中找2个数，使其差等于一个给定值。 数组中都是正数且为unique number，给定一个正整数$k$，找出两个数$A$、$B$，使得$A-B=K$，要求使用常数空间（hash map不能用）、$O(N)$时间。</p>
+<p>其实类似于经典的twoSum问题，略作修改而已。当然解决办法也是类似的，用两个指针$i$, $j$指向尾部($i&lt;j$，且一直保证$j$不可能小于$i$)，比较$i$, $j$指向的值的差，若差为$k$，返回。若小于$k$，$i$减1， 若大于$k$, $j$减1。一直到$i$小于0为止。</p>
 <p>代码如下：</p>
 <pre><code>pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; find(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; data, <span class="keyword">int</span> k) {
     <span class="keyword">int</span> sz = data.size(), i=sz-<span class="number">2</span>, j=sz-<span class="number">1</span>;
@@ -235,7 +235,7 @@
     }
     <span class="keyword">return</span> pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;(-<span class="number">1</span>, -<span class="number">1</span>);
 }
-</code></pre><p>如果找不到满足条件的A和B，则返回的pair的一对值是相等的，且都为-1。</p>
+</code></pre><p>如果找不到满足条件的$A$和$B$，则返回的pair的一对值是相等的，且都为-1。</p>
 
       
     </div>
