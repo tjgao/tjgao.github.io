@@ -3,18 +3,26 @@
 <head>
   <meta charset="utf-8">
   
-  <title>小题(1) | Random Thoughts</title>
+  <title>小题(2) | Random Thoughts</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="逛买卖提看到一个小题，其实也不难，但是如果在面试中出现，要瞬间找到解法，还是需要在平时多思多练。平时遇到问题也不应轻易放过，自我勉励一下。">
+  <meta name="description" content="一道leetcode小题。描述如下：
+Largest Rectangle in Histogram
+Given n non-negative integers representing the histogram’s bar height where the width of each bar is 1, find the area of largest rectangle in the hist">
 <meta property="og:type" content="article">
-<meta property="og:title" content="小题(1)">
-<meta property="og:url" content="http://tjgao.github.io/2015/10/30/小题-1/index.html">
+<meta property="og:title" content="小题(2)">
+<meta property="og:url" content="http://tjgao.github.io/2015/10/30/小题-2/index.html">
 <meta property="og:site_name" content="Random Thoughts">
-<meta property="og:description" content="逛买卖提看到一个小题，其实也不难，但是如果在面试中出现，要瞬间找到解法，还是需要在平时多思多练。平时遇到问题也不应轻易放过，自我勉励一下。">
-<meta property="og:updated_time" content="2015-10-30T09:41:15.000Z">
+<meta property="og:description" content="一道leetcode小题。描述如下：
+Largest Rectangle in Histogram
+Given n non-negative integers representing the histogram’s bar height where the width of each bar is 1, find the area of largest rectangle in the hist">
+<meta property="og:image" content="http://www.leetcode.com/wp-content/uploads/2012/04/histogram.png">
+<meta property="og:image" content="http://www.leetcode.com/wp-content/uploads/2012/04/histogram_area.png">
+<meta property="og:updated_time" content="2015-10-30T12:38:03.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="小题(1)">
-<meta name="twitter:description" content="逛买卖提看到一个小题，其实也不难，但是如果在面试中出现，要瞬间找到解法，还是需要在平时多思多练。平时遇到问题也不应轻易放过，自我勉励一下。">
+<meta name="twitter:title" content="小题(2)">
+<meta name="twitter:description" content="一道leetcode小题。描述如下：
+Largest Rectangle in Histogram
+Given n non-negative integers representing the histogram’s bar height where the width of each bar is 1, find the area of largest rectangle in the hist">
   
     <link rel="alternative" href="/atom.xml" title="Random Thoughts" type="application/atom+xml">
   
@@ -183,11 +191,11 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-小题-1" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-小题-2" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2015/10/30/小题-1/" class="article-date">
-  	<time datetime="2015-10-29T14:07:19.000Z" itemprop="datePublished">2015-10-30</time>
+      <a href="/2015/10/30/小题-2/" class="article-date">
+  	<time datetime="2015-10-30T05:05:12.000Z" itemprop="datePublished">2015-10-30</time>
 </a>
     </div>
   
@@ -200,7 +208,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      小题(1)
+      小题(2)
     </h1>
   
 
@@ -224,22 +232,56 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>逛买卖提看到一个小题，其实也不难，但是如果在面试中出现，要瞬间找到解法，还是需要在平时多思多练。平时遇到问题也不应轻易放过，自我勉励一下。</p>
+        <p>一道leetcode小题。描述如下：</p>
+<p>Largest Rectangle in Histogram</p>
+<p>Given n non-negative integers representing the histogram’s bar height where the width of each bar is 1, find the area of largest rectangle in the histogram.</p>
 <a id="more"></a>
-<p>题目是这样： 排序数组中找2个数，使其差等于一个给定值。 数组中都是正数且为unique number，给定一个正整数$k$，找出两个数$A$、$B$，使得$A-B=k$，要求使用常数空间（hash map不能用）、$O(N)$时间。</p>
-<p>其实类似于经典的twoSum问题，略作修改而已。当然解决办法也是类似的，用两个指针$i$, $j$指向尾部($i&lt;j$，且一直保证$j$不可能小于$i$)，比较$i$，$j$指向的值的差，若差为$k$，返回。若小于$k$，$i$减1，若大于$k$，$j$减1。一直到$i$小于0为止。</p>
-<p>代码如下：</p>
-<pre><code>pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; find(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; data, <span class="keyword">int</span> k) {
-    <span class="keyword">int</span> sz = data.size(), i = sz-<span class="number">2</span>, j = sz-<span class="number">1</span>;
-    <span class="keyword">if</span>( sz &lt;= <span class="number">1</span> ) <span class="keyword">return</span> pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;(-<span class="number">1</span>, -<span class="number">1</span>);
-    <span class="keyword">while</span>( i&gt;=<span class="number">0</span> ) {
-        <span class="keyword">if</span>( data[j] - data[i] &gt; k &amp;&amp; j &gt; i) j--;
-        <span class="keyword">else</span> <span class="keyword">if</span>( data[j] - data[i] == k &amp;&amp; j &gt; i) <span class="keyword">return</span> pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;(data[i], data[j]);
-        <span class="keyword">else</span> i--;
+<p><img src="http://www.leetcode.com/wp-content/uploads/2012/04/histogram.png" alt="largest rectangle"><br>Above is a histogram where width of each bar is 1, given height = [2,1,5,6,2,3].</p>
+<p><img src="http://www.leetcode.com/wp-content/uploads/2012/04/histogram_area.png" alt="largest rectangle"><br>The largest rectangle is shown in the shaded area, which has area = 10 unit.</p>
+<p>For example, Given height = [2,1,5,6,2,3], return 10.</p>
+<p>直接反应就是怎么简单怎么来，来个暴力的code：</p>
+<pre><code><span class="function"><span class="keyword">int</span> <span class="title">largestRectangleArea</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; height)</span> </span>{
+    <span class="keyword">int</span> sz = height.size(), w, ma=<span class="number">0</span>;
+    <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;sz; i++ ) {
+        w = <span class="number">0</span>;
+        <span class="keyword">for</span>( <span class="keyword">int</span> j=i-<span class="number">1</span>; j&gt;=<span class="number">0</span>; j-- ) <span class="keyword">if</span>( height[j] &gt;= height[i] ) w++; <span class="keyword">else</span> <span class="keyword">break</span>;
+        <span class="keyword">for</span>( <span class="keyword">int</span> j=i+<span class="number">1</span>; j&lt;sz; j++ ) <span class="keyword">if</span>( height[j] &gt;= height[i] ) w++; <span class="keyword">else</span> <span class="keyword">break</span>;
+        <span class="keyword">if</span>( (w + <span class="number">1</span>)*height[i] &gt; ma ) ma = (w + <span class="number">1</span>)*height[i];
     }
-    <span class="keyword">return</span> pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;(-<span class="number">1</span>, -<span class="number">1</span>);
+    <span class="keyword">return</span> ma;
 }
-</code></pre><p>如果找不到满足条件的$A$和$B$，则返回的pair的一对值是相等的，且都为-1。</p>
+</code></pre><p>至少看上去还是简洁的，不过这是明显的$O(n^2)$时间复杂度，一提交就意料之中的Time Limit Exceeded.</p>
+<p>看上去似乎可以用DP的思想，但是却不太容易。[2,2,3,N]，扫描前面几项到3的时候，最好的结果为6，但是N的值对于最终结果有极大影响。N=1，最终结果为6，N=2，最终结果为8，N&gt;=9，结果为N。</p>
+<p>注意到暴力解法从任何索引i往前往后扫的时候都没有利用以前的扫描结果，这可能是可以改进的地方。于是引入了个数组来记录前一个索引能够抵达的位置。</p>
+<pre><code><span class="function"><span class="keyword">int</span> <span class="title">largestRectangleArea</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; height)</span> </span>{
+    <span class="keyword">int</span> sz = height.size(), ma = <span class="number">0</span>, s = <span class="number">0</span>;
+    <span class="keyword">if</span>( sz == <span class="number">0</span> ) <span class="keyword">return</span> <span class="number">0</span>;
+    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ext(sz), area(sz);
+    ext[sz-<span class="number">1</span>] = sz-<span class="number">1</span>, area[sz-<span class="number">1</span>] = height[sz-<span class="number">1</span>];
+    ma = height[sz-<span class="number">1</span>];
+    <span class="keyword">for</span>( <span class="keyword">int</span> i=sz-<span class="number">2</span>; i&gt;=<span class="number">0</span>; i-- ) {
+        <span class="keyword">int</span> n = i+<span class="number">1</span>;
+        ext[i] = i;
+        <span class="keyword">while</span>( n &lt; sz &amp;&amp; height[i] &lt;= height[n] ) {
+            ext[i] = ext[n];
+            n = ext[n] + <span class="number">1</span>;
+        }
+        area[i] = height[i]*(ext[i] - i + <span class="number">1</span>);
+    }
+    area[<span class="number">0</span>] = height[<span class="number">0</span>];
+    <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;sz; i++ ) {
+        <span class="keyword">int</span> n = i-<span class="number">1</span>;
+        ext[i] = i;
+        <span class="keyword">while</span>( n &gt;= <span class="number">0</span> &amp;&amp; height[i] &lt;= height[n] ) {
+            ext[i] = ext[n];
+            n = ext[n] - <span class="number">1</span>;
+        }
+        s = height[i]*(i - ext[i] + <span class="number">1</span> );
+        <span class="keyword">if</span>( ma &lt; s + area[i] - height[i] ) ma = s + area[i] - height[i];
+    }
+    <span class="keyword">return</span> ma;
+}
+</code></pre><p>第一个循环，是计算从索引i往右延伸，能够抵达的最远的位置，第二个循环，则是i往左能够抵达的位置。由于能够尽量利用前一次扫描的结果，效率大大增加。提交之后显示能够比85%的方案快，20ms跑完90多个测试。</p>
 
       
     </div>
@@ -249,18 +291,9 @@
     
 <nav id="article-nav">
   
-    <a href="/2015/10/30/小题-2/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          小题(2)
-        
-      </div>
-    </a>
   
-  
-    <a href="/2015/08/17/RMQ-算法/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">RMQ 算法</div>
+    <a href="/2015/10/30/小题-1/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">小题(1)</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
