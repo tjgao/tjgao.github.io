@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://tjgao.github.io/"/>
-  <updated>2015-10-30T12:38:03.000Z</updated>
+  <updated>2015-12-07T14:50:19.000Z</updated>
   <id>http://tjgao.github.io/</id>
   
   <author>
@@ -13,6 +13,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[小题(3)]]></title>
+    <link href="http://tjgao.github.io/2015/12/07/%E5%B0%8F%E9%A2%98-3/"/>
+    <id>http://tjgao.github.io/2015/12/07/小题-3/</id>
+    <published>2015-12-07T12:14:01.000Z</published>
+    <updated>2015-12-07T14:50:19.000Z</updated>
+    <content type="html"><![CDATA[<p>闲逛水木，又碰到有人讨论算法小题，题目是这样：数组有N+M个数字, 数字的范围为1 … N, 打印重复的元素, 要求O(M + N), 不可以用额外的空间。</p>
+<a id="more"></a>
+<p>一个思路是，如果这些数字都按照自然的顺序排列，data[0] = 1, data[1] = 2 … data[K] = K - 1，则由于数字范围为1 … N， 而需要填补的位置是 M + N，必然有不能放在“正确”位置上的数字，这些不在“正确”位置上的数字必然就是重复的。又由于不能使用额外空间，就要利用这个数组本身的空间来腾挪。于是乎，代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">printDup</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; data)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;data.size(); i++ ) &#123;</span><br><span class="line">        <span class="keyword">while</span>( data[i] != data[data[i]-<span class="number">1</span>] ) &#123;</span><br><span class="line">            swap( data[i], data[data[i]-<span class="number">1</span>] );</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;sz; i++ ) &#123;</span><br><span class="line">        <span class="keyword">if</span>( data[i]-<span class="number">1</span> != i ) <span class="built_in">cout</span>&lt;&lt;data[i]&lt;&lt;<span class="string">" "</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>关键的一步是嵌套的第二重while循环，其目的是尽量使得data[i] - 1 = i，如果不能那就算了，留其在原位。那么问题是，这个循环执行多少步？是否一定能够保证任何一个不重复的数字K，能够被放到data[K-1]的位置上？只要这两个问题的答案是令人满意的，这个算法就是高效的。</p>
+<p>循环结束的条件是data[i] == data[data[i]-1]，当其结束时，至少data[data[i]-1]已经在正确的位置上了，这其中运行多少次，就有多少个数字归位。但是由于数字范围为1 … N，最多有N个数能归位，每一个归位的数字只要在另一次while循环中被碰到，就会结束while循环。所以，即使不能明确说出某次while循环运行了多少次，总的while循环次数不会超过N。另一个问题，怎么知道一个不重复的K一定可以被正确归位？换个方式问这个问题，如果K不放在data[K-1]上，它能放到哪里去？若 data[M] = K，则 data[data[M]-1] = data[K-1]，如果data[M]-1是个重复的数字，则有data[data[M]-1] = data[M]（重复的数字至少得有个在正确的位置上），所以data[M] = data[K-1] = K，推回来了。如果data[M]-1也不重复，且data[M]-1也不在其正确位置上，这问题变成了另一个，K不重复且不在其位置上，则K-1也是这样，如此这般推下去一直到14。可是1只要存在，一定是可以放到正确的位置上，不信可以在脑子里推一推。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>闲逛水木，又碰到有人讨论算法小题，题目是这样：数组有N+M个数字, 数字的范围为1 … N, 打印重复的元素, 要求O(M + N), 不可以用额外的空间。</p>]]>
+    
+    </summary>
+    
+      <category term="algorithm" scheme="http://tjgao.github.io/tags/algorithm/"/>
+    
+      <category term="算法" scheme="http://tjgao.github.io/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="技术" scheme="http://tjgao.github.io/categories/technology/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[小题(2)]]></title>
@@ -127,11 +153,10 @@
     <link href="http://tjgao.github.io/2015/08/17/RMQ-%E7%AE%97%E6%B3%95/"/>
     <id>http://tjgao.github.io/2015/08/17/RMQ-算法/</id>
     <published>2015-08-17T10:56:51.000Z</published>
-    <updated>2015-11-14T03:28:47.000Z</updated>
+    <updated>2015-11-14T03:45:24.000Z</updated>
     <content type="html"><![CDATA[<p>RMQ (Range Minimum/Maximum Query，区间最值) 问题，是指给定一个区间，然后询问在区间某一局部区域的最值是什么。比如给出一个长度为$n$的数组$N$，然后每次给出索引号$i$和$j$，问：$N[i]$和$N[j]$之间的最大（小）值是什么。</p>
 <a id="more"></a>
 <p>一个简单的办法是，逐个扫描，复杂度为$O(n)$。问题在于，如果询问的次数非常多，每次都逐个扫描，性能一定很差。显然，如果能预先准备好数据，然后直接查询会快多了。这里，又是一个使用动态规划的理想场所。其解决办法被称为 Sparse Table (稀疏表)。</p>
-<p>$$2^{j-1}$$</p>
 <p>准备一个二维数组$A[n][m]$，$n$为数组长度，而$m$则为$1+log_2{n}$。对于数组中任何一个元素$A[i][j]$，记录了起始于索引$i$，长度为$2^j$的区间的最值。$A[i][j]$可以被均分为$A[i][j-1]$以及$A[i+2^{j-1}][j-1]$，从动态规划的观点看，已经找到了最为关键的递推关系(假设求的是最小值)：<br>$$A[i][j] = min(A[i][j-1], A[i+2^{j-1}][j-1])$$</p>
 <p>很显然，$A[i][0]$就是$N[i]$，只有一个值，最值就是这个值。于是乎，其他值也就相应求出即可。准备好这个二维数组的时间是$O(nlogn)$。</p>
 <p>怎么使用这个表呢？假设给出的区间是$u$和$v$，则$u$和$v$之间的长度为$v-u+1$，可得出$k=log_2(v-u+1)$，则以下两个区间一定覆盖了所求区间，即$A[u][k]$和$A[1+v-2^k][k]$。有重叠区域也无所谓，它们的最小值中较小的那个仍然是最后所求的值。即：<br>$$RMQ(u,v) = min(A[u][k], A[1+v-2^k][k])$$<br>时间复杂度为$O(1)$。</p>
