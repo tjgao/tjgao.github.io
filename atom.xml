@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://tjgao.github.io/"/>
-  <updated>2015-12-07T14:50:19.000Z</updated>
+  <updated>2015-12-25T15:29:52.000Z</updated>
   <id>http://tjgao.github.io/</id>
   
   <author>
@@ -15,17 +15,110 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[小题-4]]></title>
+    <link href="http://tjgao.github.io/2015/12/19/%E5%B0%8F%E9%A2%98-4/"/>
+    <id>http://tjgao.github.io/2015/12/19/小题-4/</id>
+    <published>2015-12-19T09:58:15.000Z</published>
+    <updated>2015-12-25T15:29:52.000Z</updated>
+    <content type="html"><![CDATA[<p>一个有趣的小题，题目如下：给定两个字符串 <code>s</code> 和 <code>pattern</code>， 其中 <code>pattern</code> 的格式是每个字母后面跟一个加号或者减号。比如 <code>pattern = &quot;a+b+c-&quot;</code>，代表了<code>&quot;aabbcccc&quot;</code>，加号代表连续出现两次，减号代表连续出现四次。现在问，在 <code>s</code> 中可以找到多少连续或者不连续的 <code>pattern</code>？ 即<code>aa</code>、<code>bb</code>和<code>cccc</code>之间可以相隔零个或者多个字符，但它们的顺序还是一样的。</p>
+<a id="more"></a>
+<p>第一感觉就是动态规划，但是为什么觉得难以下手呢？因为<code>pattern</code>的形式不是很好利用。如果换个问法，假设<code>pattern</code>就是个普通字符串，问在<code>s</code>中有多少个<code>pattern</code>，就成了经典的动态规划问题。先来解决这个经典问题，再推到第二个问题：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">numDistinct</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">string</span> t)</span> </span>&#123;</span><br><span class="line">	 <span class="keyword">if</span>( t.length() == <span class="number">0</span> ) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> m = s.length(), n = t.length();</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; dp( m+<span class="number">1</span>, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(n+<span class="number">1</span>) );</span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;m+<span class="number">1</span>; i++ ) dp[i][<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">1</span>; i&lt;m+<span class="number">1</span>; i++ ) &#123;</span><br><span class="line">        <span class="keyword">for</span>( <span class="keyword">int</span> j=<span class="number">1</span>; j&lt;n+<span class="number">1</span>; j++ ) &#123;</span><br><span class="line">            dp[i][j] = s[i-<span class="number">1</span>] == t[j-<span class="number">1</span>] ? ( dp[i-<span class="number">1</span>][j-<span class="number">1</span>] + dp[i-<span class="number">1</span>][j] ) : dp[i-<span class="number">1</span>][j];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dp[m][n];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果抠门点，空间复杂度还能再降一维：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">numDistinct</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">string</span> t)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>( t.length() == <span class="number">0</span> ) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> m = s.length(), n = t.length();</span><br><span class="line">    <span class="keyword">int</span> last, tmp;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; dp( n + <span class="number">1</span> );</span><br><span class="line">    dp[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=m; i++ ) &#123;</span><br><span class="line">        last = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>( <span class="keyword">int</span> j=<span class="number">1</span>; j&lt;=n; j++ ) &#123;</span><br><span class="line">            tmp = dp[j];</span><br><span class="line">            dp[j] = s[i-<span class="number">1</span>] == t[j-<span class="number">1</span>] ? ( last + dp[j] ) : dp[j];</span><br><span class="line">            last = tmp;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dp[n];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>那么我们把什么<code>aa</code>，<code>bb</code>还有<code>cccc</code>都换成特殊字符不是就行了吗？假设都是小写字母，<code>aa</code>换成<code>A</code>, <code>aaaa</code>换成<code>1</code>，以此类推。我能想到的一个比较 tricky 的地方是，字符串<code>s</code>中有<code>aaaaaaaa</code>这样的存在，如果<code>pattern</code>中有<code>a+</code>和<code>a-</code>，恐怕要考虑很多组合:<code>A1A</code>, <code>1AA</code>, <code>AA1</code>。</p>
+<p>Anyway, 这事儿我还得细想一下，回来再来更新。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>一个有趣的小题，题目如下：给定两个字符串 <code>s</code> 和 <code>pattern</code>， 其中 <code>pattern</code> 的格式是每个字母后面跟一个加号或者减号。比如 <code>pattern = &quot;a+b+c-&quot;</code>，代表了<code>&quot;aabbcccc&quot;</code>，加号代表连续出现两次，减号代表连续出现四次。现在问，在 <code>s</code> 中可以找到多少连续或者不连续的 <code>pattern</code>？ 即<code>aa</code>、<code>bb</code>和<code>cccc</code>之间可以相隔零个或者多个字符，但它们的顺序还是一样的。</p>]]>
+    
+    </summary>
+    
+      <category term="algorithm" scheme="http://tjgao.github.io/tags/algorithm/"/>
+    
+      <category term="dynamic programming" scheme="http://tjgao.github.io/tags/dynamic-programming/"/>
+    
+      <category term="动态规划" scheme="http://tjgao.github.io/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/"/>
+    
+      <category term="算法" scheme="http://tjgao.github.io/tags/%E7%AE%97%E6%B3%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[简单的数学期望]]></title>
+    <link href="http://tjgao.github.io/2015/12/18/%E7%AE%80%E5%8D%95%E7%9A%84%E6%95%B0%E5%AD%A6%E6%9C%9F%E6%9C%9B/"/>
+    <id>http://tjgao.github.io/2015/12/18/简单的数学期望/</id>
+    <published>2015-12-18T12:37:52.000Z</published>
+    <updated>2015-12-19T05:38:08.000Z</updated>
+    <content type="html"><![CDATA[<p>我确信我大学的时候还是学过概率论的，怎么感觉相关的东西已经忘得一干二净了？ 完全可以认为自己对此已经一无所知了。我感觉我需要重新学习，就从简单的例子和概念入手。以下文章主要内容来自<a href="https://www.codechef.com/wiki/tutorial-expectation" target="_blank" rel="external">这里</a>。</p>
+<a id="more"></a>
+<h2 id="概念">概念</h2><p>数学期望是一个概率论的概念。用数学语言来描述：对于一个离散的变量 $X$， 假设其概率函数为 $P(X)$，则其期望值 $E(X)$ 就是所有的可能的离散变量值 $x_i$ 乘以其概率 $P(x_i)$ 的和 $\Sigma{x_iP(x_i)}$。举个例子，掷一次骰子有可能得到1到6点，而每种点数的概率是一样的，则获得的点数的数学期望是 $\frac 16\times(1 + 2 + 3 + 4 + 5 + 6) = 3.5$。而对于拥有概率密度函数 $P(x)$ 的连续的变量 $x$，其数学期望为$\int{xP(x)}dx$。</p>
+<p>首先，很明显的一点，数学期望不是概率最大的值，它可以不是任何可能出现的值。比如掷一次骰子得到的点数的数学期望是 3.5，你绝无可能掷出 3.5 的点数来。数学期望是一种统计意义上的平均。另外一点，数学期望还遵从加法结合律：$E(x_1 + x_2) = E(x_1) + E(x_2)$。</p>
+<h2 id="问题探讨">问题探讨</h2><p>让我们讨论点实际问题。</p>
+<h5 id="What_is_the_expected_number_of_coin_flips_for_getting_a_head?">What is the expected number of coin flips for getting a head?</h5><p>我们就根据定义来计算。假设期望值为X次，则掷一次就得到头像的概率为$\frac 12\times1$，因为就掷了一次，所以后面 $\times1$。如果掷一次没有得到头像呢？在这之后再次掷骰子已经是独立事件了，相当于回到了原点，这之后的期望值仍然是$X$，但是我们已经多掷了一次，所以实际上是 $X + 1 $，其概率为$\frac 12\times(X+1)$，这样得到了一个等式并可推出$X$的值：$$X = {\frac 12} + {\frac {(X+1)}2} \Rightarrow X=2$$</p>
+<h5 id="What_is_the_expected_number_of_coin_flips_for_getting_two_consecutive_heads?">What is the expected number of coin flips for getting two consecutive heads?</h5><p>同样的，假设期望为X，连续掷两次得到头像的概率为$\frac 14$，再乘以用掉的两次。如果第一次就不是头像，又回到了原点，只是浪费一次投掷骰子，其概率为$\frac 12\times(X+1)$。如果第一次掷出了头像，但第二次却不是，则概率为$\frac 14\times(X+2)$。我们又可以得到一个等式：$$X = \frac 14\times2 + \frac 12\times(X+1) + \frac 14\times(X+2) \Rightarrow X=6$$</p>
+<h5 id="(Generalization)_What_is_the_expected_number_of_coin_flips_for_getting_N_consecutive_heads,_given_N?">(Generalization) What is the expected number of coin flips for getting N consecutive heads, given N?</h5><p>类似的方法，可以得到这样的等式：$$X=\frac 1{2^N}\times{N} + \frac 12\times(X+1) + \frac1{2^2}\times(X+2) + \frac1{2^3}\times(X+3) +  … + \frac1{2^i}\times(X+i) + … + \frac1{2^N}\times(X+N)$$<br>结果为 $X=2^{N+1}-2$，此后这类问题的答案都可以脱口而出了，真是让人愉悦。</p>
+<h5 id="An_array_A_has_distinct,_randomly_ordered_entries,_which_each_permutation_of_the_entries_being_equally_likely-_That_is,_the_entries_are_uniformly_randomly_ordered-_What_are_the_expectations_of_the_indices_of_the_maximum_and_minimum_entries_in_the_array?">An array A has distinct, randomly ordered entries, which each permutation of the entries being equally likely. That is, the entries are uniformly randomly ordered. What are the expectations of the indices of the maximum and minimum entries in the array?</h5><p>假设这个 array 的序号是从0开始的，那么 max 和 min 的可能的序号，一直从 0 到<br>n-1。则很明显有，$ E = \frac 0n + \frac 1n + \frac 2n + … + \frac {n-1}n = \frac {n-1}2$。</p>
+<h5 id="Suppose_that_you_are_a_contestant_in_a_game_show_in_which_a_prize_is_hidden_behind_one_of_three_curtains-_You_will_win_the_prize_if_you_select_the_correct_curtain-_After_you_have_picked_one_curtain_but_before_the_curtain_is_lifted,_the_host_of_the_show_lifts_one_of_the_other_curtains,_revealing_that_the_prize_is_not_behind_it,_and_asks_if_you_would_like_to_switch_your_choice_to_the_third_curtain-_How_would_your_chances_of_winning_change_if_you_switched?">Suppose that you are a contestant in a game show in which a prize is hidden behind one of three curtains. You will win the prize if you select the correct curtain. After you have picked one curtain but before the curtain is lifted, the host of the show lifts one of the other curtains, revealing that the prize is not behind it, and asks if you would like to switch your choice to the third curtain. How would your chances of winning change if you switched?</h5><p>Well, 好熟悉的调调，我一定在什么脑筋急转弯见过。可是这是个纯粹的数学问题，脑子怎么转弯呢？先不管了，回到这个问题上。这个问题说白了就是要计算做这两种选择的赢的数学期望，然后从中选择更有利的。假设需要选择 $E$ 次才能获胜。</p>
+<p>首先，如果不换呢：<br>$$E = \frac 13\times1 + \frac{2(E+1)}3  \Rightarrow  E = 3$$<br>如果换了呢：<br>$$E = \frac 23\times1 + \frac{E+1}3 \Rightarrow E = \frac32 $$</p>
+<h5 id="A_random_permutation_P_of_[1…n]_needs_to_be_sorted_in_ascending_order-_To_do_this,_at_every_step_you_will_randomly_choose_a_pair_(i,j)_where_i_&lt;_j_but_P[i]_&gt;_P[j],_and_swap_P[i]_with_P[j]-_What_is_the_expected_number_of_swaps_needed_to_sort_permutation_in_ascending_order-_(Idea:_Topcoder)">A random permutation P of [1…n] needs to be sorted in ascending order. To do this, at every step you will randomly choose a pair (i,j) where i &lt; j but P[i] &gt; P[j], and swap P[i] with P[j]. What is the expected number of swaps needed to sort permutation in ascending order. (Idea: Topcoder)</h5><p>说白了就是任给 $1…n$ 的一个数字排列，为了将这个乱序的排列搞成顺序的，每次需要从中随机选取一对顺序相反的数并交换两数的值。问，这种交换的期望次数是多少？</p>
+<h2 id="习题">习题</h2><p>作为练习，一大波问题正在赶来。</p>
+<ol>
+<li><p>Candidates are appearing for interview one after other. Probability of each candidate getting selected is 0.16. What is the expected number of candidates that you will need to interview to make sure that you select somebody?</p>
+</li>
+<li><p>(Generalized version of Q1) - The queen of a honey bee nest produces offsprings one-after-other till she produces a male offspring. The probability of produing a male offspring is p. What is the expected number of offsprings required to be produced to produce a male offspring?</p>
+</li>
+<li><p>what is the expected number of dice throws required to get a “four”?</p>
+</li>
+<li><p>Candidates are appearing for interview one after other. Probability of k-th candidate getting selected is 1/(k+1). What is the expected number of candidates that you will need to interview to make sure that you select somebody?</p>
+</li>
+<li><p>A random permutation P of [1…n] needs to be sorted in ascending order. To do this, at every step you will randomly choose a pair (i,j) where i &lt; j but P[i] &gt; P[j], and swap P[i] with P[j]. What is the expected number of swaps needed to sort permutation in ascending order. (Idea: Topcoder)</p>
+</li>
+<li><p>A fair coin flip experiment is carried out N times. What is the expected number of heads?</p>
+</li>
+<li><p>(Bernaulli Trials) n students are asked to choose a number from 1 to 100 inclusive. What is the expected number of students that would choose a single digit number? </p>
+</li>
+<li><p>What is the expected number of coin flips to ensure that there are atleast N heads?</p>
+</li>
+</ol>
+<ol>
+<li><p>What is the expected number of bernaulli trials to ensure that there are atleast N successes, if the probability of each success is p?</p>
+</li>
+<li><p>A game involves you choosing one number (between 1 to 6 inclusive) and then throwing three fair dice simultaneously. If none of the dice shows up the number that you have chosen, you lose $1. If exactly one, two or three dice show up the number that you have chosen, you win \$1, \$3 or \$5 respectively. What is your expected gain?</p>
+</li>
+<li><p>There are 10 flowers in a garden, exactly one of which is poisonous. A dog starts eating all these flowers one by one at random. whenever he eats the posionous flower he will die. What is the expected number of flowers he will eat before he will die?</p>
+</li>
+<li><p>A bag contains 64 balls of eight different colours, with eight of each colour. What is the expected number of balls you would have to pick (without looking) to select three balls of the same color?</p>
+</li>
+<li><p>In a game of fair dice throw, what is the expected number of throws to make sure that all 6 outcomes appear atleast once?</p>
+</li>
+<li><p>What is the expected number of bernaulli trials for getting N consecutive successes, given N, if the probability of each success is p?</p>
+</li>
+</ol>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>我确信我大学的时候还是学过概率论的，怎么感觉相关的东西已经忘得一干二净了？ 完全可以认为自己对此已经一无所知了。我感觉我需要重新学习，就从简单的例子和概念入手。以下文章主要内容来自<a href="https://www.codechef.com/wiki/tutorial-expectation">这里</a>。</p>]]>
+    
+    </summary>
+    
+      <category term="mathematics" scheme="http://tjgao.github.io/tags/mathematics/"/>
+    
+      <category term="数学" scheme="http://tjgao.github.io/tags/%E6%95%B0%E5%AD%A6/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[小题(3)]]></title>
     <link href="http://tjgao.github.io/2015/12/07/%E5%B0%8F%E9%A2%98-3/"/>
     <id>http://tjgao.github.io/2015/12/07/小题-3/</id>
     <published>2015-12-07T12:14:01.000Z</published>
-    <updated>2015-12-07T14:50:19.000Z</updated>
+    <updated>2015-12-08T02:42:36.000Z</updated>
     <content type="html"><![CDATA[<p>闲逛水木，又碰到有人讨论算法小题，题目是这样：数组有N+M个数字, 数字的范围为1 … N, 打印重复的元素, 要求O(M + N), 不可以用额外的空间。</p>
 <a id="more"></a>
 <p>一个思路是，如果这些数字都按照自然的顺序排列，data[0] = 1, data[1] = 2 … data[K] = K - 1，则由于数字范围为1 … N， 而需要填补的位置是 M + N，必然有不能放在“正确”位置上的数字，这些不在“正确”位置上的数字必然就是重复的。又由于不能使用额外空间，就要利用这个数组本身的空间来腾挪。于是乎，代码如下：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">printDup</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; data)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;data.size(); i++ ) &#123;</span><br><span class="line">        <span class="keyword">while</span>( data[i] != data[data[i]-<span class="number">1</span>] ) &#123;</span><br><span class="line">            swap( data[i], data[data[i]-<span class="number">1</span>] );</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;sz; i++ ) &#123;</span><br><span class="line">        <span class="keyword">if</span>( data[i]-<span class="number">1</span> != i ) <span class="built_in">cout</span>&lt;&lt;data[i]&lt;&lt;<span class="string">" "</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>关键的一步是嵌套的第二重while循环，其目的是尽量使得data[i] - 1 = i，如果不能那就算了，留其在原位。那么问题是，这个循环执行多少步？是否一定能够保证任何一个不重复的数字K，能够被放到data[K-1]的位置上？只要这两个问题的答案是令人满意的，这个算法就是高效的。</p>
-<p>循环结束的条件是data[i] == data[data[i]-1]，当其结束时，至少data[data[i]-1]已经在正确的位置上了，这其中运行多少次，就有多少个数字归位。但是由于数字范围为1 … N，最多有N个数能归位，每一个归位的数字只要在另一次while循环中被碰到，就会结束while循环。所以，即使不能明确说出某次while循环运行了多少次，总的while循环次数不会超过N。另一个问题，怎么知道一个不重复的K一定可以被正确归位？换个方式问这个问题，如果K不放在data[K-1]上，它能放到哪里去？若 data[M] = K，则 data[data[M]-1] = data[K-1]，如果data[M]-1是个重复的数字，则有data[data[M]-1] = data[M]（重复的数字至少得有个在正确的位置上），所以data[M] = data[K-1] = K，推回来了。如果data[M]-1也不重复，且data[M]-1也不在其正确位置上，这问题变成了另一个，K不重复且不在其位置上，则K-1也是这样，如此这般推下去一直到14。可是1只要存在，一定是可以放到正确的位置上，不信可以在脑子里推一推。</p>
+<p>循环结束的条件是data[i] == data[data[i]-1]，当其结束时，至少data[data[i]-1]已经在正确的位置上了，即，一遇到归位的数字，就结束。while每执行一次，就确保了一个数归位。而总共有N个位置，所以总的执行次数是有上限的。另一个问题，怎么知道一个不重复的K一定可以被正确归位？换个方式问这个问题，如果K不放在data[K-1]上，它能放到哪里去？若 data[M] = K，则 data[data[M]-1] = data[K-1]，如果data[M]-1是个重复的数字，则有data[data[M]-1] = data[M]（重复的数字至少得有个在正确的位置上），所以data[M] = data[K-1] = K，推回来了。如果data[M]-1也不重复，且data[M]-1也不在其正确位置上，这问题变成了另一个，K不重复且不在其位置上，则K-1也是这样，如此这般推下去一直到1。可是1只要存在，一定是可以放到正确的位置上，不信可以在脑子里推一推。</p>
 ]]></content>
     <summary type="html">
     <![CDATA[<p>闲逛水木，又碰到有人讨论算法小题，题目是这样：数组有N+M个数字, 数字的范围为1 … N, 打印重复的元素, 要求O(M + N), 不可以用额外的空间。</p>]]>
@@ -117,23 +210,14 @@
     <link href="http://tjgao.github.io/2015/10/30/%E5%B0%8F%E9%A2%98-1/"/>
     <id>http://tjgao.github.io/2015/10/30/小题-1/</id>
     <published>2015-10-29T14:07:19.000Z</published>
-    <updated>2015-10-30T09:41:15.000Z</updated>
+    <updated>2015-12-19T11:55:04.000Z</updated>
     <content type="html"><![CDATA[<p>逛买卖提看到一个小题，其实也不难，但是如果在面试中出现，要瞬间找到解法，还是需要在平时多思多练。平时遇到问题也不应轻易放过，自我勉励一下。</p>
 <a id="more"></a>
 <p>题目是这样： 排序数组中找2个数，使其差等于一个给定值。 数组中都是正数且为unique number，给定一个正整数$k$，找出两个数$A$、$B$，使得$A-B=k$，要求使用常数空间（hash map不能用）、$O(N)$时间。</p>
 <p>其实类似于经典的twoSum问题，略作修改而已。当然解决办法也是类似的，用两个指针$i$, $j$指向尾部($i&lt;j$，且一直保证$j$不可能小于$i$)，比较$i$，$j$指向的值的差，若差为$k$，返回。若小于$k$，$i$减1，若大于$k$，$j$减1。一直到$i$小于0为止。</p>
 <p>代码如下：</p>
-<pre><code>pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; find(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; data, <span class="keyword">int</span> k) {
-    <span class="keyword">int</span> sz = data.size(), i = sz-<span class="number">2</span>, j = sz-<span class="number">1</span>;
-    <span class="keyword">if</span>( sz &lt;= <span class="number">1</span> ) <span class="keyword">return</span> pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;(-<span class="number">1</span>, -<span class="number">1</span>);
-    <span class="keyword">while</span>( i&gt;=<span class="number">0</span> ) {
-        <span class="keyword">if</span>( data[j] - data[i] &gt; k &amp;&amp; j &gt; i) j--;
-        <span class="keyword">else</span> <span class="keyword">if</span>( data[j] - data[i] == k &amp;&amp; j &gt; i) <span class="keyword">return</span> pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;(data[i], data[j]);
-        <span class="keyword">else</span> i--;
-    }
-    <span class="keyword">return</span> pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;(-<span class="number">1</span>, -<span class="number">1</span>);
-}
-</code></pre><p>如果找不到满足条件的$A$和$B$，则返回的pair的一对值是相等的，且都为-1。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; find(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; data, <span class="keyword">int</span> k) &#123;</span><br><span class="line">    <span class="keyword">int</span> sz = data.size(), i = sz-<span class="number">2</span>, j = sz-<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span>( sz &lt;= <span class="number">1</span> ) <span class="keyword">return</span> pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;(-<span class="number">1</span>, -<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">while</span>( i&gt;=<span class="number">0</span> ) &#123;</span><br><span class="line">        <span class="keyword">if</span>( data[j] - data[i] &gt; k &amp;&amp; j &gt; i) j--;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>( data[j] - data[i] == k &amp;&amp; j &gt; i) <span class="keyword">return</span> pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;(data[i], data[j]);</span><br><span class="line">        <span class="keyword">else</span> i--;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;(-<span class="number">1</span>, -<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果找不到满足条件的$A$和$B$，则返回的pair的一对值是相等的，且都为-1。</p>
 ]]></content>
     <summary type="html">
     <![CDATA[<p>逛买卖提看到一个小题，其实也不难，但是如果在面试中出现，要瞬间找到解法，还是需要在平时多思多练。平时遇到问题也不应轻易放过，自我勉励一下。</p>]]>
@@ -153,34 +237,14 @@
     <link href="http://tjgao.github.io/2015/08/17/RMQ-%E7%AE%97%E6%B3%95/"/>
     <id>http://tjgao.github.io/2015/08/17/RMQ-算法/</id>
     <published>2015-08-17T10:56:51.000Z</published>
-    <updated>2015-11-14T03:45:24.000Z</updated>
+    <updated>2015-12-18T13:38:42.000Z</updated>
     <content type="html"><![CDATA[<p>RMQ (Range Minimum/Maximum Query，区间最值) 问题，是指给定一个区间，然后询问在区间某一局部区域的最值是什么。比如给出一个长度为$n$的数组$N$，然后每次给出索引号$i$和$j$，问：$N[i]$和$N[j]$之间的最大（小）值是什么。</p>
 <a id="more"></a>
 <p>一个简单的办法是，逐个扫描，复杂度为$O(n)$。问题在于，如果询问的次数非常多，每次都逐个扫描，性能一定很差。显然，如果能预先准备好数据，然后直接查询会快多了。这里，又是一个使用动态规划的理想场所。其解决办法被称为 Sparse Table (稀疏表)。</p>
 <p>准备一个二维数组$A[n][m]$，$n$为数组长度，而$m$则为$1+log_2{n}$。对于数组中任何一个元素$A[i][j]$，记录了起始于索引$i$，长度为$2^j$的区间的最值。$A[i][j]$可以被均分为$A[i][j-1]$以及$A[i+2^{j-1}][j-1]$，从动态规划的观点看，已经找到了最为关键的递推关系(假设求的是最小值)：<br>$$A[i][j] = min(A[i][j-1], A[i+2^{j-1}][j-1])$$</p>
 <p>很显然，$A[i][0]$就是$N[i]$，只有一个值，最值就是这个值。于是乎，其他值也就相应求出即可。准备好这个二维数组的时间是$O(nlogn)$。</p>
 <p>怎么使用这个表呢？假设给出的区间是$u$和$v$，则$u$和$v$之间的长度为$v-u+1$，可得出$k=log_2(v-u+1)$，则以下两个区间一定覆盖了所求区间，即$A[u][k]$和$A[1+v-2^k][k]$。有重叠区域也无所谓，它们的最小值中较小的那个仍然是最后所求的值。即：<br>$$RMQ(u,v) = min(A[u][k], A[1+v-2^k][k])$$<br>时间复杂度为$O(1)$。</p>
-<pre><code><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; st(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; v) {
-    <span class="keyword">int</span> sz = v.size();
-    <span class="keyword">int</span> k = <span class="keyword">int</span>(<span class="built_in">log</span>(sz)/<span class="built_in">log</span>(<span class="number">2</span>)) + <span class="number">1</span>;
-    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; table(sz, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(k));
-    <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;sz; i++ )
-        table[i][<span class="number">0</span>] = v[i];
-    <span class="keyword">int</span> j = <span class="number">1</span>;
-    <span class="keyword">while</span>( <span class="built_in">pow</span>(<span class="number">2</span>,j-<span class="number">1</span>) &lt; sz) {
-        <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;sz; i++ )
-            <span class="keyword">if</span>( (i + <span class="built_in">pow</span>(<span class="number">2</span>,j-<span class="number">1</span>)) &lt; sz )
-                table[i][j] = min(table[i][j-<span class="number">1</span>], table[i+<span class="built_in">pow</span>(<span class="number">2</span>, j-<span class="number">1</span>)][j-<span class="number">1</span>]);
-        j++;
-    }
-    <span class="keyword">return</span> table;
-}
-
-<span class="function"><span class="keyword">int</span> <span class="title">rmq</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; table, <span class="keyword">int</span> u, <span class="keyword">int</span> v)</span> </span>{
-    <span class="keyword">int</span> len = v - u + <span class="number">1</span>, k = <span class="keyword">int</span>(<span class="built_in">log</span>(len)/<span class="built_in">log</span>(<span class="number">2</span>));
-    <span class="keyword">return</span> min(table[u][k], table[<span class="number">1</span>+v-<span class="built_in">pow</span>(<span class="number">2</span>,k)][k]);
-}
-</code></pre>]]></content>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; st(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; v) &#123;</span><br><span class="line">    <span class="keyword">int</span> sz = v.size();</span><br><span class="line">    <span class="keyword">int</span> k = <span class="keyword">int</span>(<span class="built_in">log</span>(sz)/<span class="built_in">log</span>(<span class="number">2</span>)) + <span class="number">1</span>;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; table(sz, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(k));</span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;sz; i++ )</span><br><span class="line">        table[i][<span class="number">0</span>] = v[i];</span><br><span class="line">    <span class="keyword">int</span> j = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>( <span class="built_in">pow</span>(<span class="number">2</span>,j-<span class="number">1</span>) &lt; sz) &#123;</span><br><span class="line">        <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;sz; i++ )</span><br><span class="line">            <span class="keyword">if</span>( (i + <span class="built_in">pow</span>(<span class="number">2</span>,j-<span class="number">1</span>)) &lt; sz )</span><br><span class="line">                table[i][j] = min(table[i][j-<span class="number">1</span>], table[i+<span class="built_in">pow</span>(<span class="number">2</span>, j-<span class="number">1</span>)][j-<span class="number">1</span>]);</span><br><span class="line">        j++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> table;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">rmq</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; table, <span class="keyword">int</span> u, <span class="keyword">int</span> v)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> len = v - u + <span class="number">1</span>, k = <span class="keyword">int</span>(<span class="built_in">log</span>(len)/<span class="built_in">log</span>(<span class="number">2</span>));</span><br><span class="line">    <span class="keyword">return</span> min(table[u][k], table[<span class="number">1</span>+v-<span class="built_in">pow</span>(<span class="number">2</span>,k)][k]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
     <summary type="html">
     <![CDATA[<p>RMQ (Range Minimum/Maximum Query，区间最值) 问题，是指给定一个区间，然后询问在区间某一局部区域的最值是什么。比如给出一个长度为$n$的数组$N$，然后每次给出索引号$i$和$j$，问：$N[i]$和$N[j]$之间的最大（小）值是什么。</p>]]>
     
@@ -203,83 +267,21 @@
     <link href="http://tjgao.github.io/2015/08/11/Suffix-array-I/"/>
     <id>http://tjgao.github.io/2015/08/11/Suffix-array-I/</id>
     <published>2015-08-11T13:00:33.000Z</published>
-    <updated>2015-08-11T15:24:38.000Z</updated>
+    <updated>2015-12-18T13:47:56.000Z</updated>
     <content type="html"><![CDATA[<p>Suffix array 是一种很奇妙的数据结构，在字符串处理中有很多重要的用途。很多看上去复杂的字符串问题，在已经创建了 suffix array之后，往往能够在线性时间之内解决。</p>
 <p>Suffix array 其实只是 suffix tree 的一种简化，而 suffix tree，只是 trie 的一个特例。如果有了 trie 的概念，那么所谓的 suffix tree， 其实只是用字符串 S 的所有后缀构建的一个 trie。所谓后缀，比如对于字符串 bananas, 其所有的后缀包括了 bananas, ananas, nanas, anas, nas, as, s。这些后缀构成的 trie 如下：</p>
 <a id="more"></a>
 <p><img src="http://facweb.cs.depaul.edu/mobasher/classes/csc575/Suffix_Trees/FIGURE1.gif" alt="suffix tree"></p>
 <p>而 suffix array 则是 S 的所有后缀的一个字典序的简洁记法。 比如 bananas 的所有后缀按照字典序排序为： ananas, anas, as, bananas, nanas, nas, s。如果再注意到只需要记录各个后缀的开头字母的索引就可以了，那么得到一个数组，结果为：1 3 5 0 2 4 6, 这就是 suffix array，它和 suffix tree 有着很紧密的联系。</p>
 <p>根据这个定义，写一段代码来获取 suffix array 似乎颇为容易：</p>
-<pre><code><span class="comment">//A very naive implementation</span>
-<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; getSA_naive(<span class="built_in">string</span> s) {
-    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v;
-    <span class="keyword">int</span> len = s.length();
-    <span class="built_in">map</span>&lt;<span class="built_in">string</span>, <span class="keyword">int</span>&gt; tmp;
-    <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;len; i++ )
-        tmp[s.substr(i, len-i)] = i;
-    <span class="keyword">for</span>( <span class="keyword">auto</span> it = tmp.begin(); it!=tmp.end(); ++it )
-        v.push_back(it-&gt;second);
-    <span class="keyword">return</span> v;
-}
-</code></pre><p>再看看运行时间，字符串长度为n，n个字串排序，运行时间应为$O(nlgn)$。而每个字符串的比较又是$O(n)$，则总体时间复杂度为$O(n^2lgn)$。此处使用了C++的map，自带排序，所以找不到字符串排序的部分。但无论这个隐藏的排序在哪里，总是避免不了的。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//A very naive implementation</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; getSA_naive(<span class="built_in">string</span> s) &#123;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v;</span><br><span class="line">    <span class="keyword">int</span> len = s.length();</span><br><span class="line">    <span class="built_in">map</span>&lt;<span class="built_in">string</span>, <span class="keyword">int</span>&gt; tmp;</span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;len; i++ )</span><br><span class="line">        tmp[s.substr(i, len-i)] = i;</span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">auto</span> it = tmp.begin(); it!=tmp.end(); ++it )</span><br><span class="line">        v.push_back(it-&gt;second);</span><br><span class="line">    <span class="keyword">return</span> v;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>再看看运行时间，字符串长度为n，n个字串排序，运行时间应为$O(nlgn)$。而每个字符串的比较又是$O(n)$，则总体时间复杂度为$O(n^2lgn)$。此处使用了C++的map，自带排序，所以找不到字符串排序的部分。但无论这个隐藏的排序在哪里，总是避免不了的。</p>
 <p>由于Suffix array的重要用途，近几十年很多研究者投入到其获取算法的改进中。最近的一篇论文”A taxonomy of suffix array construction algorithms”指出：</p>
 <p>1) Practical space-efficient suffix array construction algorithms (SACAs) exist that require worst-case time linear in string length;<br>2) SACAs exist that are even faster in practice, though with supralinear worstcase construction time requirements;<br>3) Any problem whose solution can be computed using suffix trees is solvable with the same asymptotic complexity using suffix arrays.</p>
 <p>这种改进也不知道最后会达到什么程度，总而言之，线性时间的Suffix array获得是没有问题的。任何能够用 suffix tree 来解决的问题，也可以通过高效的 suffix array 获取算法来解决。</p>
 <p>最常见的几种求 suffix array 的有 prefix doubling 和 DC3 算法。 其中 prefix doubling (倍增算法)是最早的高效获取 suffix array 的尝试，也比较清晰，实现起来更容易。它基本思想是，naive 算法效率不好的原因是没有利用一个事实，即我们排序的一堆字符串是同一个字符串的后缀，而不是一堆随机的字符串，应该充分利用这一点。具体用语言来描述其算法是一个很困难的事情，我通过观察这张图最终理解了这个算法，并完成了一个实现。要注意，这个示意图中的示例字符串是 aabaaaab，求它的suffix array。<br><img src="http://7xl1lv.com1.z0.glb.clouddn.com/imageda.JPG" alt="prefix doubling"><br>代码也附上。我相信还有各种可以优化的余地，但基本思路大致如此。</p>
-<pre><code><span class="comment">//Prefix doubling</span>
-<span class="keyword">typedef</span> <span class="keyword">struct</span> tagENTRY {
-    <span class="keyword">int</span> pr[<span class="number">2</span>];
-    <span class="keyword">int</span> idx;
-    tagENTRY() {
-       pr[<span class="number">0</span>] = pr[<span class="number">1</span>] = idx = -<span class="number">1</span>;
-    }
-} ENTRY;
-
-<span class="function"><span class="keyword">bool</span> <span class="title">cmp</span><span class="params">(ENTRY&amp; e1, ENTRY&amp; e2 )</span> </span>{
-    <span class="keyword">return</span> ( e1.pr[<span class="number">0</span>] == e2.pr[<span class="number">0</span>] ) ? ( e1.pr[<span class="number">1</span>] &lt; e2.pr[<span class="number">1</span>] ) : ( e1.pr[<span class="number">0</span>] &lt; e2.pr[<span class="number">0</span>] );
-}
-
-<span class="function"><span class="keyword">void</span> <span class="title">update</span><span class="params">(<span class="built_in">vector</span>&lt;ENTRY&gt;&amp; entry, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; rank)</span> </span>{
-    sort( entry.begin(), entry.end(), cmp );
-    <span class="keyword">int</span> n = <span class="number">0</span>, e1 = entry[<span class="number">0</span>].pr[<span class="number">0</span>], e2 = entry[<span class="number">0</span>].pr[<span class="number">1</span>];
-    <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;entry.size(); i++ ) {
-        <span class="keyword">if</span>( e1 != entry[i].pr[<span class="number">0</span>] || e2 != entry[i].pr[<span class="number">1</span>] ) {
-            n++;
-            e1 = entry[i].pr[<span class="number">0</span>];
-            e2 = entry[i].pr[<span class="number">1</span>];
-        }
-        rank[entry[i].idx] = n;
-    }
-    <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;entry.size(); i++ )  {
-        entry[i].pr[<span class="number">0</span>] = rank[entry[i].idx];
-    }
-}
-
-<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; getSA_pd(<span class="built_in">string</span> s) {
-    <span class="keyword">int</span> len = s.length();
-    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; rank(len);
-    <span class="built_in">vector</span>&lt;ENTRY&gt; entry(len);
-    <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;len; i++ ) {
-        entry[i].pr[<span class="number">0</span>] = s[i];
-        entry[i].idx = i;
-    }
-    update( entry, rank);
-    <span class="keyword">for</span>( <span class="keyword">int</span> step=<span class="number">1</span>; step&lt;len; step*=<span class="number">2</span> ) {
-        <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;len; i++ ) {
-            <span class="keyword">if</span>( entry[i].idx + step &lt; len )
-                entry[i].pr[<span class="number">1</span>] = rank[entry[i].idx+step];
-            <span class="keyword">else</span>
-                entry[i].pr[<span class="number">1</span>] = -<span class="number">1</span>;
-        }
-        update( entry, rank);
-    }
-    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v(len);
-    <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;len; i++ ) {
-        v[rank[i]] = i;
-    }
-    <span class="keyword">return</span> v;
-}
-</code></pre><p>注意，rank是每次完成后的排名，其含义是，后缀索引为i的名次是rank[i]。我们需要的 suffix array，其含义是从小到大排出所有的后缀，所以这两正好是反的。假设 value = rank[i]， 则对于suffix array，有 sa[value] == i，所以最后求出suffix array并返回。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Prefix doubling</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> tagENTRY &#123;</span><br><span class="line">    <span class="keyword">int</span> pr[<span class="number">2</span>];</span><br><span class="line">    <span class="keyword">int</span> idx;</span><br><span class="line">    tagENTRY() &#123;</span><br><span class="line">       pr[<span class="number">0</span>] = pr[<span class="number">1</span>] = idx = -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125; ENTRY;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp</span><span class="params">(ENTRY&amp; e1, ENTRY&amp; e2 )</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> ( e1.pr[<span class="number">0</span>] == e2.pr[<span class="number">0</span>] ) ? ( e1.pr[<span class="number">1</span>] &lt; e2.pr[<span class="number">1</span>] ) : ( e1.pr[<span class="number">0</span>] &lt; e2.pr[<span class="number">0</span>] );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">update</span><span class="params">(<span class="built_in">vector</span>&lt;ENTRY&gt;&amp; entry, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; rank)</span> </span>&#123;</span><br><span class="line">    sort( entry.begin(), entry.end(), cmp );</span><br><span class="line">    <span class="keyword">int</span> n = <span class="number">0</span>, e1 = entry[<span class="number">0</span>].pr[<span class="number">0</span>], e2 = entry[<span class="number">0</span>].pr[<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;entry.size(); i++ ) &#123;</span><br><span class="line">        <span class="keyword">if</span>( e1 != entry[i].pr[<span class="number">0</span>] || e2 != entry[i].pr[<span class="number">1</span>] ) &#123;</span><br><span class="line">            n++;</span><br><span class="line">            e1 = entry[i].pr[<span class="number">0</span>];</span><br><span class="line">            e2 = entry[i].pr[<span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        rank[entry[i].idx] = n;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;entry.size(); i++ )  &#123;</span><br><span class="line">        entry[i].pr[<span class="number">0</span>] = rank[entry[i].idx];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; getSA_pd(<span class="built_in">string</span> s) &#123;</span><br><span class="line">    <span class="keyword">int</span> len = s.length();</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; rank(len);</span><br><span class="line">    <span class="built_in">vector</span>&lt;ENTRY&gt; entry(len);</span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;len; i++ ) &#123;</span><br><span class="line">        entry[i].pr[<span class="number">0</span>] = s[i];</span><br><span class="line">        entry[i].idx = i;</span><br><span class="line">    &#125;</span><br><span class="line">    update( entry, rank);</span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">int</span> step=<span class="number">1</span>; step&lt;len; step*=<span class="number">2</span> ) &#123;</span><br><span class="line">        <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;len; i++ ) &#123;</span><br><span class="line">            <span class="keyword">if</span>( entry[i].idx + step &lt; len )</span><br><span class="line">                entry[i].pr[<span class="number">1</span>] = rank[entry[i].idx+step];</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                entry[i].pr[<span class="number">1</span>] = -<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        update( entry, rank);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v(len);</span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;len; i++ ) &#123;</span><br><span class="line">        v[rank[i]] = i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> v;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意，rank是每次完成后的排名，其含义是，后缀索引为i的名次是rank[i]。我们需要的 suffix array，其含义是从小到大排出所有的后缀，所以这两正好是反的。假设 value = rank[i]， 则对于suffix array，有 sa[value] == i，所以最后求出suffix array并返回。</p>
 <p>通过观察getSA_pd函数中的循环可以知道，最外层的循环次数为$lgn$，内部的for循环为$n$，update函数执行了一次sort，复杂度为$nlgn$，其余循环操作均为$n$，所以最终的复杂度为$n(lgn)^2$。</p>
 ]]></content>
     <summary type="html">

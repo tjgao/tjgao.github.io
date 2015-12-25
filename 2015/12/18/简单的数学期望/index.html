@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>简单的数学期望 | Random Thoughts</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="我确信我大学的时候还是学过概率论的，怎么感觉相关的东西已经忘得一干二净了？ 完全可以认为自己对此已经一无所知了。我感觉我需要重新学习，就从简单的例子和概念入手。以下文章主要内容来自这里。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="简单的数学期望">
+<meta property="og:url" content="http://tjgao.github.io/2015/12/18/简单的数学期望/index.html">
+<meta property="og:site_name" content="Random Thoughts">
+<meta property="og:description" content="我确信我大学的时候还是学过概率论的，怎么感觉相关的东西已经忘得一干二净了？ 完全可以认为自己对此已经一无所知了。我感觉我需要重新学习，就从简单的例子和概念入手。以下文章主要内容来自这里。">
+<meta property="og:updated_time" content="2015-12-19T05:38:08.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="简单的数学期望">
+<meta name="twitter:description" content="我确信我大学的时候还是学过概率论的，怎么感觉相关的东西已经忘得一干二净了？ 完全可以认为自己对此已经一无所知了。我感觉我需要重新学习，就从简单的例子和概念入手。以下文章主要内容来自这里。">
+  
+    <link rel="alternative" href="/atom.xml" title="Random Thoughts" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/pang-blackwhite-final.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Tiejun Gao</a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/tjgao" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="http://www.weibo.com/u/1403496193" title="weibo">weibo</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/algorithm/" style="font-size: 20px;">algorithm</a> <a href="/tags/dynamic-programming/" style="font-size: 15px;">dynamic programming</a> <a href="/tags/mathematics/" style="font-size: 10px;">mathematics</a> <a href="/tags/string/" style="font-size: 10px;">string</a> <a href="/tags/suffix-array/" style="font-size: 10px;">suffix array</a> <a href="/tags/动态规划/" style="font-size: 15px;">动态规划</a> <a href="/tags/字符串/" style="font-size: 10px;">字符串</a> <a href="/tags/数学/" style="font-size: 10px;">数学</a> <a href="/tags/算法/" style="font-size: 20px;">算法</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">奥巴马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">卡卡的美丽传说</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">本泽马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">吉格斯的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">习大大大不同</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">托蒂的博客</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">一个沉默的胖子</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Tiejun Gao</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/pang-blackwhite-final.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Tiejun Gao</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/tjgao" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://www.weibo.com/u/1403496193" title="weibo">weibo</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-简单的数学期望" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/12/18/简单的数学期望/" class="article-date">
+  	<time datetime="2015-12-18T12:37:52.000Z" itemprop="datePublished">2015-12-18</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      简单的数学期望
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mathematics/">mathematics</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数学/">数学</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我确信我大学的时候还是学过概率论的，怎么感觉相关的东西已经忘得一干二净了？ 完全可以认为自己对此已经一无所知了。我感觉我需要重新学习，就从简单的例子和概念入手。以下文章主要内容来自<a href="https://www.codechef.com/wiki/tutorial-expectation" target="_blank" rel="external">这里</a>。</p>
+<a id="more"></a>
+<h2 id="概念">概念</h2><p>数学期望是一个概率论的概念。用数学语言来描述：对于一个离散的变量 $X$， 假设其概率函数为 $P(X)$，则其期望值 $E(X)$ 就是所有的可能的离散变量值 $x_i$ 乘以其概率 $P(x_i)$ 的和 $\Sigma{x_iP(x_i)}$。举个例子，掷一次骰子有可能得到1到6点，而每种点数的概率是一样的，则获得的点数的数学期望是 $\frac 16\times(1 + 2 + 3 + 4 + 5 + 6) = 3.5$。而对于拥有概率密度函数 $P(x)$ 的连续的变量 $x$，其数学期望为$\int{xP(x)}dx$。</p>
+<p>首先，很明显的一点，数学期望不是概率最大的值，它可以不是任何可能出现的值。比如掷一次骰子得到的点数的数学期望是 3.5，你绝无可能掷出 3.5 的点数来。数学期望是一种统计意义上的平均。另外一点，数学期望还遵从加法结合律：$E(x_1 + x_2) = E(x_1) + E(x_2)$。</p>
+<h2 id="问题探讨">问题探讨</h2><p>让我们讨论点实际问题。</p>
+<h5 id="What_is_the_expected_number_of_coin_flips_for_getting_a_head?">What is the expected number of coin flips for getting a head?</h5><p>我们就根据定义来计算。假设期望值为X次，则掷一次就得到头像的概率为$\frac 12\times1$，因为就掷了一次，所以后面 $\times1$。如果掷一次没有得到头像呢？在这之后再次掷骰子已经是独立事件了，相当于回到了原点，这之后的期望值仍然是$X$，但是我们已经多掷了一次，所以实际上是 $X + 1 $，其概率为$\frac 12\times(X+1)$，这样得到了一个等式并可推出$X$的值：$$X = {\frac 12} + {\frac {(X+1)}2} \Rightarrow X=2$$</p>
+<h5 id="What_is_the_expected_number_of_coin_flips_for_getting_two_consecutive_heads?">What is the expected number of coin flips for getting two consecutive heads?</h5><p>同样的，假设期望为X，连续掷两次得到头像的概率为$\frac 14$，再乘以用掉的两次。如果第一次就不是头像，又回到了原点，只是浪费一次投掷骰子，其概率为$\frac 12\times(X+1)$。如果第一次掷出了头像，但第二次却不是，则概率为$\frac 14\times(X+2)$。我们又可以得到一个等式：$$X = \frac 14\times2 + \frac 12\times(X+1) + \frac 14\times(X+2) \Rightarrow X=6$$</p>
+<h5 id="(Generalization)_What_is_the_expected_number_of_coin_flips_for_getting_N_consecutive_heads,_given_N?">(Generalization) What is the expected number of coin flips for getting N consecutive heads, given N?</h5><p>类似的方法，可以得到这样的等式：$$X=\frac 1{2^N}\times{N} + \frac 12\times(X+1) + \frac1{2^2}\times(X+2) + \frac1{2^3}\times(X+3) +  … + \frac1{2^i}\times(X+i) + … + \frac1{2^N}\times(X+N)$$<br>结果为 $X=2^{N+1}-2$，此后这类问题的答案都可以脱口而出了，真是让人愉悦。</p>
+<h5 id="An_array_A_has_distinct,_randomly_ordered_entries,_which_each_permutation_of_the_entries_being_equally_likely-_That_is,_the_entries_are_uniformly_randomly_ordered-_What_are_the_expectations_of_the_indices_of_the_maximum_and_minimum_entries_in_the_array?">An array A has distinct, randomly ordered entries, which each permutation of the entries being equally likely. That is, the entries are uniformly randomly ordered. What are the expectations of the indices of the maximum and minimum entries in the array?</h5><p>假设这个 array 的序号是从0开始的，那么 max 和 min 的可能的序号，一直从 0 到<br>n-1。则很明显有，$ E = \frac 0n + \frac 1n + \frac 2n + … + \frac {n-1}n = \frac {n-1}2$。</p>
+<h5 id="Suppose_that_you_are_a_contestant_in_a_game_show_in_which_a_prize_is_hidden_behind_one_of_three_curtains-_You_will_win_the_prize_if_you_select_the_correct_curtain-_After_you_have_picked_one_curtain_but_before_the_curtain_is_lifted,_the_host_of_the_show_lifts_one_of_the_other_curtains,_revealing_that_the_prize_is_not_behind_it,_and_asks_if_you_would_like_to_switch_your_choice_to_the_third_curtain-_How_would_your_chances_of_winning_change_if_you_switched?">Suppose that you are a contestant in a game show in which a prize is hidden behind one of three curtains. You will win the prize if you select the correct curtain. After you have picked one curtain but before the curtain is lifted, the host of the show lifts one of the other curtains, revealing that the prize is not behind it, and asks if you would like to switch your choice to the third curtain. How would your chances of winning change if you switched?</h5><p>Well, 好熟悉的调调，我一定在什么脑筋急转弯见过。可是这是个纯粹的数学问题，脑子怎么转弯呢？先不管了，回到这个问题上。这个问题说白了就是要计算做这两种选择的赢的数学期望，然后从中选择更有利的。假设需要选择 $E$ 次才能获胜。</p>
+<p>首先，如果不换呢：<br>$$E = \frac 13\times1 + \frac{2(E+1)}3  \Rightarrow  E = 3$$<br>如果换了呢：<br>$$E = \frac 23\times1 + \frac{E+1}3 \Rightarrow E = \frac32 $$</p>
+<h5 id="A_random_permutation_P_of_[1…n]_needs_to_be_sorted_in_ascending_order-_To_do_this,_at_every_step_you_will_randomly_choose_a_pair_(i,j)_where_i_&lt;_j_but_P[i]_&gt;_P[j],_and_swap_P[i]_with_P[j]-_What_is_the_expected_number_of_swaps_needed_to_sort_permutation_in_ascending_order-_(Idea:_Topcoder)">A random permutation P of [1…n] needs to be sorted in ascending order. To do this, at every step you will randomly choose a pair (i,j) where i &lt; j but P[i] &gt; P[j], and swap P[i] with P[j]. What is the expected number of swaps needed to sort permutation in ascending order. (Idea: Topcoder)</h5><p>说白了就是任给 $1…n$ 的一个数字排列，为了将这个乱序的排列搞成顺序的，每次需要从中随机选取一对顺序相反的数并交换两数的值。问，这种交换的期望次数是多少？</p>
+<h2 id="习题">习题</h2><p>作为练习，一大波问题正在赶来。</p>
+<ol>
+<li><p>Candidates are appearing for interview one after other. Probability of each candidate getting selected is 0.16. What is the expected number of candidates that you will need to interview to make sure that you select somebody?</p>
+</li>
+<li><p>(Generalized version of Q1) - The queen of a honey bee nest produces offsprings one-after-other till she produces a male offspring. The probability of produing a male offspring is p. What is the expected number of offsprings required to be produced to produce a male offspring?</p>
+</li>
+<li><p>what is the expected number of dice throws required to get a “four”?</p>
+</li>
+<li><p>Candidates are appearing for interview one after other. Probability of k-th candidate getting selected is 1/(k+1). What is the expected number of candidates that you will need to interview to make sure that you select somebody?</p>
+</li>
+<li><p>A random permutation P of [1…n] needs to be sorted in ascending order. To do this, at every step you will randomly choose a pair (i,j) where i &lt; j but P[i] &gt; P[j], and swap P[i] with P[j]. What is the expected number of swaps needed to sort permutation in ascending order. (Idea: Topcoder)</p>
+</li>
+<li><p>A fair coin flip experiment is carried out N times. What is the expected number of heads?</p>
+</li>
+<li><p>(Bernaulli Trials) n students are asked to choose a number from 1 to 100 inclusive. What is the expected number of students that would choose a single digit number? </p>
+</li>
+<li><p>What is the expected number of coin flips to ensure that there are atleast N heads?</p>
+</li>
+</ol>
+<ol>
+<li><p>What is the expected number of bernaulli trials to ensure that there are atleast N successes, if the probability of each success is p?</p>
+</li>
+<li><p>A game involves you choosing one number (between 1 to 6 inclusive) and then throwing three fair dice simultaneously. If none of the dice shows up the number that you have chosen, you lose $1. If exactly one, two or three dice show up the number that you have chosen, you win \$1, \$3 or \$5 respectively. What is your expected gain?</p>
+</li>
+<li><p>There are 10 flowers in a garden, exactly one of which is poisonous. A dog starts eating all these flowers one by one at random. whenever he eats the posionous flower he will die. What is the expected number of flowers he will eat before he will die?</p>
+</li>
+<li><p>A bag contains 64 balls of eight different colours, with eight of each colour. What is the expected number of balls you would have to pick (without looking) to select three balls of the same color?</p>
+</li>
+<li><p>In a game of fair dice throw, what is the expected number of throws to make sure that all 6 outcomes appear atleast once?</p>
+</li>
+<li><p>What is the expected number of bernaulli trials for getting N consecutive successes, given N, if the probability of each success is p?</p>
+</li>
+</ol>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/12/19/小题-4/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          小题-4
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/12/07/小题-3/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">小题(3)</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+<section id="comments">
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'tiejungao'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2015 Tiejun Gao
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>

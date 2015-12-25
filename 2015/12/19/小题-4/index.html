@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>RMQ 算法 | Random Thoughts</title>
+  <title>小题-4 | Random Thoughts</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="RMQ (Range Minimum/Maximum Query，区间最值) 问题，是指给定一个区间，然后询问在区间某一局部区域的最值是什么。比如给出一个长度为$n$的数组$N$，然后每次给出索引号$i$和$j$，问：$N[i]$和$N[j]$之间的最大（小）值是什么。">
+  <meta name="description" content="一个有趣的小题，题目如下：给定两个字符串 s 和 pattern， 其中 pattern 的格式是每个字母后面跟一个加号或者减号。比如 pattern = &amp;quot;a+b+c-&amp;quot;，代表了&amp;quot;aabbcccc&amp;quot;，加号代表连续出现两次，减号代表连续出现四次。现在问，在 s 中可以找到多少连续或者不连续的 pattern？ 即aa、bb和cccc之间可以相隔零个或者多个字">
 <meta property="og:type" content="article">
-<meta property="og:title" content="RMQ 算法">
-<meta property="og:url" content="http://tjgao.github.io/2015/08/17/RMQ-算法/index.html">
+<meta property="og:title" content="小题-4">
+<meta property="og:url" content="http://tjgao.github.io/2015/12/19/小题-4/index.html">
 <meta property="og:site_name" content="Random Thoughts">
-<meta property="og:description" content="RMQ (Range Minimum/Maximum Query，区间最值) 问题，是指给定一个区间，然后询问在区间某一局部区域的最值是什么。比如给出一个长度为$n$的数组$N$，然后每次给出索引号$i$和$j$，问：$N[i]$和$N[j]$之间的最大（小）值是什么。">
-<meta property="og:updated_time" content="2015-12-18T13:38:42.000Z">
+<meta property="og:description" content="一个有趣的小题，题目如下：给定两个字符串 s 和 pattern， 其中 pattern 的格式是每个字母后面跟一个加号或者减号。比如 pattern = &amp;quot;a+b+c-&amp;quot;，代表了&amp;quot;aabbcccc&amp;quot;，加号代表连续出现两次，减号代表连续出现四次。现在问，在 s 中可以找到多少连续或者不连续的 pattern？ 即aa、bb和cccc之间可以相隔零个或者多个字">
+<meta property="og:updated_time" content="2015-12-25T15:29:52.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="RMQ 算法">
-<meta name="twitter:description" content="RMQ (Range Minimum/Maximum Query，区间最值) 问题，是指给定一个区间，然后询问在区间某一局部区域的最值是什么。比如给出一个长度为$n$的数组$N$，然后每次给出索引号$i$和$j$，问：$N[i]$和$N[j]$之间的最大（小）值是什么。">
+<meta name="twitter:title" content="小题-4">
+<meta name="twitter:description" content="一个有趣的小题，题目如下：给定两个字符串 s 和 pattern， 其中 pattern 的格式是每个字母后面跟一个加号或者减号。比如 pattern = &amp;quot;a+b+c-&amp;quot;，代表了&amp;quot;aabbcccc&amp;quot;，加号代表连续出现两次，减号代表连续出现四次。现在问，在 s 中可以找到多少连续或者不连续的 pattern？ 即aa、bb和cccc之间可以相隔零个或者多个字">
   
     <link rel="alternative" href="/atom.xml" title="Random Thoughts" type="application/atom+xml">
   
@@ -183,11 +183,11 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-RMQ-算法" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-小题-4" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2015/08/17/RMQ-算法/" class="article-date">
-  	<time datetime="2015-08-17T10:56:51.000Z" itemprop="datePublished">2015-08-17</time>
+      <a href="/2015/12/19/小题-4/" class="article-date">
+  	<time datetime="2015-12-19T09:58:15.000Z" itemprop="datePublished">2015-12-19</time>
 </a>
     </div>
   
@@ -200,7 +200,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      RMQ 算法
+      小题-4
     </h1>
   
 
@@ -213,10 +213,6 @@
 	</div>
 
         
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/technology/">技术</a>
-	</div>
-
 
         <div class="clearfix"></div>
       </div>
@@ -224,13 +220,15 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>RMQ (Range Minimum/Maximum Query，区间最值) 问题，是指给定一个区间，然后询问在区间某一局部区域的最值是什么。比如给出一个长度为$n$的数组$N$，然后每次给出索引号$i$和$j$，问：$N[i]$和$N[j]$之间的最大（小）值是什么。</p>
+        <p>一个有趣的小题，题目如下：给定两个字符串 <code>s</code> 和 <code>pattern</code>， 其中 <code>pattern</code> 的格式是每个字母后面跟一个加号或者减号。比如 <code>pattern = &quot;a+b+c-&quot;</code>，代表了<code>&quot;aabbcccc&quot;</code>，加号代表连续出现两次，减号代表连续出现四次。现在问，在 <code>s</code> 中可以找到多少连续或者不连续的 <code>pattern</code>？ 即<code>aa</code>、<code>bb</code>和<code>cccc</code>之间可以相隔零个或者多个字符，但它们的顺序还是一样的。</p>
 <a id="more"></a>
-<p>一个简单的办法是，逐个扫描，复杂度为$O(n)$。问题在于，如果询问的次数非常多，每次都逐个扫描，性能一定很差。显然，如果能预先准备好数据，然后直接查询会快多了。这里，又是一个使用动态规划的理想场所。其解决办法被称为 Sparse Table (稀疏表)。</p>
-<p>准备一个二维数组$A[n][m]$，$n$为数组长度，而$m$则为$1+log_2{n}$。对于数组中任何一个元素$A[i][j]$，记录了起始于索引$i$，长度为$2^j$的区间的最值。$A[i][j]$可以被均分为$A[i][j-1]$以及$A[i+2^{j-1}][j-1]$，从动态规划的观点看，已经找到了最为关键的递推关系(假设求的是最小值)：<br>$$A[i][j] = min(A[i][j-1], A[i+2^{j-1}][j-1])$$</p>
-<p>很显然，$A[i][0]$就是$N[i]$，只有一个值，最值就是这个值。于是乎，其他值也就相应求出即可。准备好这个二维数组的时间是$O(nlogn)$。</p>
-<p>怎么使用这个表呢？假设给出的区间是$u$和$v$，则$u$和$v$之间的长度为$v-u+1$，可得出$k=log_2(v-u+1)$，则以下两个区间一定覆盖了所求区间，即$A[u][k]$和$A[1+v-2^k][k]$。有重叠区域也无所谓，它们的最小值中较小的那个仍然是最后所求的值。即：<br>$$RMQ(u,v) = min(A[u][k], A[1+v-2^k][k])$$<br>时间复杂度为$O(1)$。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; st(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; v) &#123;</span><br><span class="line">    <span class="keyword">int</span> sz = v.size();</span><br><span class="line">    <span class="keyword">int</span> k = <span class="keyword">int</span>(<span class="built_in">log</span>(sz)/<span class="built_in">log</span>(<span class="number">2</span>)) + <span class="number">1</span>;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; table(sz, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(k));</span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;sz; i++ )</span><br><span class="line">        table[i][<span class="number">0</span>] = v[i];</span><br><span class="line">    <span class="keyword">int</span> j = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>( <span class="built_in">pow</span>(<span class="number">2</span>,j-<span class="number">1</span>) &lt; sz) &#123;</span><br><span class="line">        <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;sz; i++ )</span><br><span class="line">            <span class="keyword">if</span>( (i + <span class="built_in">pow</span>(<span class="number">2</span>,j-<span class="number">1</span>)) &lt; sz )</span><br><span class="line">                table[i][j] = min(table[i][j-<span class="number">1</span>], table[i+<span class="built_in">pow</span>(<span class="number">2</span>, j-<span class="number">1</span>)][j-<span class="number">1</span>]);</span><br><span class="line">        j++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> table;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">rmq</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; table, <span class="keyword">int</span> u, <span class="keyword">int</span> v)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> len = v - u + <span class="number">1</span>, k = <span class="keyword">int</span>(<span class="built_in">log</span>(len)/<span class="built_in">log</span>(<span class="number">2</span>));</span><br><span class="line">    <span class="keyword">return</span> min(table[u][k], table[<span class="number">1</span>+v-<span class="built_in">pow</span>(<span class="number">2</span>,k)][k]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>第一感觉就是动态规划，但是为什么觉得难以下手呢？因为<code>pattern</code>的形式不是很好利用。如果换个问法，假设<code>pattern</code>就是个普通字符串，问在<code>s</code>中有多少个<code>pattern</code>，就成了经典的动态规划问题。先来解决这个经典问题，再推到第二个问题：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">numDistinct</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">string</span> t)</span> </span>&#123;</span><br><span class="line">	 <span class="keyword">if</span>( t.length() == <span class="number">0</span> ) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> m = s.length(), n = t.length();</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; dp( m+<span class="number">1</span>, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(n+<span class="number">1</span>) );</span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;m+<span class="number">1</span>; i++ ) dp[i][<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">1</span>; i&lt;m+<span class="number">1</span>; i++ ) &#123;</span><br><span class="line">        <span class="keyword">for</span>( <span class="keyword">int</span> j=<span class="number">1</span>; j&lt;n+<span class="number">1</span>; j++ ) &#123;</span><br><span class="line">            dp[i][j] = s[i-<span class="number">1</span>] == t[j-<span class="number">1</span>] ? ( dp[i-<span class="number">1</span>][j-<span class="number">1</span>] + dp[i-<span class="number">1</span>][j] ) : dp[i-<span class="number">1</span>][j];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dp[m][n];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果抠门点，空间复杂度还能再降一维：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">numDistinct</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">string</span> t)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>( t.length() == <span class="number">0</span> ) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> m = s.length(), n = t.length();</span><br><span class="line">    <span class="keyword">int</span> last, tmp;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; dp( n + <span class="number">1</span> );</span><br><span class="line">    dp[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=m; i++ ) &#123;</span><br><span class="line">        last = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>( <span class="keyword">int</span> j=<span class="number">1</span>; j&lt;=n; j++ ) &#123;</span><br><span class="line">            tmp = dp[j];</span><br><span class="line">            dp[j] = s[i-<span class="number">1</span>] == t[j-<span class="number">1</span>] ? ( last + dp[j] ) : dp[j];</span><br><span class="line">            last = tmp;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dp[n];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>那么我们把什么<code>aa</code>，<code>bb</code>还有<code>cccc</code>都换成特殊字符不是就行了吗？假设都是小写字母，<code>aa</code>换成<code>A</code>, <code>aaaa</code>换成<code>1</code>，以此类推。我能想到的一个比较 tricky 的地方是，字符串<code>s</code>中有<code>aaaaaaaa</code>这样的存在，如果<code>pattern</code>中有<code>a+</code>和<code>a-</code>，恐怕要考虑很多组合:<code>A1A</code>, <code>1AA</code>, <code>AA1</code>。</p>
+<p>Anyway, 这事儿我还得细想一下，回来再来更新。</p>
+
       
     </div>
     
@@ -239,18 +237,9 @@
     
 <nav id="article-nav">
   
-    <a href="/2015/10/30/小题-1/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          小题(1)
-        
-      </div>
-    </a>
   
-  
-    <a href="/2015/08/11/Suffix-array-I/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Suffix array I</div>
+    <a href="/2015/12/18/简单的数学期望/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">简单的数学期望</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
