@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>RMQ 算法 | Random Thoughts</title>
+  <title>小题-6 | Random Thoughts</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="RMQ (Range Minimum/Maximum Query，区间最值) 问题，是指给定一个区间，然后询问在区间某一局部区域的最值是什么。比如给出一个长度为$n$的数组$N$，然后每次给出索引号$i$和$j$，问：$N[i]$和$N[j]$之间的最大（小）值是什么。">
+  <meta name="description" content="还是继续动态规划问题。动态规划问题非常有趣，想得对路，问题迎刃而解，想得不对路，费了牛劲也弄不出满意的性能和结果。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="RMQ 算法">
-<meta property="og:url" content="http://tjgao.github.io/2015/08/17/RMQ-算法/index.html">
+<meta property="og:title" content="小题-6">
+<meta property="og:url" content="http://tjgao.github.io/2016/01/08/小题-6/index.html">
 <meta property="og:site_name" content="Random Thoughts">
-<meta property="og:description" content="RMQ (Range Minimum/Maximum Query，区间最值) 问题，是指给定一个区间，然后询问在区间某一局部区域的最值是什么。比如给出一个长度为$n$的数组$N$，然后每次给出索引号$i$和$j$，问：$N[i]$和$N[j]$之间的最大（小）值是什么。">
-<meta property="og:updated_time" content="2015-12-18T13:38:42.000Z">
+<meta property="og:description" content="还是继续动态规划问题。动态规划问题非常有趣，想得对路，问题迎刃而解，想得不对路，费了牛劲也弄不出满意的性能和结果。">
+<meta property="og:updated_time" content="2016-01-08T08:29:00.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="RMQ 算法">
-<meta name="twitter:description" content="RMQ (Range Minimum/Maximum Query，区间最值) 问题，是指给定一个区间，然后询问在区间某一局部区域的最值是什么。比如给出一个长度为$n$的数组$N$，然后每次给出索引号$i$和$j$，问：$N[i]$和$N[j]$之间的最大（小）值是什么。">
+<meta name="twitter:title" content="小题-6">
+<meta name="twitter:description" content="还是继续动态规划问题。动态规划问题非常有趣，想得对路，问题迎刃而解，想得不对路，费了牛劲也弄不出满意的性能和结果。">
   
     <link rel="alternative" href="/atom.xml" title="Random Thoughts" type="application/atom+xml">
   
@@ -183,11 +183,11 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-RMQ-算法" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-小题-6" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2015/08/17/RMQ-算法/" class="article-date">
-  	<time datetime="2015-08-17T10:56:51.000Z" itemprop="datePublished">2015-08-17</time>
+      <a href="/2016/01/08/小题-6/" class="article-date">
+  	<time datetime="2016-01-08T06:23:29.000Z" itemprop="datePublished">2016-01-08</time>
 </a>
     </div>
   
@@ -200,7 +200,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      RMQ 算法
+      小题-6
     </h1>
   
 
@@ -213,10 +213,6 @@
 	</div>
 
         
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/technology/">技术</a>
-	</div>
-
 
         <div class="clearfix"></div>
       </div>
@@ -224,13 +220,21 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>RMQ (Range Minimum/Maximum Query，区间最值) 问题，是指给定一个区间，然后询问在区间某一局部区域的最值是什么。比如给出一个长度为$n$的数组$N$，然后每次给出索引号$i$和$j$，问：$N[i]$和$N[j]$之间的最大（小）值是什么。</p>
+        <p>还是继续动态规划问题。动态规划问题非常有趣，想得对路，问题迎刃而解，想得不对路，费了牛劲也弄不出满意的性能和结果。</p>
 <a id="more"></a>
-<p>一个简单的办法是，逐个扫描，复杂度为$O(n)$。问题在于，如果询问的次数非常多，每次都逐个扫描，性能一定很差。显然，如果能预先准备好数据，然后直接查询会快多了。这里，又是一个使用动态规划的理想场所。其解决办法被称为 Sparse Table (稀疏表)。</p>
-<p>准备一个二维数组$A[n][m]$，$n$为数组长度，而$m$则为$1+log_2{n}$。对于数组中任何一个元素$A[i][j]$，记录了起始于索引$i$，长度为$2^j$的区间的最值。$A[i][j]$可以被均分为$A[i][j-1]$以及$A[i+2^{j-1}][j-1]$，从动态规划的观点看，已经找到了最为关键的递推关系(假设求的是最小值)：<br>$$A[i][j] = min(A[i][j-1], A[i+2^{j-1}][j-1])$$</p>
-<p>很显然，$A[i][0]$就是$N[i]$，只有一个值，最值就是这个值。于是乎，其他值也就相应求出即可。准备好这个二维数组的时间是$O(nlogn)$。</p>
-<p>怎么使用这个表呢？假设给出的区间是$u$和$v$，则$u$和$v$之间的长度为$v-u+1$，可得出$k=log_2(v-u+1)$，则以下两个区间一定覆盖了所求区间，即$A[u][k]$和$A[1+v-2^k][k]$。有重叠区域也无所谓，它们的最小值中较小的那个仍然是最后所求的值。即：<br>$$RMQ(u,v) = min(A[u][k], A[1+v-2^k][k])$$<br>时间复杂度为$O(1)$。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; st(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; v) &#123;</span><br><span class="line">    <span class="keyword">int</span> sz = v.size();</span><br><span class="line">    <span class="keyword">int</span> k = <span class="keyword">int</span>(<span class="built_in">log</span>(sz)/<span class="built_in">log</span>(<span class="number">2</span>)) + <span class="number">1</span>;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; table(sz, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(k));</span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;sz; i++ )</span><br><span class="line">        table[i][<span class="number">0</span>] = v[i];</span><br><span class="line">    <span class="keyword">int</span> j = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>( <span class="built_in">pow</span>(<span class="number">2</span>,j-<span class="number">1</span>) &lt; sz) &#123;</span><br><span class="line">        <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;sz; i++ )</span><br><span class="line">            <span class="keyword">if</span>( (i + <span class="built_in">pow</span>(<span class="number">2</span>,j-<span class="number">1</span>)) &lt; sz )</span><br><span class="line">                table[i][j] = min(table[i][j-<span class="number">1</span>], table[i+<span class="built_in">pow</span>(<span class="number">2</span>, j-<span class="number">1</span>)][j-<span class="number">1</span>]);</span><br><span class="line">        j++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> table;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">rmq</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; table, <span class="keyword">int</span> u, <span class="keyword">int</span> v)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> len = v - u + <span class="number">1</span>, k = <span class="keyword">int</span>(<span class="built_in">log</span>(len)/<span class="built_in">log</span>(<span class="number">2</span>));</span><br><span class="line">    <span class="keyword">return</span> min(table[u][k], table[<span class="number">1</span>+v-<span class="built_in">pow</span>(<span class="number">2</span>,k)][k]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这也是 leetcode 的第 132 个问题，题目描述如下：</p>
+<blockquote>
+<p>Given a string s, partition s such that every substring of the partition is a palindrome.</p>
+<p>Return the minimum cuts needed for a palindrome partitioning of s.</p>
+<p>For example, given s = “aab”,<br>Return 1 since the palindrome partitioning [“aa”,”b”] could be produced using 1 cut. </p>
+</blockquote>
+<p>很明显，这样的 cut 总是存在的，最不济单个字符肯定是个 palindrome，把字符串切成一个个单字符就能满足条件的。不过这里要求的是最少的切法。</p>
+<p>这个最少、最多、最长、最短等问题，几乎有相当大一部分是可以归为动态规划的范畴，这个问题也不例外。我第一个版本是这样的：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">minCut</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; dp(s.length() + <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">2</span>; i&lt;s.length()+<span class="number">1</span>; i++ ) &#123;</span><br><span class="line">        <span class="keyword">int</span> j = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>( j=<span class="number">0</span>; j&lt;i; j++ ) &#123;</span><br><span class="line">            <span class="keyword">int</span> p = j, q = i-<span class="number">1</span>; </span><br><span class="line">            <span class="keyword">while</span>( p &lt; q &amp;&amp; s[p] == s[q]) &#123; p++; q--; &#125;</span><br><span class="line">            <span class="keyword">if</span>( p &gt;= q ) &#123; </span><br><span class="line">                dp[i] = j == <span class="number">0</span> ? <span class="number">0</span> : dp[j] + <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dp[s.length()];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这代码里其实是有错误的，这里先不去管它。至少看起来还不错，喂了它一些测试用例，瞬间就能吐出正确结果，于是我提交了，立马得到了一个 Limit Time Exceeded 结果，原来人家提供了这么一个测试用例，aaa…a(约500个a)bbaaa…a(约500个a)，佩服。我这程序反复的计算字符串是不是 palindrome，浪费的计算太多，于是性能就很差了。</p>
+<p>问题的关键在于事先算好所有的字符串是否是 palindrome 并存起来备用。假设用个数组来描述这个信息<code>pal[i][j]</code>，其含义为起点索引为<code>i</code>，长度为<code>j</code>，那么<code>pal[i][j]</code>是不是 palindrome 取决于这两件事：<code>s[i]</code>是否等于<code>s[i+j-1]</code>以及<code>pal[i+1][j-2]</code>是否是 palindrome。有了这个关系，我们就可以在 $O(n^2)$ 时间内准备好这个数组，并在以后的代码中以常数时间查表，极大的提高了效率。最终代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">minCut</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; pal(s.length(), <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(s.length()+<span class="number">1</span>));</span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">int</span> i=s.length()-<span class="number">2</span>; i&gt;=<span class="number">0</span>; i-- ) &#123;</span><br><span class="line">        <span class="keyword">for</span>( <span class="keyword">int</span> j=<span class="number">0</span>; j+i&lt;=s.length(); j++ ) &#123;</span><br><span class="line">            <span class="keyword">if</span>( j &gt; <span class="number">1</span>) &#123;</span><br><span class="line">                pal[i][j] = s[i] == s[i+j-<span class="number">1</span>] ? ( pal[i+<span class="number">1</span>][j-<span class="number">2</span>] ? <span class="number">1</span> : <span class="number">0</span> ) : <span class="number">0</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> pal[i][j] = <span class="number">1</span>;</span><br><span class="line">        &#125; </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; dp(s.length() + <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">2</span>; i&lt;=s.length(); i++ ) &#123;</span><br><span class="line">        <span class="keyword">int</span> j=<span class="number">0</span>, val=INT_MAX, tmp;</span><br><span class="line">        <span class="keyword">for</span>( j=<span class="number">0</span>; j&lt;i; j++ ) &#123;</span><br><span class="line">            <span class="keyword">if</span>( pal[j][i-j] ) &#123;</span><br><span class="line">                tmp = j == <span class="number">0</span> ? <span class="number">0</span> : dp[j] + <span class="number">1</span>;</span><br><span class="line">                val = tmp &lt; val ? tmp : val;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        dp[i] = val &lt; dp[i-<span class="number">1</span>] + <span class="number">1</span> ? val : dp[i-<span class="number">1</span>] + <span class="number">1</span>;</span><br><span class="line">    &#125;   </span><br><span class="line">    <span class="keyword">return</span> dp[s.length()];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
       
     </div>
     
@@ -239,18 +243,18 @@
     
 <nav id="article-nav">
   
-    <a href="/2015/10/30/小题-1/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2016/01/09/小题-7/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption"><</strong>
       <div class="article-nav-title">
         
-          小题(1)
+          小题-7
         
       </div>
     </a>
   
   
-    <a href="/2015/08/11/Suffix-array-I/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Suffix array I</div>
+    <a href="/2016/01/03/小题-5/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">小题-5</div>
       <strong class="article-nav-caption">></strong>
     </a>
   

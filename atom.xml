@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://tjgao.github.io/"/>
-  <updated>2016-01-03T07:25:05.000Z</updated>
+  <updated>2016-01-09T10:35:04.000Z</updated>
   <id>http://tjgao.github.io/</id>
   
   <author>
@@ -13,6 +13,93 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[小题-7]]></title>
+    <link href="http://tjgao.github.io/2016/01/09/%E5%B0%8F%E9%A2%98-7/"/>
+    <id>http://tjgao.github.io/2016/01/09/小题-7/</id>
+    <published>2016-01-09T06:41:35.000Z</published>
+    <updated>2016-01-09T10:35:04.000Z</updated>
+    <content type="html"><![CDATA[<p>这是 leetcode 第 135 题，非常有趣味，一个小孩分糖果的算法。题目描述如下：</p>
+<blockquote>
+<p>There are N children standing in a line. Each child is assigned a rating value.</p>
+<p>You are giving candies to these children subjected to the following requirements:</p>
+<ul>
+<li>Each child must have at least one candy.</li>
+<li>Children with a higher rating get more candies than their neighbors.</li>
+</ul>
+<p>What is the minimum candies you must give? </p>
+</blockquote>
+<a id="more"></a>
+<p>这个和动态规划似乎没有直接的关系，但是思路还是相关的。你想知道第<code>i</code> 个小孩分到多少个糖果，多半还是要先考虑第<code>i-1</code>个小孩的情况。很快你会发现环环相扣，要不断的回溯。</p>
+<p>第一版代码是很 naive 的直接实现，结果很快被测试用例打败了。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">candy</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; ratings)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>( ratings.empty()) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; candy(ratings.size());</span><br><span class="line">    candy[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">1</span>; i&lt;ratings.size(); i++ ) &#123;</span><br><span class="line">        <span class="keyword">if</span>( ratings[i] &gt; ratings[i-<span class="number">1</span>]) candy[i] = candy[i-<span class="number">1</span>]+<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>( ratings[i] == ratings[i-<span class="number">1</span>] ) candy[i] = candy[i-<span class="number">1</span>];</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            candy[i] = <span class="number">1</span> ;</span><br><span class="line">            <span class="keyword">if</span>( candy[i-<span class="number">1</span>] &lt;= <span class="number">1</span> ) &#123;</span><br><span class="line">                <span class="keyword">int</span> j = i;</span><br><span class="line">                <span class="keyword">while</span>( j-<span class="number">1</span> &gt;= <span class="number">0</span> &amp;&amp; ratings[j] &lt; ratings[j-<span class="number">1</span>]) &#123;</span><br><span class="line">                    <span class="keyword">if</span>( candy[j-<span class="number">1</span>] &lt;= candy[j]) candy[j-<span class="number">1</span>]++;</span><br><span class="line">                    j--;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> accumulate(candy.begin(), candy.end(), <span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>先不说代码里的毛病，这算法遇到了精心构建的测试用例立马就仆街了。比如：200000,199999,199998, …. 4,3,2,1，每计算一个小孩的糖果都要回溯到头，忙得很。</p>
+<p>想了半天终于想出了个 $O(n)$ 的算法。基本思路是，对于表示小孩的<code>rating</code>的数组，递增的我不怕，我怕递减的，每次递减都要回溯实在受不了，所以我要预先算好递减的程度。假如我用个数组<code>decrease</code>来记录递减的情况，则<code>decrease[i]</code>表示从第<code>i</code>个小孩起递减的长度是多少。假如第<code>i+1</code>个小孩的<code>rating</code>大于或者等于第<code>i</code>个小孩的<code>rating</code>，则<code>decrease[i]=1</code>。举个例子，数组<code>[1,2,5,4,3,3,4,1]</code>的<code>decrease</code>数组应该是这个样子：<code>[1,1,3,2,1,1,2,1]</code>。很显然，要计算这个<code>decrease</code>数组最好倒着来算比较方便一点。有了这个数组，计算效率就高多了。这其中还有各种 corner case 等着坑人，先掠过不提了。代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">candy</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; ratings)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>( ratings.empty()) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; decrease(ratings.size());</span><br><span class="line">    decrease[ratings.size()-<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">int</span> i=ratings.size()-<span class="number">2</span>; i&gt;=<span class="number">0</span>; i-- ) &#123;</span><br><span class="line">        decrease[i] = ratings[i] &gt; ratings[i+<span class="number">1</span>] ? decrease[i+<span class="number">1</span>] + <span class="number">1</span> : <span class="number">1</span>;</span><br><span class="line">    &#125;        </span><br><span class="line"></span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; candy(ratings.size());</span><br><span class="line">    candy[<span class="number">0</span>] = decrease[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">1</span>; i&lt;ratings.size(); i++ ) &#123;</span><br><span class="line">        <span class="keyword">if</span>( ratings[i] &gt; ratings[i-<span class="number">1</span>] ) candy[i] = max( decrease[i], candy[i-<span class="number">1</span>]+<span class="number">1</span>);</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>( ratings[i] == ratings[i-<span class="number">1</span>] ) &#123;</span><br><span class="line">            candy[i] = max( decrease[i], <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> candy[i] = min(candy[i-<span class="number">1</span>]-<span class="number">1</span>, decrease[i]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> accumulate(candy.begin(), candy.end(), <span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>做完了之后跑去 leetcode 的论坛里瞅了一眼，发现一哥们儿的算法更牛，简洁漂亮，佩服佩服。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">candy</span><span class="params">(<span class="keyword">int</span>[] ratings)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> candies[] = <span class="keyword">new</span> <span class="keyword">int</span>[ratings.length];   </span><br><span class="line">    <span class="comment">// Give each child 1 candy     </span></span><br><span class="line">    Arrays.fill(candies, <span class="number">1</span>); </span><br><span class="line">    <span class="comment">// Scan from left to right, to make sure right higher rated child gets 1 more candy than left lower rated child</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; candies.length; i++)&#123;</span><br><span class="line">        <span class="keyword">if</span> (ratings[i] &gt; ratings[i - <span class="number">1</span>]) candies[i] = (candies[i - <span class="number">1</span>] + <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Scan from right to left, to make sure left higher rated child gets 1 more candy than right lower rated child</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = candies.length - <span class="number">2</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">        <span class="keyword">if</span> (ratings[i] &gt; ratings[i + <span class="number">1</span>]) candies[i] = Math.max(candies[i], (candies[i + <span class="number">1</span>] + <span class="number">1</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> sum = <span class="number">0</span>;        </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> candy : candies)  </span><br><span class="line">        sum += candy;        </span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    <summary type="html">
+    <![CDATA[<p>这是 leetcode 第 135 题，非常有趣味，一个小孩分糖果的算法。题目描述如下：</p>
+<blockquote>
+<p>There are N children standing in a line. Each child is assigned a rating value.</p>
+<p>You are giving candies to these children subjected to the following requirements:</p>
+<ul>
+<li>Each child must have at least one candy.</li>
+<li>Children with a higher rating get more candies than their neighbors.</li>
+</ul>
+<p>What is the minimum candies you must give? </p>
+</blockquote>]]>
+    
+    </summary>
+    
+      <category term="algorithm" scheme="http://tjgao.github.io/tags/algorithm/"/>
+    
+      <category term="dynamic programming" scheme="http://tjgao.github.io/tags/dynamic-programming/"/>
+    
+      <category term="动态规划" scheme="http://tjgao.github.io/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/"/>
+    
+      <category term="算法" scheme="http://tjgao.github.io/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="逆推" scheme="http://tjgao.github.io/tags/%E9%80%86%E6%8E%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[小题-6]]></title>
+    <link href="http://tjgao.github.io/2016/01/08/%E5%B0%8F%E9%A2%98-6/"/>
+    <id>http://tjgao.github.io/2016/01/08/小题-6/</id>
+    <published>2016-01-08T06:23:29.000Z</published>
+    <updated>2016-01-08T08:29:00.000Z</updated>
+    <content type="html"><![CDATA[<p>还是继续动态规划问题。动态规划问题非常有趣，想得对路，问题迎刃而解，想得不对路，费了牛劲也弄不出满意的性能和结果。</p>
+<a id="more"></a>
+<p>这也是 leetcode 的第 132 个问题，题目描述如下：</p>
+<blockquote>
+<p>Given a string s, partition s such that every substring of the partition is a palindrome.</p>
+<p>Return the minimum cuts needed for a palindrome partitioning of s.</p>
+<p>For example, given s = “aab”,<br>Return 1 since the palindrome partitioning [“aa”,”b”] could be produced using 1 cut. </p>
+</blockquote>
+<p>很明显，这样的 cut 总是存在的，最不济单个字符肯定是个 palindrome，把字符串切成一个个单字符就能满足条件的。不过这里要求的是最少的切法。</p>
+<p>这个最少、最多、最长、最短等问题，几乎有相当大一部分是可以归为动态规划的范畴，这个问题也不例外。我第一个版本是这样的：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">minCut</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; dp(s.length() + <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">2</span>; i&lt;s.length()+<span class="number">1</span>; i++ ) &#123;</span><br><span class="line">        <span class="keyword">int</span> j = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>( j=<span class="number">0</span>; j&lt;i; j++ ) &#123;</span><br><span class="line">            <span class="keyword">int</span> p = j, q = i-<span class="number">1</span>; </span><br><span class="line">            <span class="keyword">while</span>( p &lt; q &amp;&amp; s[p] == s[q]) &#123; p++; q--; &#125;</span><br><span class="line">            <span class="keyword">if</span>( p &gt;= q ) &#123; </span><br><span class="line">                dp[i] = j == <span class="number">0</span> ? <span class="number">0</span> : dp[j] + <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dp[s.length()];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这代码里其实是有错误的，这里先不去管它。至少看起来还不错，喂了它一些测试用例，瞬间就能吐出正确结果，于是我提交了，立马得到了一个 Limit Time Exceeded 结果，原来人家提供了这么一个测试用例，aaa…a(约500个a)bbaaa…a(约500个a)，佩服。我这程序反复的计算字符串是不是 palindrome，浪费的计算太多，于是性能就很差了。</p>
+<p>问题的关键在于事先算好所有的字符串是否是 palindrome 并存起来备用。假设用个数组来描述这个信息<code>pal[i][j]</code>，其含义为起点索引为<code>i</code>，长度为<code>j</code>，那么<code>pal[i][j]</code>是不是 palindrome 取决于这两件事：<code>s[i]</code>是否等于<code>s[i+j-1]</code>以及<code>pal[i+1][j-2]</code>是否是 palindrome。有了这个关系，我们就可以在 $O(n^2)$ 时间内准备好这个数组，并在以后的代码中以常数时间查表，极大的提高了效率。最终代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">minCut</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; pal(s.length(), <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(s.length()+<span class="number">1</span>));</span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">int</span> i=s.length()-<span class="number">2</span>; i&gt;=<span class="number">0</span>; i-- ) &#123;</span><br><span class="line">        <span class="keyword">for</span>( <span class="keyword">int</span> j=<span class="number">0</span>; j+i&lt;=s.length(); j++ ) &#123;</span><br><span class="line">            <span class="keyword">if</span>( j &gt; <span class="number">1</span>) &#123;</span><br><span class="line">                pal[i][j] = s[i] == s[i+j-<span class="number">1</span>] ? ( pal[i+<span class="number">1</span>][j-<span class="number">2</span>] ? <span class="number">1</span> : <span class="number">0</span> ) : <span class="number">0</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> pal[i][j] = <span class="number">1</span>;</span><br><span class="line">        &#125; </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; dp(s.length() + <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">int</span> i=<span class="number">2</span>; i&lt;=s.length(); i++ ) &#123;</span><br><span class="line">        <span class="keyword">int</span> j=<span class="number">0</span>, val=INT_MAX, tmp;</span><br><span class="line">        <span class="keyword">for</span>( j=<span class="number">0</span>; j&lt;i; j++ ) &#123;</span><br><span class="line">            <span class="keyword">if</span>( pal[j][i-j] ) &#123;</span><br><span class="line">                tmp = j == <span class="number">0</span> ? <span class="number">0</span> : dp[j] + <span class="number">1</span>;</span><br><span class="line">                val = tmp &lt; val ? tmp : val;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        dp[i] = val &lt; dp[i-<span class="number">1</span>] + <span class="number">1</span> ? val : dp[i-<span class="number">1</span>] + <span class="number">1</span>;</span><br><span class="line">    &#125;   </span><br><span class="line">    <span class="keyword">return</span> dp[s.length()];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>还是继续动态规划问题。动态规划问题非常有趣，想得对路，问题迎刃而解，想得不对路，费了牛劲也弄不出满意的性能和结果。</p>]]>
+    
+    </summary>
+    
+      <category term="algorithm" scheme="http://tjgao.github.io/tags/algorithm/"/>
+    
+      <category term="dynamic programming" scheme="http://tjgao.github.io/tags/dynamic-programming/"/>
+    
+      <category term="动态规划" scheme="http://tjgao.github.io/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/"/>
+    
+      <category term="算法" scheme="http://tjgao.github.io/tags/%E7%AE%97%E6%B3%95/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[小题-5]]></title>
