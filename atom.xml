@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://tjgao.github.io/"/>
-  <updated>2016-01-15T12:40:46.000Z</updated>
+  <updated>2016-01-15T12:43:08.000Z</updated>
   <id>http://tjgao.github.io/</id>
   
   <author>
@@ -19,8 +19,9 @@
     <link href="http://tjgao.github.io/2016/01/15/%E5%B0%8F%E9%A2%98-8/"/>
     <id>http://tjgao.github.io/2016/01/15/小题-8/</id>
     <published>2016-01-15T06:56:19.000Z</published>
-    <updated>2016-01-15T12:40:46.000Z</updated>
+    <updated>2016-01-15T12:43:08.000Z</updated>
     <content type="html"><![CDATA[<p>leetcode 上有一系列的关于利润最大化的交易问题，比较有趣。 基本问题是这样的，假设你知道未来的 N 天的某股票的价格，在给定条件下（比如，限定你最多只能做一次或者 k 次交易，如果要买入必须先卖出已经入手的股票），怎样才能让利润最大化。</p>
+<a id="more"></a>
 <p>在只让做一次交易，以及允许做不限次数的交易的情况下，问题很容易解决。做一次交易，就相当于找到最大的一次有利可图的价格差嘛。做不限次数的交易，就是把所有的有利可图的价格差都加起来嘛。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// at most one transaction</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> profit = <span class="number">0</span>, high = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>( <span class="keyword">int</span> i = prices.size()-<span class="number">1</span>; i&gt;=<span class="number">0</span>; i-- ) &#123;</span><br><span class="line">		high = max( high, prices[i] );</span><br><span class="line">		profit = max( profit, high - prices[i] );</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> profit;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// unlimited transactions</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> profit = <span class="number">0</span>, high = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>( <span class="keyword">int</span> i = prices.size()-<span class="number">1</span>; i&gt;=<span class="number">0</span>; i-- ) &#123;</span><br><span class="line">		profit += ( high - prices[i] &lt; <span class="number">0</span> ? <span class="number">0</span> : high - prices[i] );</span><br><span class="line">		high = prices[i];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> profit;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>现在如果最多只让做 2 次交易，问题的解法就没有那么明显了。仔细分析一下，买入算是投资，利润实际上是负数，只有卖出后才能变现，而且只有卖出后大于 0 才能是有利可图的交易。则代码如下：</p>
@@ -31,8 +32,8 @@
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> profit = <span class="number">0</span>, high = INT_MIN;</span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">int</span> i=prices.size()-<span class="number">1</span>; i&gt;=<span class="number">0</span>; i-- ) &#123;</span><br><span class="line">        high = max( high, prices[i] );</span><br><span class="line">        profit += ( high - prices[i] &lt; <span class="number">0</span> ? <span class="number">0</span> : high - prices[i] );</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> profit;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p>leetcode 上有一系列的关于利润最大化的交易问题，比较有趣。 基本问题是这样的，假设你知道未来的 N 天的某股票的价格，在给定条件下（比如，限定你最多只能做一次或者 k 次交易，如果要买入必须先卖出已经入手的股票），怎样才能让利润最大化。</p>
-<p>在只让做一次交]]>
+    <![CDATA[<p>leetcode 上有一系列的关于利润最大化的交易问题，比较有趣。 基本问题是这样的，假设你知道未来的 N 天的某股票的价格，在给定条件下（比如，限定你最多只能做一次或者 k 次交易，如果要买入必须先卖出已经入手的股票），怎样才能让利润最大化。</p>]]>
+    
     </summary>
     
       <category term="algorithm" scheme="http://tjgao.github.io/tags/algorithm/"/>
