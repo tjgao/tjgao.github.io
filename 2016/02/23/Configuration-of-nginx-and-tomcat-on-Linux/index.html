@@ -3,18 +3,21 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Hello hexo | Random Thoughts</title>
+  <title>Configuration of nginx and tomcat on Linux | Random Thoughts</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Nice, a fresh start">
+  <meta name="description" content="配置nginx和什么php啊， tomcat啊， 我干了也无数次了，总是记不住，结果每次要弄了都要现查。 痛定思痛，好记性不如烂笔头，还是大致写写过程以后方便些，何况我这绝对算不上好记性。
+以下针对的都是ubuntu，估摸debian也差不多。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello hexo">
-<meta property="og:url" content="http://tjgao.github.io/2015/08/09/Hello-hexo/index.html">
+<meta property="og:title" content="Configuration of nginx and tomcat on Linux">
+<meta property="og:url" content="http://tjgao.github.io/2016/02/23/Configuration-of-nginx-and-tomcat-on-Linux/index.html">
 <meta property="og:site_name" content="Random Thoughts">
-<meta property="og:description" content="Nice, a fresh start">
-<meta property="og:updated_time" content="2015-08-09T07:50:31.000Z">
+<meta property="og:description" content="配置nginx和什么php啊， tomcat啊， 我干了也无数次了，总是记不住，结果每次要弄了都要现查。 痛定思痛，好记性不如烂笔头，还是大致写写过程以后方便些，何况我这绝对算不上好记性。
+以下针对的都是ubuntu，估摸debian也差不多。">
+<meta property="og:updated_time" content="2016-03-07T12:40:29.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello hexo">
-<meta name="twitter:description" content="Nice, a fresh start">
+<meta name="twitter:title" content="Configuration of nginx and tomcat on Linux">
+<meta name="twitter:description" content="配置nginx和什么php啊， tomcat啊， 我干了也无数次了，总是记不住，结果每次要弄了都要现查。 痛定思痛，好记性不如烂笔头，还是大致写写过程以后方便些，何况我这绝对算不上好记性。
+以下针对的都是ubuntu，估摸debian也差不多。">
   
     <link rel="alternative" href="/atom.xml" title="Random Thoughts" type="application/atom+xml">
   
@@ -183,11 +186,11 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-Hello-hexo" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-Configuration-of-nginx-and-tomcat-on-Linux" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2015/08/09/Hello-hexo/" class="article-date">
-  	<time datetime="2015-08-09T07:49:17.000Z" itemprop="datePublished">2015-08-09</time>
+      <a href="/2016/02/23/Configuration-of-nginx-and-tomcat-on-Linux/" class="article-date">
+  	<time datetime="2016-02-23T05:55:10.000Z" itemprop="datePublished">2016-02-23</time>
 </a>
     </div>
   
@@ -200,7 +203,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Hello hexo
+      Configuration of nginx and tomcat on Linux
     </h1>
   
 
@@ -208,6 +211,10 @@
       
       <div class="article-info article-info-post">
         
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/">nginx</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/technology/">technology</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术/">技术</a></li></ul>
+	</div>
+
         
 
         <div class="clearfix"></div>
@@ -216,7 +223,18 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Nice, a fresh start</p>
+        <p>配置<code>nginx</code>和什么<code>php</code>啊， <code>tomcat</code>啊， 我干了也无数次了，总是记不住，结果每次要弄了都要现查。 痛定思痛，好记性不如烂笔头，还是大致写写过程以后方便些，何况我这绝对算不上好记性。</p>
+<p>以下针对的都是<code>ubuntu</code>，估摸<code>debian</code>也差不多。<br><a id="more"></a></p>
+<h3 id="权限">权限</h3><p>为了能够彻底排除权限问题，最好使用一个统一的用户来运行 nginx 和 tomcat。通过包安装的<code>nginx</code>默认的运行用户是<code>www-data</code>，而<code>tomcat7</code>则偏要弄个叫做<code>tomcat7</code>的用户。所以，我首先就把<code>tomcat7</code>的运行用户改成<code>www-data</code>，统一号令。</p>
+<p>打开<code>/etc/default/tomcat7</code>就看到了运行用户的配置，我直接改成了<code>www-data</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Run Tomcat as this user ID. Not setting this or leaving it blank will use the</span></span><br><span class="line"><span class="comment"># default of tomcat7.</span></span><br><span class="line">TOMCAT7_USER=www-data</span><br><span class="line"></span><br><span class="line"><span class="comment"># Run Tomcat as this group ID. Not setting this or leaving it blank will use</span></span><br><span class="line"><span class="comment"># the default of tomcat7.</span></span><br><span class="line">TOMCAT7_GROUP=www-data</span><br></pre></td></tr></table></figure>
+<p>不过这还没完，原有的文件仍然归属于用户<code>tomcat7</code>，这些都得一一改掉。如<code>/var/lib/tomcat7</code>，<code>/var/log/tomcat7</code>，<code>/etc/tomcat7</code>，要把其所有权给<code>www-data</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chown -R www-data:www-data /var/lib/tomcat7</span><br></pre></td></tr></table></figure>
+<p>这些东西都改完了<code>tomcat7</code>的运行用户修改才算完事。</p>
+<h3 id="路径">路径</h3><p>这两的默认服务路径都颇为奇葩，我还是习惯于使用<code>/var/www</code>，和以前的<code>apache</code>一样。到<code>tomcat</code>的<code>server.xml</code>中修改<code>Host</code>项里的<code>appBase</code>，使之指向<code>/var/www</code>即可。对于<code>nginx</code>修改其<code>/etc/site-enabled/</code>下面的配置文件，修改<code>root</code>指向的路径，也使之指向<code>/var/www</code>，大致就这些。</p>
+<h3 id="反向代理">反向代理</h3><p><code>nginx</code>的长处在于提供静态内容的服务，效率极高，而和应用相关的请求则应该直接发给<code>tomcat</code>，所以，修改<code>nginx</code>的配置文件如下：</p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">location ~* ^(/api/|/admin/) &#123;</span><br><span class="line">    proxy_pass http://<span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">8080</span>;</span><br><span class="line">    proxy_set_header X-Forwarded-For <span class="variable">$proxy</span>_add_x_forwarded_for;</span><br><span class="line">    proxy_set_header Host <span class="variable">$http</span>_host;</span><br><span class="line">    proxy_set_header X-Real-IP <span class="variable">$remote</span>_addr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个意思是，凡是 URL 路径以<code>/api/</code>和<code>/admin/</code>开头的请求，一律丢给<code>tomcat</code>。至于其他的请求，都默认由<code>nginx</code>挡了，<code>tomcat</code>毫不知情，这两各司其职。</p>
 
       
     </div>
@@ -226,15 +244,11 @@
     
 <nav id="article-nav">
   
-    <a href="/2015/08/11/Suffix-array-I/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          Suffix array I
-        
-      </div>
-    </a>
   
+    <a href="/2016/01/15/小题-8/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">小题-8</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
   
 </nav>
 
