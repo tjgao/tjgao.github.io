@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>小题(1) // tj&#39;s blog</title>
+
+        <meta charset="utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+        <meta property="og:title" content="小题(1)" />
+    <meta property="og:description" content="" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="http://tjgao.github.com/post/%E5%B0%8F%E9%A2%98-1/" />
+    
+
+    <link href="" rel="alternate" type="application/rss+xml" title="tj&#39;s blog" />
+    <link rel="shortcut icon" href="/favicon.png">
+
+    <link href="http://tjgao.github.com/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+    <link href="http://tjgao.github.com/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="http://tjgao.github.com/css/style.css">
+
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+    
+    <meta name="generator" content="Hugo 0.27-DEV" />
+</head>
+
+
+<body>
+<div id="container">
+    <header id="header">
+    <div id="header-outer" class="outer">
+        <div id="header-inner" class="inner">
+            <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+            <a id="logo" class="logo-text" href="http://tjgao.github.com/">tj&#39;s blog</a>
+            <nav id="main-nav">
+                
+            </nav>
+            <nav id="sub-nav">
+                <div id="search-form-wrap">
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+    <section id="main" class="outer">
+        <article class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        <header class="article-header">
+            <h1 class="article-title" itemprop="name">小题(1)</h1>
+        </header>
+        
+        <div class="article-meta">
+            <a href="/post/%E5%B0%8F%E9%A2%98-1/" class="article-date">
+                <time datetime='2015-10-30T01:07:19.000&#43;00:00' itemprop="datePublished">2015-10-30</time>
+            </a>
+            
+            
+            <div class="post-categories">
+                <div class="article-category">
+                    
+                    
+                    <a class="article-category-link" href="http://tjgao.github.com//categories/%E6%8A%80%E6%9C%AF">技术</a>
+                    
+                </div>
+            </div>
+            
+            
+        </div>
+        <div class="article-entry" itemprop="articleBody">
+            <p>逛买卖提看到一个小题，其实也不难，但是如果要瞬间找到解法，还是需要在平时多思多练。平时遇到问题也不应轻易放过，自我勉励一下。</p>
+
+<p></p>
+
+<p>题目是这样： 排序数组中找2个数，使其差等于一个给定值。 数组中都是正数且为unique number，给定一个正整数$k$，找出两个数$A$、$B$，使得$A-B=k$，要求使用常数空间（hash map不能用）、$O(N)$时间。</p>
+
+<p>其实类似于经典的twoSum问题，略作修改而已。当然解决办法也是类似的，用两个指针$i$, $j$指向尾部($i&lt;j$，且一直保证$j$不可能小于$i$)，比较$i$，$j$指向的值的差，若差为$k$，返回。若小于$k$，$i$减1，若大于$k$，$j$减1。一直到$i$小于0为止。</p>
+
+<p>代码如下：</p>
+
+<pre><code class="language-cpp">pair&lt;int, int&gt; find(vector&lt;int&gt;&amp; data, int k) {
+    int sz = data.size(), i = sz-2, j = sz-1;
+    if( sz &lt;= 1 ) return pair&lt;int, int&gt;(-1, -1);
+    while( i&gt;=0 ) {
+        if( data[j] - data[i] &gt; k &amp;&amp; j &gt; i) j--;
+        else if( data[j] - data[i] == k &amp;&amp; j &gt; i) return pair&lt;int, int&gt;(data[i], data[j]);
+        else i--;
+    }
+    return pair&lt;int, int&gt;(-1, -1);
+}
+</code></pre>
+
+<p>如果找不到满足条件的$A$和$B$，则返回的pair的一对值是相等的，且都为-1。</p>
+        </div>
+
+        
+        
+        
+
+        
+
+
+        
+        <footer class="article-footer">
+            <ul class="article-tag-list">
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="http://tjgao.github.com//tags/%E7%AE%97%E6%B3%95">算法
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="http://tjgao.github.com//tags/algorithm">algorithm
+                    </a>
+                </li>
+                
+            </ul>
+        </footer>
+        
+    </div>
+    <nav id="article-nav">
+    
+    <a href="/post/%E5%B0%8F%E9%A2%98-2/" id="article-nav-newer" class="article-nav-link-wrap">
+        <div class="article-nav-title"><span>&lt;</span>&nbsp;
+            小题(2)
+        </div>
+    </a>
+    
+    
+    <a href="/post/rmq-%E7%AE%97%E6%B3%95/" id="article-nav-older" class="article-nav-link-wrap">
+        <div class="article-nav-title">RMQ 算法&nbsp;<span>&gt;</span></div>
+    </a>
+    
+</nav>
+</article>
+
+        
+    </section>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/tomorrow-night.min.css" integrity="sha256-2wL88NKUqvJi/ExflDzkzUumjUM73mcK2gBvBBeLvTk=" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js" integrity="sha256-KbfTjB0WZ8vvXngdpJGY3Yp3xKk+tttbqClO11anCIU=" crossorigin="anonymous"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<script type="text/javascript" async src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+</div>
+</body>
+</html>

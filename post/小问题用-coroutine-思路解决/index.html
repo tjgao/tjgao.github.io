@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>小问题用 coroutine 思路解决 // tj&#39;s blog</title>
+
+        <meta charset="utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+        <meta property="og:title" content="小问题用 coroutine 思路解决" />
+    <meta property="og:description" content="" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="http://tjgao.github.com/post/%E5%B0%8F%E9%97%AE%E9%A2%98%E7%94%A8-coroutine-%E6%80%9D%E8%B7%AF%E8%A7%A3%E5%86%B3/" />
+    
+
+    <link href="" rel="alternate" type="application/rss+xml" title="tj&#39;s blog" />
+    <link rel="shortcut icon" href="/favicon.png">
+
+    <link href="http://tjgao.github.com/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+    <link href="http://tjgao.github.com/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="http://tjgao.github.com/css/style.css">
+
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+    
+    <meta name="generator" content="Hugo 0.27-DEV" />
+</head>
+
+
+<body>
+<div id="container">
+    <header id="header">
+    <div id="header-outer" class="outer">
+        <div id="header-inner" class="inner">
+            <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+            <a id="logo" class="logo-text" href="http://tjgao.github.com/">tj&#39;s blog</a>
+            <nav id="main-nav">
+                
+            </nav>
+            <nav id="sub-nav">
+                <div id="search-form-wrap">
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+    <section id="main" class="outer">
+        <article class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        <header class="article-header">
+            <h1 class="article-title" itemprop="name">小问题用 coroutine 思路解决</h1>
+        </header>
+        
+        <div class="article-meta">
+            <a href="/post/%E5%B0%8F%E9%97%AE%E9%A2%98%E7%94%A8-coroutine-%E6%80%9D%E8%B7%AF%E8%A7%A3%E5%86%B3/" class="article-date">
+                <time datetime='2017-08-21T01:54:43.000&#43;00:00' itemprop="datePublished">2017-08-21</time>
+            </a>
+            
+            
+            <div class="post-categories">
+                <div class="article-category">
+                    
+                    
+                    <a class="article-category-link" href="http://tjgao.github.com//categories/%E6%8A%80%E6%9C%AF">技术</a>
+                    
+                </div>
+            </div>
+            
+            
+        </div>
+        <div class="article-entry" itemprop="articleBody">
+            <p>前阵子在水木上看到有人贴了个问题，问怎么用程序实现。即，给你一堆等式，你的程序边接受输入边求值，并打印出来。</p>
+
+<p></p>
+
+<pre><code>a = 3
+===&gt; a = 3
+b = 2 + 4
+===&gt; b = 6
+c = a
+===&gt; c = 3
+d = b + 7
+===&gt; d = 13
+A = b + c + d
+===&gt; A = 22
+f = g
+g = 1 + 2 + 3
+===&gt; g = 6
+===&gt; f = 6
+h = i + A + lemon
+lemon = k + lima
+i = A + 5
+===&gt; i = 27
+k = a + b
+===&gt; k = 9
+lima = k + k
+===&gt; lima = 18
+===&gt; lemon = 27
+===&gt; h = 76
+</code></pre>
+
+<p>See? 能求值的就输出结果，不能的就无输出。经过观察，它左边只有一个变量，还算简化的情况呢。</p>
+
+<p>我先用 C++ 撸了个，说实话，不好撸，绕来绕去的。</p>
+
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;sstream&gt;
+#include &lt;cctype&gt;
+#include &lt;vector&gt;
+#include &lt;unordered_set&gt;
+#include &lt;unordered_map&gt;
+#include &lt;functional&gt;
+ 
+class executor {
+public:
+    typedef std::unordered_map&lt;std::string, int&gt; smap;
+    typedef std::unordered_map&lt;std::string, std::vector&lt;std::function&lt;void(executor*)&gt;&gt;&gt; cmap;
+    typedef std::unordered_map&lt;std::string, int&gt; vmap;
+ 
+    void process(const std::string&amp; equation) {
+        std::cout &lt;&lt; equation &lt;&lt; std::endl;
+        std::unordered_set&lt;std::string&gt; deps;
+        std::string left;
+        int value = 0;
+        if (parse(equation, left, deps, value)) {
+            print(left, value);
+            cache[left] = value;
+            auto it = cb.find(left);
+            if (it != cb.end()) {
+                for (auto&amp; callback: it-&gt;second) callback(this);
+            }
+            cb.erase(left);
+        } else {
+            cache.erase(left);
+            int&amp; current_version = version[left];
+            current_version++;
+            for (auto&amp; s : deps) {
+                cb[s].push_back([left, deps, value, current_version](executor* e){
+                    if (e-&gt;version[left] &gt; current_version) return;
+                    int result = value;
+                    for (auto&amp; key : deps) {
+                        auto it = e-&gt;cache.find(key);
+                        if (it == e-&gt;cache.end()) return;
+                        result += it-&gt;second;
+                    }
+                    e-&gt;print(left, result);
+                    e-&gt;cache[left] = result;
+                    auto it = e-&gt;cb.find(left);
+                    if (it != e-&gt;cb.end()) {
+                        for (auto&amp; callback : it-&gt;second) callback(e);
+                        e-&gt;cb.erase(left);
+                    }
+                });
+            }
+        }
+    }
+private:
+    bool parse(const std::string&amp; equation, std::string&amp; left, std::unordered_set&lt;std::string&gt;&amp; deps, int&amp; value) {
+        size_t pos = equation.find('=');
+        left = trim(equation.substr(0, pos));
+        std::stringstream ss(equation.substr(pos + 1));
+        std::string token, stripped;
+        int evaluated = 0;
+        bool good = true;
+        while (std::getline(ss, token, '+')) {
+            stripped = trim(token);
+            if (isalpha(stripped[0]) == 0) {
+                value += stoi(stripped); 
+            } else {
+                auto it = cache.find(stripped);
+                if (it != cache.end()) evaluated += it-&gt;second;
+                else good = false; 
+                deps.insert(stripped);
+            }
+        }
+        if (good) value += evaluated;
+        return good;
+    }
+    void print(const std::string&amp; key, int value) { std::cout &lt;&lt; &quot;===&gt; &quot; &lt;&lt; key &lt;&lt; &quot; = &quot; &lt;&lt; value &lt;&lt; std::endl; }
+    std::string trim(const std::string&amp; s) {
+        size_t start = s.find_first_not_of(&quot; \t\n&quot;);
+        return s.substr(start, s.find_last_not_of(&quot; \t\n&quot;) - start + 1);
+    }
+    smap cache;
+    cmap cb;
+    vmap version;
+};
+ 
+int main() {
+    std::vector&lt;std::string&gt; data {
+        &quot;a = 3&quot;
+        , &quot;b = 2 + 4&quot;
+        , &quot;c = a&quot;
+        , &quot;d = b + 7&quot;
+        , &quot;A = b + c + d&quot;
+        , &quot;f = g&quot;
+        , &quot;g = 1 + 2 + 3&quot;
+        , &quot;h = i + A + lemon&quot;
+        , &quot;lemon = k + lima&quot;
+        , &quot;i = A + 5&quot;
+        , &quot;k = a + b&quot;
+        , &quot;lima = k + k&quot;
+    };
+    executor e;
+    for (auto&amp; a : data) e.process(a);
+}
+</code></pre>
+
+<p>这许多行，看上去很勉强很痛苦。</p>
+
+<p>最近接触了一些 python 的 coroutine 的思路，发现这个问题用 generator/coroutine 的路子来考虑就很直观自然。每次给你个东西求值，你能求就求，不能就算了，不行就 yield 投降，就直接躺地上不干了。最重要的是下次如果某变量求值成功了，再继续这个未完成的 generator/coroutine 就行了。</p>
+
+<p>在 async programming 中总会有个 event loop 来驱动所有的 coroutine，我们这个就自己轮一个简单的 loop 就行了。上 python 代码：</p>
+
+<pre><code class="language-python">input = [
+&quot;a = 3&quot;
+, &quot;b = 2 + 4&quot;
+, &quot;c = a&quot;
+, &quot;d = b + 7&quot;
+, &quot;A = b + c + d&quot;
+, &quot;f = g&quot;
+, &quot;g = 1 + 2 + 3&quot;
+, &quot;h = i + A + lemon&quot;
+, &quot;lemon = k + lima&quot;
+, &quot;i = A + 5&quot;
+, &quot;k = a + b&quot;
+, &quot;lima = k + k&quot;	
+]
+ 
+variable_map = {}
+co_table = {}
+ 
+def value(num):
+	try:
+		return int(num)
+	except:
+		while True:
+			result = variable_map.get(num)
+			if result is not None:
+				co_table[num] = None
+				run()
+				return result 
+			yield 	
+ 
+def evaluate(left, right):
+	result = 0
+	for r in right:
+		result += yield from value(r)
+	variable_map[left] = result
+	print('===&gt; ' + left + ' = ' + str(result))
+	run()
+ 
+def run():
+	for k in co_table:
+		if co_table[k] is None: continue
+		try:
+			co_table[k].send(None)
+		except:
+			pass
+ 
+def main():
+	for line in input:
+		print(line)
+		left = line.split('=')[0].strip() 
+		right = [i.strip() for i in line.split('=')[1].split('+')]
+		co_table[left] = evaluate(left, right)
+		run()
+ 
+main()
+</code></pre>
+
+<p>是不是清楚多了？</p>
+        </div>
+
+        
+        
+        
+
+        
+
+
+        
+        <footer class="article-footer">
+            <ul class="article-tag-list">
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="http://tjgao.github.com//tags/%E7%AE%97%E6%B3%95">算法
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="http://tjgao.github.com//tags/algorithm">algorithm
+                    </a>
+                </li>
+                
+            </ul>
+        </footer>
+        
+    </div>
+    <nav id="article-nav">
+    
+    <a href="/post/migrate-to-hugo-from-hexo/" id="article-nav-newer" class="article-nav-link-wrap">
+        <div class="article-nav-title"><span>&lt;</span>&nbsp;
+            Migrate to Hugo From Hexo
+        </div>
+    </a>
+    
+    
+    <a href="/post/%E5%B0%8F%E9%A2%98-10/" id="article-nav-older" class="article-nav-link-wrap">
+        <div class="article-nav-title">小题-10&nbsp;<span>&gt;</span></div>
+    </a>
+    
+</nav>
+</article>
+
+        
+    </section>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/tomorrow-night.min.css" integrity="sha256-2wL88NKUqvJi/ExflDzkzUumjUM73mcK2gBvBBeLvTk=" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js" integrity="sha256-KbfTjB0WZ8vvXngdpJGY3Yp3xKk+tttbqClO11anCIU=" crossorigin="anonymous"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<script type="text/javascript" async src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+</div>
+</body>
+</html>

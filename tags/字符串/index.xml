@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>字符串 on tj&#39;s blog</title>
+    <link>http://tjgao.github.com/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/</link>
+    <description>Recent content in 字符串 on tj&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 11 Aug 2015 23:00:33 +0000</lastBuildDate>
+    
+	<atom:link href="http://tjgao.github.com/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Suffix array I</title>
+      <link>http://tjgao.github.com/post/suffix-array-i/</link>
+      <pubDate>Tue, 11 Aug 2015 23:00:33 +0000</pubDate>
+      
+      <guid>http://tjgao.github.com/post/suffix-array-i/</guid>
+      <description>&lt;p&gt;Suffix array 是一种很奇妙的数据结构，在字符串处理中有很多重要的用途。很多看上去复杂的字符串问题，在已经创建了 suffix array之后，往往能够在线性时间之内解决。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

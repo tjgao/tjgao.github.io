@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>小题(2) // tj&#39;s blog</title>
+
+        <meta charset="utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+        <meta property="og:title" content="小题(2)" />
+    <meta property="og:description" content="" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="http://tjgao.github.com/post/%E5%B0%8F%E9%A2%98-2/" />
+    
+
+    <link href="" rel="alternate" type="application/rss+xml" title="tj&#39;s blog" />
+    <link rel="shortcut icon" href="/favicon.png">
+
+    <link href="http://tjgao.github.com/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+    <link href="http://tjgao.github.com/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="http://tjgao.github.com/css/style.css">
+
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+    
+    <meta name="generator" content="Hugo 0.27-DEV" />
+</head>
+
+
+<body>
+<div id="container">
+    <header id="header">
+    <div id="header-outer" class="outer">
+        <div id="header-inner" class="inner">
+            <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+            <a id="logo" class="logo-text" href="http://tjgao.github.com/">tj&#39;s blog</a>
+            <nav id="main-nav">
+                
+            </nav>
+            <nav id="sub-nav">
+                <div id="search-form-wrap">
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+    <section id="main" class="outer">
+        <article class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        <header class="article-header">
+            <h1 class="article-title" itemprop="name">小题(2)</h1>
+        </header>
+        
+        <div class="article-meta">
+            <a href="/post/%E5%B0%8F%E9%A2%98-2/" class="article-date">
+                <time datetime='2015-10-30T16:05:12.000&#43;00:00' itemprop="datePublished">2015-10-30</time>
+            </a>
+            
+            
+            <div class="post-categories">
+                <div class="article-category">
+                    
+                    
+                    <a class="article-category-link" href="http://tjgao.github.com//categories/%E6%8A%80%E6%9C%AF">技术</a>
+                    
+                </div>
+            </div>
+            
+            
+        </div>
+        <div class="article-entry" itemprop="articleBody">
+            <p>一道leetcode小题。描述如下：</p>
+
+<p>Largest Rectangle in Histogram</p>
+
+<p>Given n non-negative integers representing the histogram&rsquo;s bar height where the width of each bar is 1, find the area of largest rectangle in the histogram.</p>
+
+<p></p>
+
+<p><img src="http://www.leetcode.com/wp-content/uploads/2012/04/histogram.png" alt="largest rectangle" />
+Above is a histogram where width of each bar is 1, given height = [2,1,5,6,2,3].</p>
+
+<p><img src="http://www.leetcode.com/wp-content/uploads/2012/04/histogram_area.png" alt="largest rectangle" />
+The largest rectangle is shown in the shaded area, which has area = 10 unit.</p>
+
+<p>For example, Given height = [2,1,5,6,2,3], return 10.</p>
+
+<p>直接反应就是怎么简单怎么来，来个暴力的code：</p>
+
+<pre><code>int largestRectangleArea(vector&lt;int&gt;&amp; height) {
+    int sz = height.size(), w, ma=0;
+    for( int i=0; i&lt;sz; i++ ) {
+        w = 0;
+        for( int j=i-1; j&gt;=0; j-- ) if( height[j] &gt;= height[i] ) w++; else break;
+        for( int j=i+1; j&lt;sz; j++ ) if( height[j] &gt;= height[i] ) w++; else break;
+        if( (w + 1)*height[i] &gt; ma ) ma = (w + 1)*height[i];
+    }
+    return ma;
+}
+</code></pre>
+
+<p>至少看上去还是简洁的，不过这是明显的$O(n^2)$时间复杂度，一提交就意料之中的Time Limit Exceeded.</p>
+
+<p>看上去似乎可以用DP的思想，但是却不太容易。[2,2,3,N]，扫描前面几项到3的时候，最好的结果为6，但是N的值对于最终结果有极大影响。N=1，最终结果为6，N=2，最终结果为8，N&gt;=9，结果为N。</p>
+
+<p>注意到暴力解法从任何索引i往前往后扫的时候都没有利用以前的扫描结果，这可能是可以改进的地方。于是引入了个数组来记录前一个索引能够抵达的位置。</p>
+
+<pre><code>int largestRectangleArea(vector&lt;int&gt;&amp; height) {
+    int sz = height.size(), ma = 0, s = 0;
+    if( sz == 0 ) return 0;
+    vector&lt;int&gt; ext(sz), area(sz);
+    ext[sz-1] = sz-1, area[sz-1] = height[sz-1];
+    ma = height[sz-1];
+    for( int i=sz-2; i&gt;=0; i-- ) {
+        int n = i+1;
+        ext[i] = i;
+        while( n &lt; sz &amp;&amp; height[i] &lt;= height[n] ) {
+            ext[i] = ext[n];
+            n = ext[n] + 1;
+        }
+        area[i] = height[i]*(ext[i] - i + 1);
+    }
+    area[0] = height[0];
+    for( int i=0; i&lt;sz; i++ ) {
+        int n = i-1;
+        ext[i] = i;
+        while( n &gt;= 0 &amp;&amp; height[i] &lt;= height[n] ) {
+            ext[i] = ext[n];
+            n = ext[n] - 1;
+        }
+        s = height[i]*(i - ext[i] + 1 );
+        if( ma &lt; s + area[i] - height[i] ) ma = s + area[i] - height[i];
+    }
+    return ma;
+}
+</code></pre>
+
+<p>第一个循环，是计算从索引i往右延伸，能够抵达的最远的位置，第二个循环，则是i往左能够抵达的位置。由于能够尽量利用前一次扫描的结果，效率大大增加。提交之后显示能够比85%的方案快，20ms跑完90多个测试。</p>
+        </div>
+
+        
+        
+        
+
+        
+
+
+        
+        <footer class="article-footer">
+            <ul class="article-tag-list">
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="http://tjgao.github.com//tags/%E7%AE%97%E6%B3%95">算法
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="http://tjgao.github.com//tags/algorithm">algorithm
+                    </a>
+                </li>
+                
+            </ul>
+        </footer>
+        
+    </div>
+    <nav id="article-nav">
+    
+    <a href="/post/%E5%B0%8F%E9%A2%98-3/" id="article-nav-newer" class="article-nav-link-wrap">
+        <div class="article-nav-title"><span>&lt;</span>&nbsp;
+            小题(3)
+        </div>
+    </a>
+    
+    
+    <a href="/post/%E5%B0%8F%E9%A2%98-1/" id="article-nav-older" class="article-nav-link-wrap">
+        <div class="article-nav-title">小题(1)&nbsp;<span>&gt;</span></div>
+    </a>
+    
+</nav>
+</article>
+
+        
+    </section>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/tomorrow-night.min.css" integrity="sha256-2wL88NKUqvJi/ExflDzkzUumjUM73mcK2gBvBBeLvTk=" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js" integrity="sha256-KbfTjB0WZ8vvXngdpJGY3Yp3xKk+tttbqClO11anCIU=" crossorigin="anonymous"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<script type="text/javascript" async src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+</div>
+</body>
+</html>

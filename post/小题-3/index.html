@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>小题(3) // tj&#39;s blog</title>
+
+        <meta charset="utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+        <meta property="og:title" content="小题(3)" />
+    <meta property="og:description" content="" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="http://tjgao.github.com/post/%E5%B0%8F%E9%A2%98-3/" />
+    
+
+    <link href="" rel="alternate" type="application/rss+xml" title="tj&#39;s blog" />
+    <link rel="shortcut icon" href="/favicon.png">
+
+    <link href="http://tjgao.github.com/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+    <link href="http://tjgao.github.com/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="http://tjgao.github.com/css/style.css">
+
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+    
+    <meta name="generator" content="Hugo 0.27-DEV" />
+</head>
+
+
+<body>
+<div id="container">
+    <header id="header">
+    <div id="header-outer" class="outer">
+        <div id="header-inner" class="inner">
+            <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+            <a id="logo" class="logo-text" href="http://tjgao.github.com/">tj&#39;s blog</a>
+            <nav id="main-nav">
+                
+            </nav>
+            <nav id="sub-nav">
+                <div id="search-form-wrap">
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+    <section id="main" class="outer">
+        <article class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        <header class="article-header">
+            <h1 class="article-title" itemprop="name">小题(3)</h1>
+        </header>
+        
+        <div class="article-meta">
+            <a href="/post/%E5%B0%8F%E9%A2%98-3/" class="article-date">
+                <time datetime='2015-12-07T23:14:01.000&#43;00:00' itemprop="datePublished">2015-12-07</time>
+            </a>
+            
+            
+            <div class="post-categories">
+                <div class="article-category">
+                    
+                    
+                    <a class="article-category-link" href="http://tjgao.github.com//categories/%E6%8A%80%E6%9C%AF">技术</a>
+                    
+                </div>
+            </div>
+            
+            
+        </div>
+        <div class="article-entry" itemprop="articleBody">
+            <p>闲逛水木，又碰到有人讨论算法小题，题目是这样：数组有N+M个数字, 数字的范围为1 &hellip; N, 打印重复的元素, 要求O(M + N), 不可以用额外的空间。</p>
+
+<p></p>
+
+<p>一个思路是，如果这些数字都按照自然的顺序排列，data[0] = 1, data[1] = 2 &hellip; data[K] = K - 1，则由于数字范围为1 &hellip; N， 而需要填补的位置是 M + N，必然有不能放在“正确”位置上的数字，这些不在“正确”位置上的数字必然就是重复的。又由于不能使用额外空间，就要利用这个数组本身的空间来腾挪。于是乎，代码如下：</p>
+
+<pre><code class="language-cpp">void printDup(vector&lt;int&gt;&amp; data) {
+    for( int i=0; i&lt;data.size(); i++ ) {
+        while( data[i] != data[data[i]-1] ) {
+            swap( data[i], data[data[i]-1] );
+        }
+    }
+
+    for( int i=0; i&lt;sz; i++ ) {
+        if( data[i]-1 != i ) cout&lt;&lt;data[i]&lt;&lt;&quot; &quot;;
+    }
+    cout&lt;&lt;endl;
+}
+
+</code></pre>
+
+<p>关键的一步是嵌套的第二重while循环，其目的是尽量使得data[i] - 1 = i，如果不能那就算了，留其在原位。那么问题是，这个循环执行多少步？是否一定能够保证任何一个不重复的数字K，能够被放到data[K-1]的位置上？只要这两个问题的答案是令人满意的，这个算法就是高效的。</p>
+
+<p>循环结束的条件是data[i] == data[data[i]-1]，当其结束时，至少data[data[i]-1]已经在正确的位置上了，即，一遇到归位的数字，就结束。while每执行一次，就确保了一个数归位。而总共有N个位置，所以总的执行次数是有上限的。另一个问题，怎么知道一个不重复的K一定可以被正确归位？换个方式问这个问题，如果K不放在data[K-1]上，它能放到哪里去？若 data[M] = K，则 data[data[M]-1] = data[K-1]，如果data[M]-1是个重复的数字，则有data[data[M]-1] = data[M]（重复的数字至少得有个在正确的位置上），所以data[M] = data[K-1] = K，推回来了。如果data[M]-1也不重复，且data[M]-1也不在其正确位置上，这问题变成了另一个，K不重复且不在其位置上，则K-1也是这样，如此这般推下去一直到1。可是1只要存在，一定是可以放到正确的位置上，不信可以在脑子里推一推。</p>
+        </div>
+
+        
+        
+        
+
+        
+
+
+        
+        <footer class="article-footer">
+            <ul class="article-tag-list">
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="http://tjgao.github.com//tags/%E7%AE%97%E6%B3%95">算法
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="http://tjgao.github.com//tags/algorithm">algorithm
+                    </a>
+                </li>
+                
+            </ul>
+        </footer>
+        
+    </div>
+    <nav id="article-nav">
+    
+    <a href="/post/%E7%AE%80%E5%8D%95%E7%9A%84%E6%95%B0%E5%AD%A6%E6%9C%9F%E6%9C%9B/" id="article-nav-newer" class="article-nav-link-wrap">
+        <div class="article-nav-title"><span>&lt;</span>&nbsp;
+            简单的数学期望
+        </div>
+    </a>
+    
+    
+    <a href="/post/%E5%B0%8F%E9%A2%98-2/" id="article-nav-older" class="article-nav-link-wrap">
+        <div class="article-nav-title">小题(2)&nbsp;<span>&gt;</span></div>
+    </a>
+    
+</nav>
+</article>
+
+        
+    </section>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/tomorrow-night.min.css" integrity="sha256-2wL88NKUqvJi/ExflDzkzUumjUM73mcK2gBvBBeLvTk=" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js" integrity="sha256-KbfTjB0WZ8vvXngdpJGY3Yp3xKk+tttbqClO11anCIU=" crossorigin="anonymous"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<script type="text/javascript" async src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+</div>
+</body>
+</html>

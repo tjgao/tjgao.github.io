@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>小题-10 // tj&#39;s blog</title>
+
+        <meta charset="utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+        <meta property="og:title" content="小题-10" />
+    <meta property="og:description" content="" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="http://tjgao.github.com/post/%E5%B0%8F%E9%A2%98-10/" />
+    
+
+    <link href="" rel="alternate" type="application/rss+xml" title="tj&#39;s blog" />
+    <link rel="shortcut icon" href="/favicon.png">
+
+    <link href="http://tjgao.github.com/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+    <link href="http://tjgao.github.com/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="http://tjgao.github.com/css/style.css">
+
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+    
+    <meta name="generator" content="Hugo 0.27-DEV" />
+</head>
+
+
+<body>
+<div id="container">
+    <header id="header">
+    <div id="header-outer" class="outer">
+        <div id="header-inner" class="inner">
+            <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+            <a id="logo" class="logo-text" href="http://tjgao.github.com/">tj&#39;s blog</a>
+            <nav id="main-nav">
+                
+            </nav>
+            <nav id="sub-nav">
+                <div id="search-form-wrap">
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+    <section id="main" class="outer">
+        <article class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        <header class="article-header">
+            <h1 class="article-title" itemprop="name">小题-10</h1>
+        </header>
+        
+        <div class="article-meta">
+            <a href="/post/%E5%B0%8F%E9%A2%98-10/" class="article-date">
+                <time datetime='2016-05-27T17:27:24.000&#43;00:00' itemprop="datePublished">2016-05-27</time>
+            </a>
+            
+            
+            <div class="post-categories">
+                <div class="article-category">
+                    
+                    
+                    <a class="article-category-link" href="http://tjgao.github.com//categories/%E6%8A%80%E6%9C%AF">技术</a>
+                    
+                </div>
+            </div>
+            
+            
+        </div>
+        <div class="article-entry" itemprop="articleBody">
+            <p>今天收到 HackerRank 一封 email，说又有什么新鲜出炉的 challenge 了，反正我没事，于是就跑去看看。没想到搞了好久才搞定，:( &hellip;</p>
+
+<p></p>
+
+<p>简单的解释一下这个问题：你有<code>M</code>种硬币，币值都不同，你还有一个总数<code>N</code>， 问凑成<code>N</code>的方式有多少种，其中 $ 1 \leq N \leq 250$，$ 1 \leq M \leq 50$。注意，同样的硬币组合的不同排列不算。比如你要凑成总数 5，你有币值为 1, 2, 3 的三种硬币。则答案为 5， 因为你有 5 种方式凑成总数 5，分别是<code>[1,1,1,1,1]</code>, <code>[1,1,1,2]</code>, <code>[1,1,3]</code>, <code>[2, 3]</code>, <code>[1, 2, 2]</code>。</p>
+
+<p>第一反应就是递归，很快就撸出来了。</p>
+
+<pre><code class="language-cpp">void dfs( int total, vector&lt;int&gt;&amp; coins, int&amp; solutions, int index ) {
+    if( total == 0 ) solutions++;
+    else {
+        while( index &lt; coins.size() &amp;&amp; total &gt;= coins[index] ) {
+            dfs( total - coins[index], coins, solutions, index);
+            index++;
+        }
+    }
+}
+
+int solution( int total, vector&lt;int&gt;&amp; coins ) {
+    sort( coins.begin(), coins.end() );
+    int solutions = 0;
+    dfs( total, coins, solutions, 0 );
+    return solutions;
+}
+</code></pre>
+
+<p>悲剧的是，这个代码只在<code>N</code>比较小的时候能凑合，随着<code>N</code>变大，递归深度增加，很快就慢到发指！时间复杂度是指数级的。100 的时候都有点不能忍了。我提交给评估系统之后毫无意外的得到了 timeout 的错误提示。当然这代码还是有优点的，第一是简明，第二，假如你要问那些硬币组合是什么样子的，此代码略加修改，就能返回结果集合，而不是一个总数。还有一个问题，结果随着<code>N</code>增大急剧增加，溢出成为了一个潜在的 bug，所以我这里应该用<code>unsigned long</code>来表示结果。</p>
+
+<p>既然问的是总数，万能的动态规划又可以出马了！动态规划的核心就是找递推关系，那就来看看这递推关系在哪里。假设我有这么一个二维数组 <code>dp[N][M]</code>，其中第一个维度表示要凑成的总数，第二个是硬币数组的索引，表示使用从索引 0 开始，以此索引为结尾的硬币（包含），有多少种方式能凑成第一维度的总数。举个例子，假设要凑总数 8，有币值为<code>[1, 2, 3]</code>的三种硬币，则只使用第一个硬币，凑成 8 的方式有 dp[8][0] 种，也就是 1 种。用前两种硬币凑成 7 的方式为 dp[7][1] 种。经观察可知， dp 二维数组内部有一种关系：
+$$dp[i][j] = dp[i-coins[j]][j] + dp[i][j-1], ( i \geq coins[j])$$
+或者，如果$ i\geq coins[j]$条件不能满足，则有：
+$$dp[i][j]=dp[i][j-1]$$</p>
+
+<p>我们来说说第一个关系，还是用前面那个凑总数 8 的例子来说，假如我要求<code>dp[8][2]</code>，即用<code>[1, 2, 3]</code>凑 8 的方式的数目（设为$S$）。这个数目等于我用<code>[1,2,3]</code>凑 5 的方式的数目（设为$S_1$）加上用<code>[1, 2]</code>凑 8 的方式的数目（设为$S_2$）。这个很容易理解， $S_1$的硬币组合只要加上币值为 3 的硬币，就是$S$的一个子集，再加上完全不使用币值为 3 的硬币的可能的组合$S_2$，两者之和就是$S$。</p>
+
+<p>第二个关系也很容易理解，假设你要用<code>[1,2,3,20]</code>来凑 8，那么币值为 20 的硬币有没有完全没影响嘛，所以你显然有 $dp[8][3] = dp[8][2]$。</p>
+
+<p>有了这个关系，实现起来就顺理成章了。首先我们对硬币数组排个序，处理起来更方便。然后我们得初始化这个二维数组<code>dp</code>。很明显，如果要凑的总数是 0， 那么组合方式的数目就是 1，无论硬币是什么组合（用无来凑无，这也算是一种）。</p>
+
+<pre><code class="language-cpp">unsigned long solution( int total, vector&lt;int&gt;&amp; coins ) {
+    int sz = coins.size();
+    if( !sz ) return 0;
+    sort( coins.begin(), coins.end() );
+    vector&lt;vector&lt;unsigned long&gt;&gt; dp( total + 1, vector&lt;unsigned long&gt;(sz));
+    for( int i=1; i&lt;total+1; i++ ) dp[i][0] = i % coins[0] ? 0 : 1; 
+    for( int i=0; i&lt;sz; i++ ) dp[0][i] = 1;
+
+    for( int i=1; i&lt;total+1; i++ ) {
+        for( int j=1; j&lt;sz; j++ ) {
+            if( i &lt; coins.front() ) break;
+            if( i &gt;= coins[j])
+                dp[i][j] = dp[i-coins[j]][j] + dp[i][j-1];
+            else 
+                dp[i][j] = dp[i][j-1];
+        }
+    }
+    return dp[total][sz-1];
+}
+</code></pre>
+
+<p>时间复杂度是$O(M\times N)$，考虑到<code>M</code>和<code>N</code>都很小，简直就是常数时间嘛，取<code>N</code>为250，给 50 种不同硬币也是秒杀。空间开销也没什么大不了的。提交代码以后，这次评估系统 happy 了。</p>
+
+<p>** update 5.30 **</p>
+
+<p>如果把题意变一下呢？原先是<code>M</code>种不同币值硬币，现在换成<code>M</code>个不同币值的硬币，拿一个少一个。原先的分析方法仍然有效。递归的实现仍然简洁，但是效率却高多了。</p>
+
+<pre><code class="language-cpp">void dfs( int total, vector&lt;int&gt;&amp; coins,  unsigned long &amp;solutions, int index ) {
+    if( total == 0 ) solutions++;
+    else {
+        while ( index &lt; coins.size() &amp;&amp; coins[index] &lt;= total ) {
+            dfs( total - coins[index], coins, solutions, index + 1 );
+            index++;
+        } 
+    }
+}
+
+unsigned long solution( int total, vector&lt;int&gt;&amp; coins ) {
+    sort( coins.begin(), coins.end() );
+    unsigned long solutions = 0;
+    dfs( total, coins, solutions, 0 );
+    return solutions;
+}
+</code></pre>
+
+<p>唯一的区别就是递归调用的时候传入的<code>index</code>参数比原先的值大1，这样就避免了从头来计算，也避免了重复选择同一个硬币。递归的速度很快，用<code>[1..30]</code>来凑 100 可以瞬间得到结果，198732。</p>
+
+<p>再来看动态规划的解法，仍然中规中矩，空间和时间复杂度没有什么变化，当然递推条件发了些微变化，二维数组的初始化也有所不同。</p>
+
+<pre><code class="language-cpp">unsigned long solution( int total, vector&lt;int&gt;&amp; coins ) {
+    if( coins.empty() ) return 0;
+    sort( coins.begin(), coins.end() );
+    vector&lt;vector&lt;unsigned long&gt;&gt; dp(total+1, vector&lt;unsigned long&gt;(coins.size()));
+    for( int i=1; i&lt;total+1; i++ ) dp[i][0] = coins[0] == i ? 1 : 0;
+    for( int i=0; i&lt;coins.size(); i++ ) dp[0][i] = 1;
+
+    for( int i=1; i&lt;total+1; i++ ) {
+        for( int j=1; j&lt;coins.size(); j++ ) {
+            if( i &lt; coins.front() ) break;
+            if( i &gt;= coins[j]) 
+                dp[i][j] = dp[i-coins[j]][j-1] + dp[i][j-1];
+            else 
+                dp[i][j] = dp[i][j-1];
+        }
+    }
+    return dp[total][coins.size()-1];
+}
+</code></pre>
+        </div>
+
+        
+        
+        
+
+        
+
+
+        
+        <footer class="article-footer">
+            <ul class="article-tag-list">
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="http://tjgao.github.com//tags/%E7%AE%97%E6%B3%95">算法
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="http://tjgao.github.com//tags/algorithm">algorithm
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="http://tjgao.github.com//tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92">动态规划
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="http://tjgao.github.com//tags/dynamic-programming">dynamic programming
+                    </a>
+                </li>
+                
+            </ul>
+        </footer>
+        
+    </div>
+    <nav id="article-nav">
+    
+    <a href="/post/%E5%B0%8F%E9%97%AE%E9%A2%98%E7%94%A8-coroutine-%E6%80%9D%E8%B7%AF%E8%A7%A3%E5%86%B3/" id="article-nav-newer" class="article-nav-link-wrap">
+        <div class="article-nav-title"><span>&lt;</span>&nbsp;
+            小问题用 coroutine 思路解决
+        </div>
+    </a>
+    
+    
+    <a href="/post/%E5%B0%8F%E9%A2%98-9/" id="article-nav-older" class="article-nav-link-wrap">
+        <div class="article-nav-title">小题-9&nbsp;<span>&gt;</span></div>
+    </a>
+    
+</nav>
+</article>
+
+        
+    </section>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/tomorrow-night.min.css" integrity="sha256-2wL88NKUqvJi/ExflDzkzUumjUM73mcK2gBvBBeLvTk=" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js" integrity="sha256-KbfTjB0WZ8vvXngdpJGY3Yp3xKk+tttbqClO11anCIU=" crossorigin="anonymous"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<script type="text/javascript" async src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+</div>
+</body>
+</html>

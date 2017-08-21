@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>小题-6 // tj&#39;s blog</title>
+
+        <meta charset="utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+        <meta property="og:title" content="小题-6" />
+    <meta property="og:description" content="" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="http://tjgao.github.com/post/%E5%B0%8F%E9%A2%98-6/" />
+    
+
+    <link href="" rel="alternate" type="application/rss+xml" title="tj&#39;s blog" />
+    <link rel="shortcut icon" href="/favicon.png">
+
+    <link href="http://tjgao.github.com/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+    <link href="http://tjgao.github.com/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="http://tjgao.github.com/css/style.css">
+
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+    
+    <meta name="generator" content="Hugo 0.27-DEV" />
+</head>
+
+
+<body>
+<div id="container">
+    <header id="header">
+    <div id="header-outer" class="outer">
+        <div id="header-inner" class="inner">
+            <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+            <a id="logo" class="logo-text" href="http://tjgao.github.com/">tj&#39;s blog</a>
+            <nav id="main-nav">
+                
+            </nav>
+            <nav id="sub-nav">
+                <div id="search-form-wrap">
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+    <section id="main" class="outer">
+        <article class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        <header class="article-header">
+            <h1 class="article-title" itemprop="name">小题-6</h1>
+        </header>
+        
+        <div class="article-meta">
+            <a href="/post/%E5%B0%8F%E9%A2%98-6/" class="article-date">
+                <time datetime='2016-01-08T17:23:29.000&#43;00:00' itemprop="datePublished">2016-01-08</time>
+            </a>
+            
+            
+            <div class="post-categories">
+                <div class="article-category">
+                    
+                    
+                    <a class="article-category-link" href="http://tjgao.github.com//categories/%E6%8A%80%E6%9C%AF">技术</a>
+                    
+                </div>
+            </div>
+            
+            
+        </div>
+        <div class="article-entry" itemprop="articleBody">
+            <p>还是继续动态规划问题。动态规划问题非常有趣，想得对路，问题迎刃而解，想得不对路，费了牛劲也弄不出满意的性能和结果。</p>
+
+<p></p>
+
+<p>这也是 leetcode 的第 132 个问题，题目描述如下：
+&gt; Given a string s, partition s such that every substring of the partition is a palindrome.</p>
+
+<blockquote>
+<p>Return the minimum cuts needed for a palindrome partitioning of s.</p>
+
+<p>For example, given s = &ldquo;aab&rdquo;,
+Return 1 since the palindrome partitioning [&ldquo;aa&rdquo;,&ldquo;b&rdquo;] could be produced using 1 cut.</p>
+</blockquote>
+
+<p>很明显，这样的 cut 总是存在的，最不济单个字符肯定是个 palindrome，把字符串切成一个个单字符就能满足条件的。不过这里要求的是最少的切法。</p>
+
+<p>这个最少、最多、最长、最短等问题，几乎有相当大一部分是可以归为动态规划的范畴，这个问题也不例外。我第一个版本是这样的：</p>
+
+<pre><code class="language-cpp">int minCut(string s) {
+    vector&lt;int&gt; dp(s.length() + 1);
+    for( int i=2; i&lt;s.length()+1; i++ ) {
+        int j = 0;
+        for( j=0; j&lt;i; j++ ) {
+            int p = j, q = i-1; 
+            while( p &lt; q &amp;&amp; s[p] == s[q]) { p++; q--; }
+            if( p &gt;= q ) { 
+                dp[i] = j == 0 ? 0 : dp[j] + 1;
+                break;
+            }
+        }
+    }
+    return dp[s.length()];
+}
+</code></pre>
+
+<p>这代码里其实是有错误的，这里先不去管它。至少看起来还不错，喂了它一些测试用例，瞬间就能吐出正确结果，于是我提交了，立马得到了一个 Limit Time Exceeded 结果，原来人家提供了这么一个测试用例，aaa&hellip;a(约500个a)bbaaa&hellip;a(约500个a)，佩服。我这程序反复的计算字符串是不是 palindrome，浪费的计算太多，于是性能就很差了。</p>
+
+<p>问题的关键在于事先算好所有的字符串是否是 palindrome 并存起来备用。假设用个数组来描述这个信息<code>pal[i][j]</code>，其含义为起点索引为<code>i</code>，长度为<code>j</code>，那么<code>pal[i][j]</code>是不是 palindrome 取决于这两件事：<code>s[i]</code>是否等于<code>s[i+j-1]</code>以及<code>pal[i+1][j-2]</code>是否是 palindrome。有了这个关系，我们就可以在 $O(n^2)$ 时间内准备好这个数组，并在以后的代码中以常数时间查表，极大的提高了效率。最终代码如下：</p>
+
+<pre><code class="language-cpp">int minCut(string s) {
+    vector&lt;vector&lt;int&gt;&gt; pal(s.length(), vector&lt;int&gt;(s.length()+1));
+    for( int i=s.length()-2; i&gt;=0; i-- ) {
+        for( int j=0; j+i&lt;=s.length(); j++ ) {
+            if( j &gt; 1) {
+                pal[i][j] = s[i] == s[i+j-1] ? ( pal[i+1][j-2] ? 1 : 0 ) : 0;
+            } else pal[i][j] = 1;
+        } 
+    }
+
+    vector&lt;int&gt; dp(s.length() + 1, 0);
+    for( int i=2; i&lt;=s.length(); i++ ) {
+        int j=0, val=INT_MAX, tmp;
+        for( j=0; j&lt;i; j++ ) {
+            if( pal[j][i-j] ) {
+                tmp = j == 0 ? 0 : dp[j] + 1;
+                val = tmp &lt; val ? tmp : val;
+            }
+        }
+        dp[i] = val &lt; dp[i-1] + 1 ? val : dp[i-1] + 1;
+    }   
+    return dp[s.length()];
+}
+
+</code></pre>
+        </div>
+
+        
+        
+        
+
+        
+
+
+        
+        <footer class="article-footer">
+            <ul class="article-tag-list">
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="http://tjgao.github.com//tags/%E7%AE%97%E6%B3%95">算法
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="http://tjgao.github.com//tags/algorithm">algorithm
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="http://tjgao.github.com//tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92">动态规划
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="http://tjgao.github.com//tags/dynamic-programming">dynamic programming
+                    </a>
+                </li>
+                
+            </ul>
+        </footer>
+        
+    </div>
+    <nav id="article-nav">
+    
+    <a href="/post/%E5%B0%8F%E9%A2%98-7/" id="article-nav-newer" class="article-nav-link-wrap">
+        <div class="article-nav-title"><span>&lt;</span>&nbsp;
+            小题-7
+        </div>
+    </a>
+    
+    
+    <a href="/post/%E5%B0%8F%E9%A2%98-5/" id="article-nav-older" class="article-nav-link-wrap">
+        <div class="article-nav-title">小题-5&nbsp;<span>&gt;</span></div>
+    </a>
+    
+</nav>
+</article>
+
+        
+    </section>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/tomorrow-night.min.css" integrity="sha256-2wL88NKUqvJi/ExflDzkzUumjUM73mcK2gBvBBeLvTk=" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js" integrity="sha256-KbfTjB0WZ8vvXngdpJGY3Yp3xKk+tttbqClO11anCIU=" crossorigin="anonymous"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<script type="text/javascript" async src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>简单的数学期望 // tj&#39;s blog</title>
+
+        <meta charset="utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+        <meta property="og:title" content="简单的数学期望" />
+    <meta property="og:description" content="" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="http://tjgao.github.com/post/%E7%AE%80%E5%8D%95%E7%9A%84%E6%95%B0%E5%AD%A6%E6%9C%9F%E6%9C%9B/" />
+    
+
+    <link href="" rel="alternate" type="application/rss+xml" title="tj&#39;s blog" />
+    <link rel="shortcut icon" href="/favicon.png">
+
+    <link href="http://tjgao.github.com/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+    <link href="http://tjgao.github.com/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="http://tjgao.github.com/css/style.css">
+
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+    
+    <meta name="generator" content="Hugo 0.27-DEV" />
+</head>
+
+
+<body>
+<div id="container">
+    <header id="header">
+    <div id="header-outer" class="outer">
+        <div id="header-inner" class="inner">
+            <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+            <a id="logo" class="logo-text" href="http://tjgao.github.com/">tj&#39;s blog</a>
+            <nav id="main-nav">
+                
+            </nav>
+            <nav id="sub-nav">
+                <div id="search-form-wrap">
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+    <section id="main" class="outer">
+        <article class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        <header class="article-header">
+            <h1 class="article-title" itemprop="name">简单的数学期望</h1>
+        </header>
+        
+        <div class="article-meta">
+            <a href="/post/%E7%AE%80%E5%8D%95%E7%9A%84%E6%95%B0%E5%AD%A6%E6%9C%9F%E6%9C%9B/" class="article-date">
+                <time datetime='2015-12-18T23:37:52.000&#43;00:00' itemprop="datePublished">2015-12-18</time>
+            </a>
+            
+            
+            <div class="post-categories">
+                <div class="article-category">
+                    
+                    
+                    <a class="article-category-link" href="http://tjgao.github.com//categories/%E6%95%B0%E5%AD%A6">数学</a>
+                    
+                </div>
+            </div>
+            
+            
+        </div>
+        <div class="article-entry" itemprop="articleBody">
+            <p>我确信我大学的时候还是学过概率论的，怎么感觉相关的东西已经忘得一干二净了？ 完全可以认为自己对此已经一无所知了。我感觉我需要重新学习，就从简单的例子和概念入手。以下文章主要内容来自<a href="https://www.codechef.com/wiki/tutorial-expectation">这里</a>。</p>
+
+<p></p>
+
+<h2 id="概念">概念</h2>
+
+<p>数学期望是一个概率论的概念。用数学语言来描述：对于一个离散的变量 $X$， 假设其概率函数为 $P(X)$，则其期望值 $E(X)$ 就是所有的可能的离散变量值 $x_i$ 乘以其概率 $P(x_i)$ 的和 $\Sigma{x_iP(x_i)}$。举个例子，掷一次骰子有可能得到1到6点，而每种点数的概率是一样的，则获得的点数的数学期望是 $\frac 16\times(1 + 2 + 3 + 4 + 5 + 6) = 3.5$。而对于拥有概率密度函数 $P(x)$ 的连续的变量 $x$，其数学期望为$\int{xP(x)}dx$。</p>
+
+<p>首先，很明显的一点，数学期望不是概率最大的值，它可以不是任何可能出现的值。比如掷一次骰子得到的点数的数学期望是 3.5，你绝无可能掷出 3.5 的点数来。数学期望是一种统计意义上的平均。另外一点，数学期望还遵从加法结合律：$E(x_1 + x_2) = E(x_1) + E(x_2)$。</p>
+
+<h2 id="问题探讨">问题探讨</h2>
+
+<p>让我们讨论点实际问题。</p>
+
+<h5 id="what-is-the-expected-number-of-coin-flips-for-getting-a-head">What is the expected number of coin flips for getting a head?</h5>
+
+<p>我们就根据定义来计算。假设期望值为X次，则掷一次就得到头像的概率为$\frac 12\times1$，因为就掷了一次，所以后面 $\times1$。如果掷一次没有得到头像呢？在这之后再次掷骰子已经是独立事件了，相当于回到了原点，这之后的期望值仍然是$X$，但是我们已经多掷了一次，所以实际上是 $X + 1 $，其概率为$\frac 12\times(X+1)$，这样得到了一个等式并可推出$X$的值：$$X = {\frac 12} + {\frac {(X+1)}2} \Rightarrow X=2$$</p>
+
+<h5 id="what-is-the-expected-number-of-coin-flips-for-getting-two-consecutive-heads">What is the expected number of coin flips for getting two consecutive heads?</h5>
+
+<p>同样的，假设期望为X，连续掷两次得到头像的概率为$\frac 14$，再乘以用掉的两次。如果第一次就不是头像，又回到了原点，只是浪费一次投掷骰子，其概率为$\frac 12\times(X+1)$。如果第一次掷出了头像，但第二次却不是，则概率为$\frac 14\times(X+2)$。我们又可以得到一个等式：$$X = \frac 14\times2 + \frac 12\times(X+1) + \frac 14\times(X+2) \Rightarrow X=6$$</p>
+
+<h5 id="generalization-what-is-the-expected-number-of-coin-flips-for-getting-n-consecutive-heads-given-n">(Generalization) What is the expected number of coin flips for getting N consecutive heads, given N?</h5>
+
+<p>类似的方法，可以得到这样的等式：$$X=\frac 1{2^N}\times{N} + \frac 12\times(X+1) + \frac1{2^2}\times(X+2) + \frac1{2^3}\times(X+3) +  &hellip; + \frac1{2^i}\times(X+i) + &hellip; + \frac1{2^N}\times(X+N)$$
+结果为 $X=2^{N+1}-2$，此后这类问题的答案都可以脱口而出了，真是让人愉悦。</p>
+
+<h5 id="an-array-a-has-distinct-randomly-ordered-entries-which-each-permutation-of-the-entries-being-equally-likely-that-is-the-entries-are-uniformly-randomly-ordered-what-are-the-expectations-of-the-indices-of-the-maximum-and-minimum-entries-in-the-array">An array A has distinct, randomly ordered entries, which each permutation of the entries being equally likely. That is, the entries are uniformly randomly ordered. What are the expectations of the indices of the maximum and minimum entries in the array?</h5>
+
+<p>假设这个 array 的序号是从0开始的，那么 max 和 min 的可能的序号，一直从 0 到
+n-1。则很明显有，$ E = \frac 0n + \frac 1n + \frac 2n + &hellip; + \frac {n-1}n = \frac {n-1}2$。</p>
+
+<h5 id="suppose-that-you-are-a-contestant-in-a-game-show-in-which-a-prize-is-hidden-behind-one-of-three-curtains-you-will-win-the-prize-if-you-select-the-correct-curtain-after-you-have-picked-one-curtain-but-before-the-curtain-is-lifted-the-host-of-the-show-lifts-one-of-the-other-curtains-revealing-that-the-prize-is-not-behind-it-and-asks-if-you-would-like-to-switch-your-choice-to-the-third-curtain-how-would-your-chances-of-winning-change-if-you-switched">Suppose that you are a contestant in a game show in which a prize is hidden behind one of three curtains. You will win the prize if you select the correct curtain. After you have picked one curtain but before the curtain is lifted, the host of the show lifts one of the other curtains, revealing that the prize is not behind it, and asks if you would like to switch your choice to the third curtain. How would your chances of winning change if you switched?</h5>
+
+<p>Well, 好熟悉的调调，我一定在什么脑筋急转弯见过。可是这是个纯粹的数学问题，脑子怎么转弯呢？先不管了，回到这个问题上。这个问题说白了就是要计算做这两种选择的赢的数学期望，然后从中选择更有利的。假设需要选择 $E$ 次才能获胜。</p>
+
+<p>首先，如果不换呢：
+$$E = \frac 13\times1 + \frac{2(E+1)}3  \Rightarrow  E = 3$$
+如果换了呢：
+$$E = \frac 23\times1 + \frac{E+1}3 \Rightarrow E = \frac32 $$</p>
+
+<h5 id="a-random-permutation-p-of-1-n-needs-to-be-sorted-in-ascending-order-to-do-this-at-every-step-you-will-randomly-choose-a-pair-i-j-where-i-j-but-p-i-p-j-and-swap-p-i-with-p-j-what-is-the-expected-number-of-swaps-needed-to-sort-permutation-in-ascending-order-idea-topcoder">A random permutation P of [1&hellip;n] needs to be sorted in ascending order. To do this, at every step you will randomly choose a pair (i,j) where i &lt; j but P[i] &gt; P[j], and swap P[i] with P[j]. What is the expected number of swaps needed to sort permutation in ascending order. (Idea: Topcoder)</h5>
+
+<p>说白了就是任给 $1&hellip;n$ 的一个数字排列，为了将这个乱序的排列搞成顺序的，每次需要从中随机选取一对顺序相反的数并交换两数的值。问，这种交换的期望次数是多少？</p>
+
+<h2 id="习题">习题</h2>
+
+<p>作为练习，一大波问题正在赶来。</p>
+
+<ol>
+<li><p>Candidates are appearing for interview one after other. Probability of each candidate getting selected is 0.16. What is the expected number of candidates that you will need to interview to make sure that you select somebody?</p></li>
+
+<li><p>(Generalized version of Q1) - The queen of a honey bee nest produces offsprings one-after-other till she produces a male offspring. The probability of produing a male offspring is p. What is the expected number of offsprings required to be produced to produce a male offspring?</p></li>
+
+<li><p>what is the expected number of dice throws required to get a &ldquo;four&rdquo;?</p></li>
+
+<li><p>Candidates are appearing for interview one after other. Probability of k-th candidate getting selected is 1/(k+1). What is the expected number of candidates that you will need to interview to make sure that you select somebody?</p></li>
+
+<li><p>A random permutation P of [1&hellip;n] needs to be sorted in ascending order. To do this, at every step you will randomly choose a pair (i,j) where i &lt; j but P[i] &gt; P[j], and swap P[i] with P[j]. What is the expected number of swaps needed to sort permutation in ascending order. (Idea: Topcoder)</p></li>
+
+<li><p>A fair coin flip experiment is carried out N times. What is the expected number of heads?</p></li>
+
+<li><p>(Bernaulli Trials) n students are asked to choose a number from 1 to 100 inclusive. What is the expected number of students that would choose a single digit number?</p></li>
+
+<li><p>What is the expected number of coin flips to ensure that there are atleast N heads?</p></li>
+
+<li><p>What is the expected number of bernaulli trials to ensure that there are atleast N successes, if the probability of each success is p?</p></li>
+
+<li><p>A game involves you choosing one number (between 1 to 6 inclusive) and then throwing three fair dice simultaneously. If none of the dice shows up the number that you have chosen, you lose $1. If exactly one, two or three dice show up the number that you have chosen, you win \$1, \$3 or \$5 respectively. What is your expected gain?</p></li>
+
+<li><p>There are 10 flowers in a garden, exactly one of which is poisonous. A dog starts eating all these flowers one by one at random. whenever he eats the posionous flower he will die. What is the expected number of flowers he will eat before he will die?</p></li>
+
+<li><p>A bag contains 64 balls of eight different colours, with eight of each colour. What is the expected number of balls you would have to pick (without looking) to select three balls of the same color?</p></li>
+
+<li><p>In a game of fair dice throw, what is the expected number of throws to make sure that all 6 outcomes appear atleast once?</p></li>
+
+<li><p>What is the expected number of bernaulli trials for getting N consecutive successes, given N, if the probability of each success is p?</p></li>
+</ol>
+        </div>
+
+        
+        
+        <div class="article-toc" >
+            <h3>Contents</h3>
+            <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#概念">概念</a></li>
+<li><a href="#问题探讨">问题探讨</a>
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#what-is-the-expected-number-of-coin-flips-for-getting-a-head">What is the expected number of coin flips for getting a head?</a></li>
+<li><a href="#what-is-the-expected-number-of-coin-flips-for-getting-two-consecutive-heads">What is the expected number of coin flips for getting two consecutive heads?</a></li>
+<li><a href="#generalization-what-is-the-expected-number-of-coin-flips-for-getting-n-consecutive-heads-given-n">(Generalization) What is the expected number of coin flips for getting N consecutive heads, given N?</a></li>
+<li><a href="#an-array-a-has-distinct-randomly-ordered-entries-which-each-permutation-of-the-entries-being-equally-likely-that-is-the-entries-are-uniformly-randomly-ordered-what-are-the-expectations-of-the-indices-of-the-maximum-and-minimum-entries-in-the-array">An array A has distinct, randomly ordered entries, which each permutation of the entries being equally likely. That is, the entries are uniformly randomly ordered. What are the expectations of the indices of the maximum and minimum entries in the array?</a></li>
+<li><a href="#suppose-that-you-are-a-contestant-in-a-game-show-in-which-a-prize-is-hidden-behind-one-of-three-curtains-you-will-win-the-prize-if-you-select-the-correct-curtain-after-you-have-picked-one-curtain-but-before-the-curtain-is-lifted-the-host-of-the-show-lifts-one-of-the-other-curtains-revealing-that-the-prize-is-not-behind-it-and-asks-if-you-would-like-to-switch-your-choice-to-the-third-curtain-how-would-your-chances-of-winning-change-if-you-switched">Suppose that you are a contestant in a game show in which a prize is hidden behind one of three curtains. You will win the prize if you select the correct curtain. After you have picked one curtain but before the curtain is lifted, the host of the show lifts one of the other curtains, revealing that the prize is not behind it, and asks if you would like to switch your choice to the third curtain. How would your chances of winning change if you switched?</a></li>
+<li><a href="#a-random-permutation-p-of-1-n-needs-to-be-sorted-in-ascending-order-to-do-this-at-every-step-you-will-randomly-choose-a-pair-i-j-where-i-j-but-p-i-p-j-and-swap-p-i-with-p-j-what-is-the-expected-number-of-swaps-needed-to-sort-permutation-in-ascending-order-idea-topcoder">A random permutation P of [1&hellip;n] needs to be sorted in ascending order. To do this, at every step you will randomly choose a pair (i,j) where i &lt; j but P[i] &gt; P[j], and swap P[i] with P[j]. What is the expected number of swaps needed to sort permutation in ascending order. (Idea: Topcoder)</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><a href="#习题">习题</a></li>
+</ul></li>
+</ul>
+</nav>
+        </div>
+        
+        
+
+        
+
+
+        
+        <footer class="article-footer">
+            <ul class="article-tag-list">
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="http://tjgao.github.com//tags/%E6%95%B0%E5%AD%A6">数学
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="http://tjgao.github.com//tags/mathematics">mathematics
+                    </a>
+                </li>
+                
+            </ul>
+        </footer>
+        
+    </div>
+    <nav id="article-nav">
+    
+    <a href="/post/%E5%B0%8F%E9%A2%98-4/" id="article-nav-newer" class="article-nav-link-wrap">
+        <div class="article-nav-title"><span>&lt;</span>&nbsp;
+            小题-4
+        </div>
+    </a>
+    
+    
+    <a href="/post/%E5%B0%8F%E9%A2%98-3/" id="article-nav-older" class="article-nav-link-wrap">
+        <div class="article-nav-title">小题(3)&nbsp;<span>&gt;</span></div>
+    </a>
+    
+</nav>
+</article>
+
+        
+    </section>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/tomorrow-night.min.css" integrity="sha256-2wL88NKUqvJi/ExflDzkzUumjUM73mcK2gBvBBeLvTk=" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js" integrity="sha256-KbfTjB0WZ8vvXngdpJGY3Yp3xKk+tttbqClO11anCIU=" crossorigin="anonymous"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<script type="text/javascript" async src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+</div>
+</body>
+</html>

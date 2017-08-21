@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>算法 on tj&#39;s blog</title>
+    <link>http://tjgao.github.com/tags/%E7%AE%97%E6%B3%95/</link>
+    <description>Recent content in 算法 on tj&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 21 Aug 2017 01:54:43 +0000</lastBuildDate>
+    
+	<atom:link href="http://tjgao.github.com/tags/%E7%AE%97%E6%B3%95/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>小问题用 coroutine 思路解决</title>
+      <link>http://tjgao.github.com/post/%E5%B0%8F%E9%97%AE%E9%A2%98%E7%94%A8-coroutine-%E6%80%9D%E8%B7%AF%E8%A7%A3%E5%86%B3/</link>
+      <pubDate>Mon, 21 Aug 2017 01:54:43 +0000</pubDate>
+      
+      <guid>http://tjgao.github.com/post/%E5%B0%8F%E9%97%AE%E9%A2%98%E7%94%A8-coroutine-%E6%80%9D%E8%B7%AF%E8%A7%A3%E5%86%B3/</guid>
+      <description>&lt;p&gt;前阵子在水木上看到有人贴了个问题，问怎么用程序实现。即，给你一堆等式，你的程序边接受输入边求值，并打印出来。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>小题-10</title>
+      <link>http://tjgao.github.com/post/%E5%B0%8F%E9%A2%98-10/</link>
+      <pubDate>Fri, 27 May 2016 17:27:24 +0000</pubDate>
+      
+      <guid>http://tjgao.github.com/post/%E5%B0%8F%E9%A2%98-10/</guid>
+      <description>&lt;p&gt;今天收到 HackerRank 一封 email，说又有什么新鲜出炉的 challenge 了，反正我没事，于是就跑去看看。没想到搞了好久才搞定，:( &amp;hellip;&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>小题-9</title>
+      <link>http://tjgao.github.com/post/%E5%B0%8F%E9%A2%98-9/</link>
+      <pubDate>Sat, 09 Apr 2016 13:44:22 +0000</pubDate>
+      
+      <guid>http://tjgao.github.com/post/%E5%B0%8F%E9%A2%98-9/</guid>
+      <description>&lt;p&gt;还是 leetcode 问题，还是那个最佳时间买卖股票的问题，只不过略作修改，问题的性质就可以发生极大变化。比如下面这个，加入了一个 cooldown 时间：&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>小题-8</title>
+      <link>http://tjgao.github.com/post/%E5%B0%8F%E9%A2%98-8/</link>
+      <pubDate>Fri, 15 Jan 2016 17:56:19 +0000</pubDate>
+      
+      <guid>http://tjgao.github.com/post/%E5%B0%8F%E9%A2%98-8/</guid>
+      <description>&lt;p&gt;leetcode 上有一系列的关于利润最大化的交易问题，比较有趣。 基本问题是这样的，假设你知道未来的 N 天的某股票的价格，在给定条件下（比如，限定你最多只能做一次或者 k 次交易，如果要买入必须先卖出已经入手的股票），怎样才能让利润最大化。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>小题-7</title>
+      <link>http://tjgao.github.com/post/%E5%B0%8F%E9%A2%98-7/</link>
+      <pubDate>Sat, 09 Jan 2016 17:41:35 +0000</pubDate>
+      
+      <guid>http://tjgao.github.com/post/%E5%B0%8F%E9%A2%98-7/</guid>
+      <description>&lt;p&gt;这是 leetcode 第 135 题，非常有趣味，一个小孩分糖果的算法。题目描述如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>小题-6</title>
+      <link>http://tjgao.github.com/post/%E5%B0%8F%E9%A2%98-6/</link>
+      <pubDate>Fri, 08 Jan 2016 17:23:29 +0000</pubDate>
+      
+      <guid>http://tjgao.github.com/post/%E5%B0%8F%E9%A2%98-6/</guid>
+      <description>&lt;p&gt;还是继续动态规划问题。动态规划问题非常有趣，想得对路，问题迎刃而解，想得不对路，费了牛劲也弄不出满意的性能和结果。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>小题-5</title>
+      <link>http://tjgao.github.com/post/%E5%B0%8F%E9%A2%98-5/</link>
+      <pubDate>Sun, 03 Jan 2016 13:07:25 +0000</pubDate>
+      
+      <guid>http://tjgao.github.com/post/%E5%B0%8F%E9%A2%98-5/</guid>
+      <description>&lt;p&gt;一道 leetcode 小题，我觉得有点意思。题目如下：&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Given s1, s2, s3, find whether s3 is formed by the interleaving of s1 and s2.&lt;/p&gt;
+
+&lt;p&gt;For example,
+Given:
+s1 = &amp;ldquo;aabcc&amp;rdquo;,
+s2 = &amp;ldquo;dbbca&amp;rdquo;,&lt;/p&gt;
+
+&lt;p&gt;When s3 = &amp;ldquo;aadbbcbcac&amp;rdquo;, return true.
+When s3 = &amp;ldquo;aadbbbaccc&amp;rdquo;, return false.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>小题-4</title>
+      <link>http://tjgao.github.com/post/%E5%B0%8F%E9%A2%98-4/</link>
+      <pubDate>Sat, 19 Dec 2015 20:58:15 +0000</pubDate>
+      
+      <guid>http://tjgao.github.com/post/%E5%B0%8F%E9%A2%98-4/</guid>
+      <description>&lt;p&gt;一个有趣的小题，题目如下：给定两个字符串 &lt;code&gt;s&lt;/code&gt; 和 &lt;code&gt;pattern&lt;/code&gt;， 其中 &lt;code&gt;pattern&lt;/code&gt; 的格式是每个字母后面跟一个加号或者减号。比如 &lt;code&gt;pattern = &amp;quot;a+b+c-&amp;quot;&lt;/code&gt;，代表了&lt;code&gt;&amp;quot;aabbcccc&amp;quot;&lt;/code&gt;，加号代表连续出现两次，减号代表连续出现四次。现在问，在 &lt;code&gt;s&lt;/code&gt; 中可以找到多少连续或者不连续的 &lt;code&gt;pattern&lt;/code&gt;？ 即&lt;code&gt;aa&lt;/code&gt;、&lt;code&gt;bb&lt;/code&gt;和&lt;code&gt;cccc&lt;/code&gt;之间可以相隔零个或者多个字符，但它们的顺序还是一样的。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>小题(3)</title>
+      <link>http://tjgao.github.com/post/%E5%B0%8F%E9%A2%98-3/</link>
+      <pubDate>Mon, 07 Dec 2015 23:14:01 +0000</pubDate>
+      
+      <guid>http://tjgao.github.com/post/%E5%B0%8F%E9%A2%98-3/</guid>
+      <description>&lt;p&gt;闲逛水木，又碰到有人讨论算法小题，题目是这样：数组有N+M个数字, 数字的范围为1 &amp;hellip; N, 打印重复的元素, 要求O(M + N), 不可以用额外的空间。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>小题(2)</title>
+      <link>http://tjgao.github.com/post/%E5%B0%8F%E9%A2%98-2/</link>
+      <pubDate>Fri, 30 Oct 2015 16:05:12 +0000</pubDate>
+      
+      <guid>http://tjgao.github.com/post/%E5%B0%8F%E9%A2%98-2/</guid>
+      <description>&lt;p&gt;一道leetcode小题。描述如下：&lt;/p&gt;
+
+&lt;p&gt;Largest Rectangle in Histogram&lt;/p&gt;
+
+&lt;p&gt;Given n non-negative integers representing the histogram&amp;rsquo;s bar height where the width of each bar is 1, find the area of largest rectangle in the histogram.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>小题(1)</title>
+      <link>http://tjgao.github.com/post/%E5%B0%8F%E9%A2%98-1/</link>
+      <pubDate>Fri, 30 Oct 2015 01:07:19 +0000</pubDate>
+      
+      <guid>http://tjgao.github.com/post/%E5%B0%8F%E9%A2%98-1/</guid>
+      <description>&lt;p&gt;逛买卖提看到一个小题，其实也不难，但是如果要瞬间找到解法，还是需要在平时多思多练。平时遇到问题也不应轻易放过，自我勉励一下。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>RMQ 算法</title>
+      <link>http://tjgao.github.com/post/rmq-%E7%AE%97%E6%B3%95/</link>
+      <pubDate>Mon, 17 Aug 2015 20:56:51 +0000</pubDate>
+      
+      <guid>http://tjgao.github.com/post/rmq-%E7%AE%97%E6%B3%95/</guid>
+      <description>&lt;p&gt;RMQ (Range Minimum/Maximum Query，区间最值) 问题，是指给定一个区间，然后询问在区间某一局部区域的最值是什么。比如给出一个长度为$n$的数组$N$，然后每次给出索引号$i$和$j$，问：$N[i]$和$N[j]$之间的最大（小）值是什么。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Suffix array I</title>
+      <link>http://tjgao.github.com/post/suffix-array-i/</link>
+      <pubDate>Tue, 11 Aug 2015 23:00:33 +0000</pubDate>
+      
+      <guid>http://tjgao.github.com/post/suffix-array-i/</guid>
+      <description>&lt;p&gt;Suffix array 是一种很奇妙的数据结构，在字符串处理中有很多重要的用途。很多看上去复杂的字符串问题，在已经创建了 suffix array之后，往往能够在线性时间之内解决。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

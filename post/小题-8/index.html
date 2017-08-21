@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>小题-8 // tj&#39;s blog</title>
+
+        <meta charset="utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+        <meta property="og:title" content="小题-8" />
+    <meta property="og:description" content="" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="http://tjgao.github.com/post/%E5%B0%8F%E9%A2%98-8/" />
+    
+
+    <link href="" rel="alternate" type="application/rss+xml" title="tj&#39;s blog" />
+    <link rel="shortcut icon" href="/favicon.png">
+
+    <link href="http://tjgao.github.com/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+    <link href="http://tjgao.github.com/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="http://tjgao.github.com/css/style.css">
+
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+    
+    <meta name="generator" content="Hugo 0.27-DEV" />
+</head>
+
+
+<body>
+<div id="container">
+    <header id="header">
+    <div id="header-outer" class="outer">
+        <div id="header-inner" class="inner">
+            <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+            <a id="logo" class="logo-text" href="http://tjgao.github.com/">tj&#39;s blog</a>
+            <nav id="main-nav">
+                
+            </nav>
+            <nav id="sub-nav">
+                <div id="search-form-wrap">
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+    <section id="main" class="outer">
+        <article class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        <header class="article-header">
+            <h1 class="article-title" itemprop="name">小题-8</h1>
+        </header>
+        
+        <div class="article-meta">
+            <a href="/post/%E5%B0%8F%E9%A2%98-8/" class="article-date">
+                <time datetime='2016-01-15T17:56:19.000&#43;00:00' itemprop="datePublished">2016-01-15</time>
+            </a>
+            
+            
+            <div class="post-categories">
+                <div class="article-category">
+                    
+                    
+                    <a class="article-category-link" href="http://tjgao.github.com//categories/%E6%8A%80%E6%9C%AF">技术</a>
+                    
+                </div>
+            </div>
+            
+            
+        </div>
+        <div class="article-entry" itemprop="articleBody">
+            <p>leetcode 上有一系列的关于利润最大化的交易问题，比较有趣。 基本问题是这样的，假设你知道未来的 N 天的某股票的价格，在给定条件下（比如，限定你最多只能做一次或者 k 次交易，如果要买入必须先卖出已经入手的股票），怎样才能让利润最大化。</p>
+
+<p></p>
+
+<p>在只让做一次交易，以及允许做不限次数的交易的情况下，问题很容易解决。做一次交易，就相当于找到最大的一次有利可图的价格差嘛。做不限次数的交易，就是把所有的有利可图的价格差都加起来嘛。</p>
+
+<pre><code class="language-cpp">// at most one transaction
+int maxProfit(vector&lt;int&gt;&amp; prices) {
+	int profit = 0, high = 0;
+	for( int i = prices.size()-1; i&gt;=0; i-- ) {
+		high = max( high, prices[i] );
+		profit = max( profit, high - prices[i] );
+	}
+	return profit;
+}
+
+// unlimited transactions
+int maxProfit(vector&lt;int&gt;&amp; prices) {
+	int profit = 0, high = 0;
+	for( int i = prices.size()-1; i&gt;=0; i-- ) {
+		profit += ( high - prices[i] &lt; 0 ? 0 : high - prices[i] );
+		high = prices[i];
+	}
+	return profit;
+}
+</code></pre>
+
+<p>现在如果最多只让做 2 次交易，问题的解法就没有那么明显了。仔细分析一下，买入算是投资，利润实际上是负数，只有卖出后才能变现，而且只有卖出后大于 0 才能是有利可图的交易。则代码如下：</p>
+
+<pre><code class="language-cpp">int maxProfit(vector&lt;int&gt;&amp; prices) {
+	int buy[2] = { INT_MIN, INT_MIN }, sell[2] = { 0 };
+	for( int i : prices ) {
+		buy[0] = max( -i, buy[0] );
+		sell[0] = max( sell[0], i + buy[0] );
+		buy[1] = max( sell[0] - i, buy[1] );
+		sell[1] = max( sell[1], i + buy[1] );
+	}
+	return sell[1];
+}
+</code></pre>
+
+<p>似乎有点违反直觉般的简单，经过测试，可以证实这是一个简洁高效的算法。同理，对于 k 次操作，可以类似的方法解决。只不过，如果 k 足够大，甚至大于了<code>prices</code>长度的一半，那也就变成了不限交易次数的情况。针对这种情况做特别处理，也可以极大提高速度，所以代码如下：</p>
+
+<pre><code class="language-cpp">class Solution {
+public:
+    int maxProfit(int k, vector&lt;int&gt;&amp; prices) {
+        if( k &lt;= 0 || prices.empty() ) return 0;
+        if( k &gt;= prices.size()/2 + 1) {
+            int profit = 0, high = 0;
+            for( int i = prices.size()-1; i&gt;=0; i-- ) {
+                profit += ( high - prices[i] &lt; 0 ? 0 : high - prices[i] );
+                high = prices[i];
+            }
+            return profit;
+        }
+        vector&lt;int&gt; buy(k, INT_MIN), sell(k);
+        for( int i : prices ) {
+            for( int idx=0; idx&lt;k; idx++ ) {
+                if( !idx ) {
+                    buy[idx] = max( buy[idx], -i );
+                } else {
+                    buy[idx] = max( buy[idx], sell[idx-1] - i );
+                }
+                sell[idx] = max( sell[idx], buy[idx] + i );
+            }
+        }
+        return sell[k-1];
+    }
+};
+</code></pre>
+
+<p>继续修改条件，假设现在不限制一定要卖出手上的股票才能买入，而且也不限制交易次数，比如，<code>[1,2,100]</code>，显然第一天第二天都要买入，第三天卖出，获利197。<code>[1,3,1,2]</code>，则要第一天买入，第二天卖出，第三天买入，第四天卖出，获利3。那么怎么才能利润最大化呢？此题来自于 hackerrank 的动态规划类型中的一道，难度属于 moderate，基本上可以类比于前面提到的无限制的情况，略有差异：</p>
+
+<pre><code class="language-cpp">int maxProfit(vector&lt;int&gt;&amp; prices) {
+    int profit = 0, high = INT_MIN;
+    for( int i=prices.size()-1; i&gt;=0; i-- ) {
+        high = max( high, prices[i] );
+        profit += ( high - prices[i] &lt; 0 ? 0 : high - prices[i] );
+    }
+    return profit;
+}
+</code></pre>
+        </div>
+
+        
+        
+        
+
+        
+
+
+        
+        <footer class="article-footer">
+            <ul class="article-tag-list">
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="http://tjgao.github.com//tags/%E7%AE%97%E6%B3%95">算法
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="http://tjgao.github.com//tags/algorithm">algorithm
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="http://tjgao.github.com//tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92">动态规划
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="http://tjgao.github.com//tags/dynamic-programming">dynamic programming
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="http://tjgao.github.com//tags/%E9%80%86%E6%8E%A8">逆推
+                    </a>
+                </li>
+                
+            </ul>
+        </footer>
+        
+    </div>
+    <nav id="article-nav">
+    
+    <a href="/post/configuration-of-nginx-and-tomcat-on-linux/" id="article-nav-newer" class="article-nav-link-wrap">
+        <div class="article-nav-title"><span>&lt;</span>&nbsp;
+            Configuration of nginx and tomcat on Linux
+        </div>
+    </a>
+    
+    
+    <a href="/post/%E5%B0%8F%E9%A2%98-7/" id="article-nav-older" class="article-nav-link-wrap">
+        <div class="article-nav-title">小题-7&nbsp;<span>&gt;</span></div>
+    </a>
+    
+</nav>
+</article>
+
+        
+    </section>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/tomorrow-night.min.css" integrity="sha256-2wL88NKUqvJi/ExflDzkzUumjUM73mcK2gBvBBeLvTk=" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js" integrity="sha256-KbfTjB0WZ8vvXngdpJGY3Yp3xKk+tttbqClO11anCIU=" crossorigin="anonymous"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<script type="text/javascript" async src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+</div>
+</body>
+</html>

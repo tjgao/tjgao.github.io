@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Nginx on tj&#39;s blog</title>
+    <link>http://tjgao.github.com/tags/nginx/</link>
+    <description>Recent content in Nginx on tj&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 23 Feb 2016 16:55:10 +0000</lastBuildDate>
+    
+	<atom:link href="http://tjgao.github.com/tags/nginx/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Configuration of nginx and tomcat on Linux</title>
+      <link>http://tjgao.github.com/post/configuration-of-nginx-and-tomcat-on-linux/</link>
+      <pubDate>Tue, 23 Feb 2016 16:55:10 +0000</pubDate>
+      
+      <guid>http://tjgao.github.com/post/configuration-of-nginx-and-tomcat-on-linux/</guid>
+      <description>&lt;p&gt;配置&lt;code&gt;nginx&lt;/code&gt;和什么&lt;code&gt;php&lt;/code&gt;啊， &lt;code&gt;tomcat&lt;/code&gt;啊， 我干了也无数次了，总是记不住，结果每次要弄了都要现查。 痛定思痛，好记性不如烂笔头，还是大致写写过程以后方便些，何况我这绝对算不上好记性。&lt;/p&gt;
+
+&lt;p&gt;以下针对的都是&lt;code&gt;ubuntu&lt;/code&gt;，估摸&lt;code&gt;debian&lt;/code&gt;也差不多。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>数学 on tj&#39;s blog</title>
+    <link>http://tjgao.github.com/tags/%E6%95%B0%E5%AD%A6/</link>
+    <description>Recent content in 数学 on tj&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 18 Dec 2015 23:37:52 +0000</lastBuildDate>
+    
+	<atom:link href="http://tjgao.github.com/tags/%E6%95%B0%E5%AD%A6/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>简单的数学期望</title>
+      <link>http://tjgao.github.com/post/%E7%AE%80%E5%8D%95%E7%9A%84%E6%95%B0%E5%AD%A6%E6%9C%9F%E6%9C%9B/</link>
+      <pubDate>Fri, 18 Dec 2015 23:37:52 +0000</pubDate>
+      
+      <guid>http://tjgao.github.com/post/%E7%AE%80%E5%8D%95%E7%9A%84%E6%95%B0%E5%AD%A6%E6%9C%9F%E6%9C%9B/</guid>
+      <description>&lt;p&gt;我确信我大学的时候还是学过概率论的，怎么感觉相关的东西已经忘得一干二净了？ 完全可以认为自己对此已经一无所知了。我感觉我需要重新学习，就从简单的例子和概念入手。以下文章主要内容来自&lt;a href=&#34;https://www.codechef.com/wiki/tutorial-expectation&#34;&gt;这里&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

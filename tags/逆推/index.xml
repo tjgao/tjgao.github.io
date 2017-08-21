@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>逆推 on tj&#39;s blog</title>
+    <link>http://tjgao.github.com/tags/%E9%80%86%E6%8E%A8/</link>
+    <description>Recent content in 逆推 on tj&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 15 Jan 2016 17:56:19 +0000</lastBuildDate>
+    
+	<atom:link href="http://tjgao.github.com/tags/%E9%80%86%E6%8E%A8/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>小题-8</title>
+      <link>http://tjgao.github.com/post/%E5%B0%8F%E9%A2%98-8/</link>
+      <pubDate>Fri, 15 Jan 2016 17:56:19 +0000</pubDate>
+      
+      <guid>http://tjgao.github.com/post/%E5%B0%8F%E9%A2%98-8/</guid>
+      <description>&lt;p&gt;leetcode 上有一系列的关于利润最大化的交易问题，比较有趣。 基本问题是这样的，假设你知道未来的 N 天的某股票的价格，在给定条件下（比如，限定你最多只能做一次或者 k 次交易，如果要买入必须先卖出已经入手的股票），怎样才能让利润最大化。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>小题-7</title>
+      <link>http://tjgao.github.com/post/%E5%B0%8F%E9%A2%98-7/</link>
+      <pubDate>Sat, 09 Jan 2016 17:41:35 +0000</pubDate>
+      
+      <guid>http://tjgao.github.com/post/%E5%B0%8F%E9%A2%98-7/</guid>
+      <description>&lt;p&gt;这是 leetcode 第 135 题，非常有趣味，一个小孩分糖果的算法。题目描述如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
