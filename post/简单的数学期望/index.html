@@ -71,6 +71,10 @@
             </div>
             
             
+            <div class="article-comment-link-wrap">
+                <a href="/post/%E7%AE%80%E5%8D%95%E7%9A%84%E6%95%B0%E5%AD%A6%E6%9C%9F%E6%9C%9B/#disqus_thread" class="article-comment-link">Comments</a>
+            </div>
+            
         </div>
         <div class="article-entry" itemprop="articleBody">
             <p>我确信我大学的时候还是学过概率论的，怎么感觉相关的东西已经忘得一干二净了？ 完全可以认为自己对此已经一无所知了。我感觉我需要重新学习，就从简单的例子和概念入手。以下文章主要内容来自<a href="https://www.codechef.com/wiki/tutorial-expectation">这里</a>。</p>
@@ -155,7 +159,7 @@ $$E = \frac 23\times1 + \frac{E+1}3 \Rightarrow E = \frac32 $$</p>
 
         
         
-        <div class="article-toc" >
+        <div class="article-toc" style="display:none;">
             <h3>Contents</h3>
             <nav id="TableOfContents">
 <ul>
@@ -185,6 +189,44 @@ $$E = \frac 23\times1 + \frac{E+1}3 \Rightarrow E = \frac32 $$</p>
         
         
 
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.slim.min.js" integrity="sha256-/SIrNqv8h6QGKDuNoLGA4iret+kyesCkHGzVUUV0shc=" crossorigin="anonymous"></script>
+        <script>
+            (function() {
+                var $toc = $('#TableOfContents');
+                if ($toc.length > 0) {
+                    var $window = $(window);
+
+                    function onScroll(){
+                        var currentScroll = $window.scrollTop();
+                        var h = $('.article-entry h1, .article-entry h2, .article-entry h3, .article-entry h4, .article-entry h5, .article-entry h6');
+                        var id = "";
+                        h.each(function (i, e) {
+                            e = $(e);
+                            if (e.offset().top - 10 <= currentScroll) {
+                                id = e.attr('id');
+                            }
+                        });
+                        var active = $toc.find('a.active');
+                        if (active.length == 1 && active.eq(0).attr('href') == '#' + id) return true;
+
+                        active.each(function (i, e) {
+                            $(e).removeClass('active').siblings('ul').hide();
+                        });
+                        $toc.find('a[href="#' + id + '"]').parentsUntil('#TableOfContents').each(function (i, e) {
+                            $(e).children('a').addClass('active').siblings('ul').show();
+                        });
+                    }
+
+                    $window.on('scroll', onScroll);
+                    $(document).ready(function() {
+                        $toc.find('a').parent('li').find('ul').hide();
+                        onScroll();
+                        document.getElementsByClassName('article-toc')[0].style.display = '';
+                    });
+                }
+            })();
+        </script>
         
 
 
@@ -222,6 +264,27 @@ $$E = \frac 23\times1 + \frac{E+1}3 \Rightarrow E = \frac32 $$</p>
 </nav>
 </article>
 
+        
+            <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "tiejun" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
         
     </section>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/tomorrow-night.min.css" integrity="sha256-2wL88NKUqvJi/ExflDzkzUumjUM73mcK2gBvBBeLvTk=" crossorigin="anonymous" />
