@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Migrate to Hugo From Hexo // tj&#39;s blog</title>
+    <title>ES6 Compatible Table // tj&#39;s blog</title>
 
         <meta charset="utf-8">
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -9,11 +9,11 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
     <meta name="author" content="">
-        <meta property="og:title" content="Migrate to Hugo From Hexo" />
+        <meta property="og:title" content="ES6 Compatible Table" />
     <meta property="og:description" content="" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="en_US" />
-    <meta property="og:url" content="http://tjgao.github.com/post/migrate-to-hugo-from-hexo/" />
+    <meta property="og:url" content="http://tjgao.github.com/post/es6-compatible-table/" />
     
 
     <link href="" rel="alternate" type="application/rss+xml" title="tj&#39;s blog" />
@@ -52,12 +52,12 @@
     <div class="article-inner">
         
         <header class="article-header">
-            <h1 class="article-title" itemprop="name">Migrate to Hugo From Hexo</h1>
+            <h1 class="article-title" itemprop="name">ES6 Compatible Table</h1>
         </header>
         
         <div class="article-meta">
-            <a href="/post/migrate-to-hugo-from-hexo/" class="article-date">
-                <time datetime='2017-08-21T13:04:34.000&#43;10:00' itemprop="datePublished">2017-08-21</time>
+            <a href="/post/es6-compatible-table/" class="article-date">
+                <time datetime='2017-09-24T12:34:08.000&#43;10:00' itemprop="datePublished">2017-09-24</time>
             </a>
             
             
@@ -72,25 +72,13 @@
             
             
             <div class="article-comment-link-wrap">
-                <a href="/post/migrate-to-hugo-from-hexo/#disqus_thread" class="article-comment-link">Comments</a>
+                <a href="/post/es6-compatible-table/#disqus_thread" class="article-comment-link">Comments</a>
             </div>
             
         </div>
         <div class="article-entry" itemprop="articleBody">
-            <p>最近把静态 blog 的生成工具由 hexo 换成了 hugo。hexo 其实还是不错的，但是速度确实不行。</p>
+            <p>很有意思的 ES6 <a href="http://kangax.github.io/compat-table/es2016plus/">兼容列表</a>，在技术选择和决策的时候，值得参考。</p>
 
-<p></p>
-
-<p>一般人修改和写东西，总是要写一点，改改，然后看看效果，于是这就要求程序不断的 generate 静态页面。如果每次等超过两秒就会极大的影响使用感受，要是五秒以上，恐怕受得了的就不多了。</p>
-
-<p>另一个，hexo 是用 js 写的，那意味着你如果要换台机器，你需要安装整套的工具链，nodejs, npm 等等，加上 hexo module 以及它所依赖的一切东西。老实说，还是麻烦的，因为你不见得在所有的机器上都设置好了环境。但是对于 golang 来说似乎很容易，而且我也有兴趣折腾 golang，所以机器上总是有 go 的环境，安装搞定 hugo 只需要一条命令：</p>
-
-<pre><code class="language-bash">go get github.com/gohugoio/hugo
-</code></pre>
-
-<p>而且，就算我不写 go 程序，hugo 也是一个静态链接的可执行文件，随便甩在 Linux，Mac 或者 Windows 上都跑得好好的，对于一般非开发者用户来说，其安装设置过程也非常简单。</p>
-
-<p>我没几篇文章，用 hugo 做一次全新的 generate 页面，需要 200 多毫秒，如果只是刷新某一篇文章的更改，也就十几毫秒，确实有快到爽的感觉（或许以前用 hexo 导致对速度要求降低？）。</p>
         </div>
 
         
@@ -143,12 +131,17 @@
             <ul class="article-tag-list">
                 
                 <li class="article-tag-list-item">
-                    <a class="article-tag-list-link" href="http://tjgao.github.com//tags/hugo">hugo
+                    <a class="article-tag-list-link" href="http://tjgao.github.com//tags/javascript">javascript
                     </a>
                 </li>
                 
                 <li class="article-tag-list-item">
-                    <a class="article-tag-list-link" href="http://tjgao.github.com//tags/blog">blog
+                    <a class="article-tag-list-link" href="http://tjgao.github.com//tags/ecmascript">ECMAScript
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="http://tjgao.github.com//tags/es6">ES6
                     </a>
                 </li>
                 
@@ -158,15 +151,9 @@
     </div>
     <nav id="article-nav">
     
-    <a href="/post/es6-compatible-table/" id="article-nav-newer" class="article-nav-link-wrap">
-        <div class="article-nav-title"><span>&lt;</span>&nbsp;
-            ES6 Compatible Table
-        </div>
-    </a>
     
-    
-    <a href="/post/%E5%B0%8F%E9%97%AE%E9%A2%98%E7%94%A8-coroutine-%E6%80%9D%E8%B7%AF%E8%A7%A3%E5%86%B3/" id="article-nav-older" class="article-nav-link-wrap">
-        <div class="article-nav-title">小问题用 coroutine 思路解决&nbsp;<span>&gt;</span></div>
+    <a href="/post/migrate-to-hugo-from-hexo/" id="article-nav-older" class="article-nav-link-wrap">
+        <div class="article-nav-title">Migrate to Hugo From Hexo&nbsp;<span>&gt;</span></div>
     </a>
     
 </nav>

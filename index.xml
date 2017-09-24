@@ -6,10 +6,19 @@
     <description>Recent content on tj&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 21 Aug 2017 13:04:34 +1000</lastBuildDate>
+    <lastBuildDate>Sun, 24 Sep 2017 12:34:08 +1000</lastBuildDate>
     
 	<atom:link href="http://tjgao.github.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>ES6 Compatible Table</title>
+      <link>http://tjgao.github.com/post/es6-compatible-table/</link>
+      <pubDate>Sun, 24 Sep 2017 12:34:08 +1000</pubDate>
+      
+      <guid>http://tjgao.github.com/post/es6-compatible-table/</guid>
+      <description>很有意思的 ES6 兼容列表，在技术选择和决策的时候，值得参考。</description>
+    </item>
     
     <item>
       <title>Migrate to Hugo From Hexo</title>
