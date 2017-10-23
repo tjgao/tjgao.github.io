@@ -6,10 +6,21 @@
     <description>Recent content in Javascript on tj&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 24 Sep 2017 12:34:08 +1000</lastBuildDate>
+    <lastBuildDate>Mon, 23 Oct 2017 16:57:24 +1100</lastBuildDate>
     
 	<atom:link href="http://tjgao.github.com/tags/javascript/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Naive Promise Implementation in Javascript</title>
+      <link>http://tjgao.github.com/post/naive-promise-implementation-in-javascript/</link>
+      <pubDate>Mon, 23 Oct 2017 16:57:24 +1100</pubDate>
+      
+      <guid>http://tjgao.github.com/post/naive-promise-implementation-in-javascript/</guid>
+      <description>&lt;p&gt;最近一段时间看了一些 ES6 和 Typescript 的内容，感叹 Javascript 的发展日新月异，不好好了解和跟踪其进展就落伍了。在断断续续的阅读中，又看到了 Javascript 中的 Promise，感觉是个挺好的东西，必须要用熟用好。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>ES6 Compatible Table</title>
