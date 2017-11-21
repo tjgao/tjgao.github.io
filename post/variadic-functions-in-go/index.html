@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Naive Promise Implementation in Javascript // tj&#39;s blog</title>
+    <title>Variadic Functions in Go // tj&#39;s blog</title>
 
         <meta charset="utf-8">
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -9,11 +9,11 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
     <meta name="author" content="">
-        <meta property="og:title" content="Naive Promise Implementation in Javascript" />
+        <meta property="og:title" content="Variadic Functions in Go" />
     <meta property="og:description" content="" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="en_US" />
-    <meta property="og:url" content="http://tjgao.github.com/post/naive-promise-implementation-in-javascript/" />
+    <meta property="og:url" content="http://tjgao.github.com/post/variadic-functions-in-go/" />
     
 
     <link href="" rel="alternate" type="application/rss+xml" title="tj&#39;s blog" />
@@ -52,12 +52,12 @@
     <div class="article-inner">
         
         <header class="article-header">
-            <h1 class="article-title" itemprop="name">Naive Promise Implementation in Javascript</h1>
+            <h1 class="article-title" itemprop="name">Variadic Functions in Go</h1>
         </header>
         
         <div class="article-meta">
-            <a href="/post/naive-promise-implementation-in-javascript/" class="article-date">
-                <time datetime='2017-10-23T16:57:24.000&#43;11:00' itemprop="datePublished">2017-10-23</time>
+            <a href="/post/variadic-functions-in-go/" class="article-date">
+                <time datetime='2017-11-21T19:13:27.000&#43;11:00' itemprop="datePublished">2017-11-21</time>
             </a>
             
             
@@ -72,68 +72,48 @@
             
             
             <div class="article-comment-link-wrap">
-                <a href="/post/naive-promise-implementation-in-javascript/#disqus_thread" class="article-comment-link">Comments</a>
+                <a href="/post/variadic-functions-in-go/#disqus_thread" class="article-comment-link">Comments</a>
             </div>
             
         </div>
         <div class="article-entry" itemprop="articleBody">
-            <p>最近一段时间看了一些 ES6 和 Typescript 的内容，感叹 Javascript 的发展日新月异，不好好了解和跟踪其进展就落伍了。在断断续续的阅读中，又看到了 Javascript 中的 Promise，感觉是个挺好的东西，必须要用熟用好。</p>
+            <p>Go 是一个挺不错的语言，但是有一些地方不太对我胃口，比如没有 Generic。按照 Rob Pike 的意思是，“你们用不着的，反正我们没发现有用模板的需求，你们肯定也不会有”。所以，结果就是写一些东西有点罗里吧嗦的。有人说用 interface{}，这个跟用 C\C++ 里的 void* 有什么区别？说好的类型安全呢？</p>
 
-<p></p>
+<p>有一些横空出世的函数，这些函数倒是什么都认，工作起来跟模板似的，就是不让用户用 generic ，什么“我们没有用模板的需求，你们肯定也不会有”。不过这些是由编译器来特殊处理的。如果从开始就不考虑 Generic 的可能性，我有点担心以后也不太可能有了。如果我觉得有用的一些 feature 都能够加上的话，那么在我眼里从实用好用角度讲，Go 几乎是无敌了。</p>
 
-<p>但是简单的看看文档，跑几个小例子，我感觉还不够，这个应该是可以由我们自己来实现的。我会尝试从零开始写一个自己的 Promise，一开始只有基本功能，然后再慢慢往上增加功能。</p>
+<p>好了回到正题，说说变长参数函数 (Variadic functions)。比如像这样：</p>
 
-<p>为什么 Promise 能够缓解 callback 造成的一些问题呢？ callback 的问题是，调用的地点和代码逻辑紧密关联，同时还暴露了很多状态，一旦状态多了，加上错误处理，管理起来非常麻烦，读起来也很困难。而 Promise，简单的说，能够把原先乱麻般的 callbacks 整理成线性的顺序执行，还能够 track 执行过程中的一些错误，使用上更加便利不用说，还能极大的减轻心智负担，提高可读性。</p>
-
-<p>Javascript 带的 Promise 功能很完善，我自己先轮一个最简单的，能够链式的按照顺序的执行代码。我的想法挺简单，其实 Promise 就是提供一个场合，让你的 callback 能够都跳到它那里去，然后在它那里统一的执行回调代码，并检查是否有下一步，以及错误处理等等。你必须要在你的代码中执行一个 Promise 提供的桩子，因为只有这样你才能驱动整个事件链条。</p>
-
-<p>一个初步的简单实现如下</p>
-
-<pre><code class="language-javascript">let NaivePromise = function(functor) {
-	let resolve = () =&gt; {
-		if (this.callbacks.length == 0) {
-			this.state = 'resolved'
-			return
-		}
-		var func = this.callbacks[0]
-		this.callbacks.shift()
-		func()
+<pre><code class="language-golang">func iDoIntegers(first int, others ...int) {
+	fmt.Print(first)
+	for _, value := range others {
+		fmt.Print(value)
 	}
-
-	let reject = () =&gt; {
-		this.state = 'rejected'
-	}
-
-	this.then = (funcall) =&gt; {
-		if (typeof funcall !== 'function')
-			return this
-
-		let wrap = function () {
-			funcall(resolve)
-		}
-		this.callbacks.push(wrap)
-		return this
-	}
-
-	this.state = 'pending'
-	this.callbacks = [] 
-	functor(resolve, reject)
+	fmt.Println()
 }
-
-let job = new NaivePromise((resolve, reject) =&gt; {
-	setTimeout(resolve, 1000)
-})
-
-job.then((resolve) =&gt; { console.log('cool '); resolve();})
-.then((resolve) =&gt; { setTimeout(resolve, 1000);})
-.then((resolve) =&gt; { console.log('awesome '); resolve()})
-.then((resolve) =&gt; { setTimeout(resolve, 1000);})
-.then((resolve) =&gt; { console.log('I am done '); resolve()})
 </code></pre>
 
-<p>这个 resolve 就是由 Promise 提供的桩子，它来看事情有没有处理完，以及跳到下一步的回调代码，它才是真正的执行者。一串串的 then 的调用只是在不断的塞入不同的回调代码，并未真正执行代码。</p>
+<p>这个函数接受至少一个整数参数，不设上限，那省略号有点像 C\C++ 中的类似用法。你会发现，其实传入整数 slice 也是可以的，比如</p>
 
-<p>这个代码并没有考虑错误处理，其实正版的 Promise 的 then 调用还有个 reject 参数，当有错误发生时，可以调用 reject，并塞入个错误原因对象。此外，Promise 应该还有 cancel 的能力。这个以后再说，这段代码足够看清楚基本原理了。</p>
+<pre><code class="language-golang">iDoIntegers(1, []int{55,66,77,88}...)
+</code></pre>
+
+<p>注意，这里对传入的 slice 用了省略号，表示对 slice 解包了，所以传进去的其实是一个一个整数。非常像 Python 里的 *args 和 *kwargs 对不对?</p>
+
+<p>但 iDoIntegers 函数内部对 others 使用了 range。这似乎说明在编译期根据实际的参数个数生成了一个数组，并用 slice 来引用之。你可以对 others 使用 len 函数，没有问题。要确认的话，就给这函数加一句</p>
+
+<pre><code class="language-golang">func iDoIntegers(first int, others ...int) {
+	fmt.Println(reflect.TypeOf(others))
+	fmt.Print(first)
+	for _, value := range others {
+		fmt.Print(value)
+	}
+	fmt.Println()
+</code></pre>
+
+<p>而返回的类型也确实是 []int。有点多此一举了是不是？不知道为啥不干脆直接接受一个不解包的 slice。</p>
+
+<p>反过来，如果函数写成接受一个整数 slice，指望输入多个整数是不行的。从这一点上说，确实不如 Python 的 *args 灵活。</p>
+
         </div>
 
         
@@ -186,7 +166,12 @@ job.then((resolve) =&gt; { console.log('cool '); resolve();})
             <ul class="article-tag-list">
                 
                 <li class="article-tag-list-item">
-                    <a class="article-tag-list-link" href="http://tjgao.github.com//tags/javascript">javascript
+                    <a class="article-tag-list-link" href="http://tjgao.github.com//tags/go">go
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="http://tjgao.github.com//tags/golang">golang
                     </a>
                 </li>
                 
@@ -196,15 +181,9 @@ job.then((resolve) =&gt; { console.log('cool '); resolve();})
     </div>
     <nav id="article-nav">
     
-    <a href="/post/variadic-functions-in-go/" id="article-nav-newer" class="article-nav-link-wrap">
-        <div class="article-nav-title"><span>&lt;</span>&nbsp;
-            Variadic Functions in Go
-        </div>
-    </a>
     
-    
-    <a href="/post/es6-compatible-table/" id="article-nav-older" class="article-nav-link-wrap">
-        <div class="article-nav-title">ES6 Compatible Table&nbsp;<span>&gt;</span></div>
+    <a href="/post/naive-promise-implementation-in-javascript/" id="article-nav-older" class="article-nav-link-wrap">
+        <div class="article-nav-title">Naive Promise Implementation in Javascript&nbsp;<span>&gt;</span></div>
     </a>
     
 </nav>
